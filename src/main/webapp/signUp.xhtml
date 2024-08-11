@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Sign Up - Personal Finance System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+        .signup-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 70%;
+            width: 400px;
+        }
+        .signup-container img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+        }
+        .signup-container .signup-logo {
+            margin-bottom: 1rem;
+        }
+        .signup-container .ui-panel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .signup-container .ui-inputfield {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .signup-container .ui-commandbutton {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            padding: 0.8rem;
+            border-radius: 5px;
+        }
+        .signup-container .ui-commandbutton:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        .input-group .fa {
+            margin-right: 10px;
+            color: #999;
+        }
+        .input-group label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .input-group .ui-inputfield {
+            flex: 2;
+            padding-left: 10px;
+            box-sizing: border-box;
+        }
+        .ui-messages {
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .signup-container {
+                width: 90%;
+                padding: 1rem;
+            }
+            .signup-container img {
+                width: 80px;
+                height: 80px;
+            }
+            .signup-container .ui-commandbutton {
+                font-size: 0.9rem;
+                padding: 0.6rem;
+            }
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="signup-container">
+        <h:form>
+            <p:panel header="Sign Up">
+                <h:graphicImage value="#{resource['images/expense1.png']}" alt="Finance System Logo" styleClass="signup-logo"/>
+                <p:messages id="messages" showDetail="true"/>
+                
+                <div class="input-group">
+                    <i class="fa fa-user"></i>
+                    <p:inputText id="username" value="#{signupBean.username}" placeholder="Username" required="true" label="Username"/>
+                </div>
+                
+                
+                <div class="input-group">
+                    <i class="fa fa-lock"></i>
+                    <p:password id="password" value="#{signupBean.password}" placeholder="Password" required="true" label="Password"/>
+                </div>
+                
+                
+                <p:commandButton value="Sign Up" action="#{signupBean.signup}" update="messages"/>
+            </p:panel>
+        </h:form>
+    </div>
+</h:body>
+</html>
