@@ -1,2 +1,8 @@
-com/syntech/pem/JAXRSConfiguration.class
+com/syntech/pem/bean/LoginBean.class
+com/syntech/pem/repository/UserRepository.class
 com/syntech/pem/resources/JavaEE8Resource.class
+com/syntech/pem/service/UserService.class
+com/syntech/pem/bean/SignupBean.class
+com/syntech/pem/JAXRSConfiguration.class
+com/syntech/pem/bean/UserBean.class
+com/syntech/pem/model/User.class
