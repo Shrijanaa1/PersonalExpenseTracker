@@ -109,19 +109,19 @@
                 
                 <div class="input-group">
                     <i class="fa fa-user"></i>
-                    <p:inputText id="username" value="#{signupBean.username}" placeholder="Username" required="true" label="Username"/>
+                    <p:inputText id="username" value="#{userBean.username}" placeholder="Username" required="true" label="Username"/>
                 </div>
-                
                 
                 <div class="input-group">
                     <i class="fa fa-lock"></i>
-                    <p:password id="password" value="#{signupBean.password}" placeholder="Password" required="true" label="Password"/>
+                    <p:password id="password" value="#{userBean.password}" placeholder="Password" required="true" label="Password"/>
                 </div>
                 
-                
-                <p:commandButton value="Sign Up" action="#{signupBean.signup}" update="messages"/>
+                <p:commandButton value="Sign Up" action="#{userBean.createUser}" update="messages"/>
+
             </p:panel>
         </h:form>
     </div>
 </h:body>
+
 </html>

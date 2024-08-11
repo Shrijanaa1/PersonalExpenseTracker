@@ -97,15 +97,15 @@
                 
                 <div class="input-group">
                     <i class="fa fa-user"></i>
-                    <p:inputText id="username" value="#{loginBean.username}" placeholder="Username" required="true" label="Username"/>
+                    <p:inputText id="username" value="#{userBean.username}" placeholder="Username" required="true" label="Username"/>
                 </div>
                 
                 <div class="input-group">
                     <i class="fa fa-lock"></i>
-                    <p:password id="password" value="#{loginBean.password}" placeholder="Password" required="true" label="Password"/>
+                    <p:password id="password" value="#{userBean.password}" placeholder="Password" required="true" label="Password"/>
                 </div>
                 
-                <p:commandButton value="Login" action="#{loginBean.login}" update="messages"/>
+                <p:commandButton value="Login" action="#{userBean.login}" update="messages"/>
                 
                 <div class="register-link">
                     <h:outputText value="Don't have an account? " />
@@ -116,4 +116,5 @@
         </h:form>
     </div>
 </h:body>
+
 </html>
