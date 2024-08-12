@@ -27,68 +27,64 @@ public class Transaction extends BaseIdEntity{
     @JoinColumn(name = "account_id")
     private Account account;
     
-    //Constructors
+    //Private Constructor
     
-    public Transaction() {}
-
-    public Transaction(double amount, String type, String category, String description, Date date, Account account) {
-        this.amount = amount;
-        this.type = type;
-        this.category = category;
-        this.description = description;
-        this.date = date;
-        this.account = account;
+    private Transaction(TransactionBuilder builder){
+        this.amount = builder.amount;
+        this.type = builder.type;
+        this.category = builder.category;
+        this.description = builder.description;
+        this.date = builder.date;
+        this.account = builder.account;
     }
     
-    
-    //Getters and Setters
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
+    public String getDescription(){
         return description;
+    } 
+    
+    public static class TransactionBuilder{
+        private double amount;
+        private String type;
+        private String category;
+        private String description;
+        private Date date;
+        private Account account;   
+    
+        
+    public TransactionBuilder setAmount(double amount){
+        this.amount = amount;
+        return this;
     }
-
-    public void setDescription(String description) {
+    
+    public TransactionBuilder setType(String type){
+        this.type = type;
+        return this;
+    }
+    
+    public TransactionBuilder setCategory(String category){
+        this.category = category;
+        return this;
+    }
+    
+    public TransactionBuilder setDescription(String description){
         this.description = description;
+        return this;
     }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
+    
+    public TransactionBuilder setDate(Date date){
         this.date = date;
+        return this;
     }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
+    
+    public TransactionBuilder setAccount(Account account){
         this.account = account;
+        return this;
     }
-   
+    
+    public Transaction build(){
+        return new Transaction(this);
+    }
+    
+    }
+
 }
