@@ -38,12 +38,25 @@ public class UserBean implements Serializable {
         return "login?faces-redirect=true"; // Redirect to login page after successful signup
     }
 
-    
-    
     public void updateUser() {
-        userService.update(user);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully."));
+        if (user != null) {
+            user.setUsername(username);
+            user.setPassword(password);
+            userService.update(user);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "User updated", "User details updated successfully"));
+            
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User details could not be updated"));
+        }
     }
+    
+    
+//    public void updateUser() {
+//        userService.update(user);
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully."));
+//    }
     
     
     public void deleteUser(User user) {
