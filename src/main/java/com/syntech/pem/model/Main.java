@@ -8,5 +8,12 @@ public class Main {
                 .build();
         
         System.out.println("Transaction Created:" + transaction.getDescription());
+    
+    Account account = new Account.AccountBuilder()
+            .setName("Cash")
+            .setBalance(10000)
+            .build();
+    
+        System.out.println("Account created: " + account.getName());
     }
 }

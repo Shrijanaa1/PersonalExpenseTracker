@@ -11,31 +11,36 @@ public class Account extends BaseIdEntity{
     
     private double balance;
     
-    //Constructors
+    //Private Constructor to enforce usage of the builder
     
-    public Account () {}
-    
-    public Account(String name, double balance){
-        this.name = name;
-        this.balance = balance;
+    private Account(AccountBuilder builder){
+        this.name = builder.name;
+        this.balance = builder.balance;
     }
     
-    //Getters and Setters
-
-    public String getName() {
+    //Put Getters and Setters here
+    public String getName(){
         return name;
-    }
+    } 
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+    //Builder class
+    public static class AccountBuilder{
+        private String name;
+        private double balance;
+        
+        public AccountBuilder setName(String name){
+            this.name = name;
+            return this;
+        }
+        
+        public AccountBuilder setBalance(double balance){
+            this.balance = balance;
+            return this;
+        }
+        
+        public Account build(){
+            return new Account(this);
+        }
     }
     
     

@@ -27,7 +27,7 @@ public class Transaction extends BaseIdEntity{
     @JoinColumn(name = "account_id")
     private Account account;
     
-    //Private Constructor
+    //Private Constructor to enforce usage of builder
     
     private Transaction(TransactionBuilder builder){
         this.amount = builder.amount;
@@ -42,6 +42,7 @@ public class Transaction extends BaseIdEntity{
         return description;
     } 
     
+    //Builder class
     public static class TransactionBuilder{
         private double amount;
         private String type;
