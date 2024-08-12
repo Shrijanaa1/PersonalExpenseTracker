@@ -7,13 +7,13 @@ public class Main {
                 .setDescription("Groceries")
                 .build();
         
-        System.out.println("Transaction Created:" + transaction.getDescription());
+        System.out.println("Transaction Created: " + transaction.getDescription());
     
-    Account account = new Account.AccountBuilder()
-            .setName("Cash")
-            .setBalance(10000)
-            .build();
-    
+        Account account = new Account.AccountBuilder()
+                .setName("Cash")
+                .setBalance(10000)
+                .build();
+
         System.out.println("Account created: " + account.getName());
     }
 }

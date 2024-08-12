@@ -17,7 +17,7 @@ public class UserBean implements Serializable {
     @Inject
     private UserService userService;
     
-    private User user = new User();
+//    private User user = new User();
 
     private String username;
     private String password;
@@ -30,18 +30,26 @@ public class UserBean implements Serializable {
             return "signUp"; // Return to the same signup page if username is taken
         }
 
-        user.setUsername(username);
-        user.setPassword(password);
+        User user = new User.UserBuilder()
+            .setUsername(username)
+            .setPassword(password)
+            .build();
+        
         userService.save(user);
-        user = new User(); // Clear the form after saving
+//        user = new User(); // Clear the form after saving
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
         return "login?faces-redirect=true"; // Redirect to login page after successful signup
     }
-
+    
+    
     public void updateUser() {
+        User user = userService.getByUsername(username);
         if (user != null) {
-            user.setUsername(username);
-            user.setPassword(password);
+            user = new User.UserBuilder()
+                .setUsername(username)
+                .setPassword(password)
+                .build();
+
             userService.update(user);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "User updated", "User details updated successfully"));
@@ -53,17 +61,13 @@ public class UserBean implements Serializable {
     }
     
     
-//    public void updateUser() {
-//        userService.update(user);
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully."));
-//    }
-    
-    
     public void deleteUser(User user) {
-        userService.delete(user.getId());
+        if(user != null){
+            userService.delete(user.getId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully."));
+        }
     }
-
+        
     
     public List<User> getAllUsers() {
         return userService.getAll();
@@ -74,26 +78,18 @@ public class UserBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         User user = userService.getByUsername(username);
 
-        if (user != null && user.getPassword().equals(password)) { // Ideally,compare passwords
+        if (user != null && user.getPassword().equals(password)) { 
             context.getExternalContext().getSessionMap().put("user", user);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Login successful"));
             return "userDashboard?faces-redirect=true";
         } else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid credentials", "Please try again."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid credentials.", "Please try again."));
             return "login";
         }
     }
     
     // Getters and Setters
-    
-    public User getUserInstance() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
+ 
     public String getUsername() {
         return username;
     }
@@ -110,3 +106,9 @@ public class UserBean implements Serializable {
         this.password = password;
     }
 }
+
+
+
+
+
+

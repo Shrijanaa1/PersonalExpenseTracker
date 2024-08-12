@@ -1,4 +1,5 @@
 com/syntech/pem/model/Main.class
+com/syntech/pem/model/User$UserBuilder.class
 com/syntech/pem/model/BaseIdEntity.class
 com/syntech/pem/bean/UserBean.class
 com/syntech/pem/repository/UserRepository.class

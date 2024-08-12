@@ -15,13 +15,27 @@ public abstract class BaseIdEntity {
     public Long getId(){
         return id;
     }
-    
-    
+        
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //To make id field immutable after the entity is created: Don't provide setter method.
     
 //    public void setId(Long id){
 //        this.id = id;
 //    }
-    
-    
-}

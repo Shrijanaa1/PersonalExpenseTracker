@@ -22,6 +22,10 @@ public class Account extends BaseIdEntity{
     public String getName(){
         return name;
     } 
+    
+    public double getBalance(){
+        return balance;
+    }
 
     //Builder class
     public static class AccountBuilder{
