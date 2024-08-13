@@ -8,6 +8,14 @@
     </h:head>
     <h:body>
     <h:form id="userListForm">
+        
+        <p:commandButton icon="pi pi-plus"
+                         title="Create New User"
+                         action="#{userBean.prepareCreateUser()}"
+                         update=":userForm:editPanel"  
+                         oncomplete="PF('editUserDialog').show()"
+                         styleClass="button-space"/>
+        
         <p:dataTable id="users" value="#{userBean.allUsers}" var="user" rowKey="#{user.id}">
             <f:facet name="header">
                 Users List
@@ -22,12 +30,17 @@
             </p:column>
 
             <p:column headerText="Actions">
-                <p:commandButton value="Edit" action="#{userBean.prepareEditUser(user)}" 
+                <p:commandButton icon="pi pi-pencil"
+                                 title="edit"
+                                 action="#{userBean.prepareEditUser(user)}" 
                                  update=":userForm:editPanel" 
-                                 oncomplete="PF('editUserDialog').show()" 
-                                 ajax="true" />
+                                 oncomplete="PF('editUserDialog').show()"
+                                 ajax="true"
+                                 styleClass="button-space"/>
                 
-                <p:commandButton value="Delete" action="#{userBean.deleteUser(user)}"
+                <p:commandButton icon="pi pi-trash"
+                                 title="Delete"
+                                 action="#{userBean.deleteUser(user)}"
                                  update=":userListForm:users"
                                  onclick="return confirm('Are you sure you want to delete this user?');"
                                  ajax="true" />
@@ -36,7 +49,7 @@
     </h:form>
     
     <!-- Edit User Dialog -->
-    <p:dialog header="Edit User" widgetVar="editUserDialog" modal="true" resizable="false">
+    <p:dialog header="Manage User"  widgetVar="editUserDialog" modal="true" resizable="false">
         <h:form id="userForm">
             <h:panelGrid id="editPanel" columns="2">
                 <h:outputLabel for="username" value="Username:" />
@@ -45,7 +58,8 @@
                 <h:outputLabel for="password" value="Password:" />
                 <p:inputText id="password" value="#{userBean.password}" required="true" />
                 
-                <p:commandButton value="Update" action="#{userBean.updateUser()}" 
+                <p:commandButton value="#{userBean.id == null ? 'Create': 'Update'}" 
+                                 action="#{userBean.saveOrUpdateUser()}"
                                  update=":userListForm:users" 
                                  oncomplete="PF('editUserDialog').hide()" />
             </h:panelGrid>

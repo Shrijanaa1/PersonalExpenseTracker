@@ -2,6 +2,7 @@ package com.syntech.pem.bean;
 
 import com.syntech.pem.model.User;
 import com.syntech.pem.service.UserService;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -51,6 +52,14 @@ public class UserBean implements Serializable {
         this.username = user.getUsername();
         this.password = user.getPassword();
     }
+    
+    public void prepareCreateUser() {
+        this.selectedUser = new User();
+        this.id = null;
+        this.username = "";
+        this.password = "";
+    }
+    
 
     public void updateUser() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -61,6 +70,49 @@ public class UserBean implements Serializable {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
         } catch (Exception e) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to update user"));
+        }
+    }
+    
+    
+    
+    public void saveOrUpdateUser() throws IOException{
+        FacesContext context = FacesContext.getCurrentInstance();
+        User user;
+        
+        if(id != null){
+            
+            //update existing user
+            user = userService.getById(id);
+            if(user == null){
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User not found"));
+                return;
+            }
+            selectedUser.setUsername(username);
+            selectedUser.setPassword(password);
+            userService.update(selectedUser);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
+        
+        }else{
+            //create new user
+            
+            if(userService.getByUsername(username) != null){
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
+                return;
+            }
+            user = new User.UserBuilder()
+                .setUsername(username)
+                .setPassword(password)
+                .build();
+            userService.save(user);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
+            
+            // Ensure messages are retained and redirect
+            context.getExternalContext().getFlash().setKeepMessages(true); // Ensure messages are retained
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/userList.xhtml?faces-redirect=true");
+
+
+//            return; //Exit
         }
     }
     
