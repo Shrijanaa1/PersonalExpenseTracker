@@ -1,26 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Users List</title>
     </h:head>
     <h:body>
     <h:form id="userListForm">
-        
-        <p:commandButton icon="pi pi-plus"
-                         title="Create New User"
-                         action="#{userBean.prepareCreateUser()}"
-                         update=":userForm:editPanel"  
-                         oncomplete="PF('editUserDialog').show()"
-                         styleClass="button-space"/>
-        
-        <p:dataTable id="users" value="#{userBean.allUsers}" var="user" rowKey="#{user.id}">
-            <f:facet name="header">
-                Users List
-            </f:facet>
+        <!-- Toolbar with Add Button on the side -->
+        <p:toolbar>
+                <p:toolbarGroup>
+                    <h:outputText value="Users List" style="font-weight: bold; font-size: 16px;" />
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton icon="pi pi-plus"
+                                     title="Create New User"
+                                     action="#{userBean.prepareCreateUser()}"
+                                     update=":userForm:editPanel, :userForm:dialogHeader"  
+                                     oncomplete="PF('editUserDialog').show()"
+                                     styleClass="button-space"/>
+                </p:toolbarGroup>
+            </p:toolbar>
 
+        <p:dataTable id="users" value="#{userBean.allUsers}" var="user" rowKey="#{user.id}">
             <p:column headerText="ID">
                 <h:outputText value="#{user.id}" />
             </p:column>
@@ -31,9 +33,9 @@
 
             <p:column headerText="Actions">
                 <p:commandButton icon="pi pi-pencil"
-                                 title="edit"
+                                 title="Edit"
                                  action="#{userBean.prepareEditUser(user)}" 
-                                 update=":userForm:editPanel" 
+                                 update=":userForm:editPanel, :userForm:dialogHeader" 
                                  oncomplete="PF('editUserDialog').show()"
                                  ajax="true"
                                  styleClass="button-space"/>
@@ -41,16 +43,32 @@
                 <p:commandButton icon="pi pi-trash"
                                  title="Delete"
                                  action="#{userBean.deleteUser(user)}"
-                                 update=":userListForm:users"
-                                 onclick="return confirm('Are you sure you want to delete this user?');"
-                                 ajax="true" />
+                                 update=":userListForm:users" 
+                                 styleClass="ui-button-danger mr-2">
+                    <p:confirm type="popup" header="Confirmation" 
+                                   message="Do you want to delete this record?" 
+                                   icon="pi pi-info-circle"/>
+                    </p:commandButton>
             </p:column>
         </p:dataTable>
+        
+        <p:confirmPopup global="true" widgetVar="confirmPopup">
+                <p:commandButton value="No" type="button" 
+                                 styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                <p:commandButton value="Yes" type="button" 
+                                 styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+            </p:confirmPopup>
+        
     </h:form>
     
     <!-- Edit User Dialog -->
-    <p:dialog header="Manage User"  widgetVar="editUserDialog" modal="true" resizable="false">
+    <p:dialog header="Manage User"
+              widgetVar="editUserDialog"
+              modal="true"
+              resizable="false">
         <h:form id="userForm">
+            <h:outputText id="dialogHeader" value="#{userBean.id == null ? 'Create User' : 'Edit User'}" style="display:none;" />
+            
             <h:panelGrid id="editPanel" columns="2">
                 <h:outputLabel for="username" value="Username:" />
                 <p:inputText id="username" value="#{userBean.username}" required="true" />
