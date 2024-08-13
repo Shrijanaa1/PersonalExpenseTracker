@@ -2,12 +2,13 @@ package com.syntech.pem.service;
 
 import com.syntech.pem.model.User;
 import com.syntech.pem.repository.UserRepository;
+import java.io.Serializable;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 
-public class UserService {
+public class UserService implements Serializable{
 
     @Inject
     private UserRepository userRepository;

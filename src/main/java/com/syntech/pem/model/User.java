@@ -14,10 +14,7 @@ public class User extends BaseIdEntity{
     @Column(name = "password", nullable = false)
     private String password;
 
-    public User() {
-    }
-    
-    
+    public User() {}
     
     //private constructor to enforce usage of the builder  
     private User(UserBuilder builder){
@@ -33,6 +30,15 @@ public class User extends BaseIdEntity{
     public String getPassword(){
         return password;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     
     public static class UserBuilder{
         private String username;

@@ -10,6 +10,9 @@ public class Account extends BaseIdEntity{
     private String name;
     
     private double balance;
+
+    public Account() {}
+    
     
     //Private Constructor to enforce usage of the builder
     

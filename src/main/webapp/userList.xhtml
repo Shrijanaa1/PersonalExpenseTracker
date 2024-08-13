@@ -22,6 +22,11 @@
             </p:column>
 
             <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{userBean.prepareEditUser(user)}" 
+                                 update=":userForm:editPanel" 
+                                 oncomplete="PF('editUserDialog').show()" 
+                                 ajax="true" />
+                
                 <p:commandButton value="Delete" action="#{userBean.deleteUser(user)}"
                                  update=":userListForm:users"
                                  onclick="return confirm('Are you sure you want to delete this user?');"
@@ -29,6 +34,22 @@
             </p:column>
         </p:dataTable>
     </h:form>
+    
+    <!-- Edit User Dialog -->
+    <p:dialog header="Edit User" widgetVar="editUserDialog" modal="true" resizable="false">
+        <h:form id="userForm">
+            <h:panelGrid id="editPanel" columns="2">
+                <h:outputLabel for="username" value="Username:" />
+                <p:inputText id="username" value="#{userBean.username}" required="true" />
+                
+                <h:outputLabel for="password" value="Password:" />
+                <p:inputText id="password" value="#{userBean.password}" required="true" />
+                
+                <p:commandButton value="Update" action="#{userBean.updateUser()}" 
+                                 update=":userListForm:users" 
+                                 oncomplete="PF('editUserDialog').hide()" />
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
 </h:body>
-
 </html>

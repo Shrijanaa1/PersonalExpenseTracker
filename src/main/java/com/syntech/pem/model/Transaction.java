@@ -26,6 +26,9 @@ public class Transaction extends BaseIdEntity{
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public Transaction() {}
+    
     
     //Private Constructor to enforce usage of builder
     

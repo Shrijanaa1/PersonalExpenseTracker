@@ -4,25 +4,30 @@ import com.syntech.pem.model.User;
 import com.syntech.pem.service.UserService;
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class UserBean implements Serializable {
-    
+        
     @Inject
     private UserService userService;
-    
-//    private User user = new User();
 
+    private Long id;
     private String username;
     private String password;
-
     
+    private User selectedUser; //hold user being edited
+    
+    public UserBean(){
+        selectedUser = new User(); //initialize selected user
+    }
+        
+
     public String createUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (userService.getByUsername(username) != null) {
@@ -30,42 +35,41 @@ public class UserBean implements Serializable {
             return "signUp"; // Return to the same signup page if username is taken
         }
 
-        User user = new User.UserBuilder()
+       User user = new User.UserBuilder()
             .setUsername(username)
             .setPassword(password)
             .build();
         
         userService.save(user);
-//        user = new User(); // Clear the form after saving
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
         return "login?faces-redirect=true"; // Redirect to login page after successful signup
     }
-    
-    
-    public void updateUser() {
-        User user = userService.getByUsername(username);
-        if (user != null) {
-            user = new User.UserBuilder()
-                .setUsername(username)
-                .setPassword(password)
-                .build();
+      
+    public void prepareEditUser(User user) {
+        this.selectedUser = user;
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+    }
 
-            userService.update(user);
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "User updated", "User details updated successfully"));
-            
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User details could not be updated"));
+    public void updateUser() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        try {
+            selectedUser.setUsername(username);
+            selectedUser.setPassword(password);
+            userService.update(selectedUser);
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
+        } catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to update user"));
         }
     }
     
-    
-    public void deleteUser(User user) {
+    public String deleteUser(User user) {
         if(user != null){
             userService.delete(user.getId());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully."));
         }
+        return "userList?faces-redirect=true"; //return to user list page
     }
         
     
@@ -89,6 +93,15 @@ public class UserBean implements Serializable {
     }
     
     // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
  
     public String getUsername() {
         return username;
@@ -105,10 +118,5 @@ public class UserBean implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    
 }
-
-
-
-
-
-
