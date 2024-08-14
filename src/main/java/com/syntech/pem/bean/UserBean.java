@@ -121,6 +121,7 @@ public class UserBean implements Serializable {
     }
     
     
+    
 //        public String createUser() {
 //        FacesContext context = FacesContext.getCurrentInstance();
 //        if (userService.getByUsername(username) != null) {
