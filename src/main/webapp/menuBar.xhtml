@@ -43,35 +43,22 @@
 
             </f:facet>
             
-            <p:submenu label="Transaction" icon="pi pi-fw pi-calendar-edit">
-                <p:menuitem value="View" icon="pi pi-fw pi-eye"/>
-                <p:menuitem value="Add Transaction" icon="pi pi-fw pi-plus"/>
-            </p:submenu>
+            <p:menuitem value="Transaction" icon="pi pi-fw pi-receipt" outcome="transactionList"/>
+
+            <p:menuitem value="Budget" icon="pi pi-fw pi-wallet" outcome=""/>
             
-            <p:submenu label="Budget" icon="pi pi-fw pi-wallet">
-                <p:menuitem value="View" icon="pi pi-fw pi-eye"/>
-                <p:menuitem value="Set Budget" icon="pi pi-fw pi-plus"/>
-            </p:submenu>
+            <p:menuitem value="Account" icon="pi pi-fw pi-credit-card" outcome=""/>
             
-             <p:submenu label="Account" icon="pi pi-fw pi-credit-card">
-                <p:menuitem value="View" icon="pi pi-fw pi-eye"/>
-                <p:menuitem value="Add Account" icon="pi pi-fw pi-plus"/>
-            </p:submenu>
             
             <p:submenu label="Report" icon="pi pi-fw pi-chart-bar">
                 <p:menuitem value="Monthly Report" icon="pi pi-fw pi-calendar"/>
                 <p:menuitem value="Yearly Report" icon="pi pi-fw pi-calendar"/>
             </p:submenu>
 
-            <p:submenu label="Users" icon="pi pi-fw pi-user">
-                <p:menuitem value="New" icon="pi pi-fw pi-user-plus"/>
-                <p:menuitem value="Delete" icon="pi pi-fw pi-user-minus"/>
-                <p:menuitem value="Update" icon="pi pi-fw pi-user-edit"/>
-            </p:submenu>
-            
+            <p:menuitem value="Settings" icon="pi pi-fw pi-cog" outcome=""/>
 
             <f:facet name="end">
-                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" outcome="login"/>
             </f:facet>
         </p:menubar>
     </h:form>

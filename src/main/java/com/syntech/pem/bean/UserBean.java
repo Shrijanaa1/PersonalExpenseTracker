@@ -57,7 +57,7 @@ public class UserBean implements Serializable {
             userService.createUser(selectedUser);
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/userList.xhtml?faces-redirect=true");
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.xhtml?faces-redirect=true");
         }
     }
     

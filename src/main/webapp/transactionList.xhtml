@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Transactions</title>
+        <style>
+            .centered-content {
+                text-align: center;
+                margin: 0;
+                padding: 0;
+            }
+            .dialog-header {
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+                margin-top: 0;
+            }
+            .dialog-footer {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .button-space {
+                margin-right: 10px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:include src="menuBar.xhtml" />
+        <h:form id="transactionListForm">
+            <p:growl id="msgs" showDetail="true" life="2000" />
+            <p:dataTable id="transactions" value="#{transactionBean.allTransactions}" var="transaction" rowKey="#{transaction.id}">
+                <f:facet name="header">
+                    Transaction List
+
+                    <!-- Add Transaction button -->
+                    <p:commandButton icon="pi pi-fw pi-plus"
+                                     value="Add Transaction"
+                                     style="color: white; background-color: #007bff; margin: 4px;"
+                                     action="#{transactionBean.prepareCreateTransaction()}" 
+                                     oncomplete="PF('editTransactionDialog').show()"
+                                     update=":transactionForm:dialogHeader, :transactionForm:msgs" 
+                                     ajax="true" />
+                </f:facet>
+        
+        
+                <p:column headerText="ID">
+                    <h:outputText value="#{transaction.id}" />
+                </p:column>
+
+                <p:column headerText="Amount">
+                    <h:outputText value="#{transaction.amount}" />
+                </p:column>
+
+                <p:column headerText="Type">
+                    <h:outputText value="#{transaction.type}" />
+                </p:column>
+
+                <p:column headerText="Category">
+                    <h:outputText value="#{transaction.category}" />
+                </p:column>
+                
+                <p:column headerText="Description">
+                    <h:outputText value="#{transaction.description}" />
+                </p:column>
+
+                <p:column headerText="Date">
+                    <h:outputText value="#{transaction.date}" />
+                </p:column>
+                
+                <p:column headerText="Actions">
+                    <p:commandButton icon="pi pi-pencil"
+                                     action="#{transactionBean.prepareEditTransaction(transaction)}" 
+                                     update=":transactionForm:dialogHeader, :transactionForm:editPanel, :transactionForm:msgs" 
+                                     oncomplete="PF('editTransactionDialog').show()"
+                                     ajax="true"
+                                     styleClass="button-space"/>
+                    
+                    <p:commandButton icon="pi pi-trash"
+                                     action="#{transactionBean.deleteTransaction(transaction)}"
+                                     update=":transactionListForm:transactions, :transactionListForm:msgs" 
+                                     styleClass="ui-button-danger">
+                        <p:confirm header="Confirmation" 
+                                   message="Are you sure you want to delete this transaction?" 
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+                
+            </p:dataTable>
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+            </p:confirmDialog>
+            
+       </h:form>
+        
+        <!-- Dialog for Transaction Form -->
+        <p:dialog widgetVar="editTransactionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="transactionForm">
+                <h:panelGrid columns="1" id="dialogHeader" styleClass="centered-content">
+                    <h:outputText value="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" styleClass="dialog-header"/>
+                </h:panelGrid>
+                
+                <h:panelGrid id="editPanel" columns="2">
+                    <h:outputLabel for="amount" value="Amount:" />
+                    <p:inputText id="amount" value="#{transactionBean.selectedTransaction.amount}" required="true" />
+
+                    <h:outputLabel for="type" value="Type:" />
+                    <p:inputText id="type" value="#{transactionBean.selectedTransaction.type}" required="true" />
+
+                    <h:outputLabel for="category" value="Category:" />
+                    <p:inputText id="category" value="#{transactionBean.selectedTransaction.category}" required="true" />
+
+                    <h:outputLabel for="description" value="Description:" />
+                    <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" />
+
+                    <h:outputLabel for="date" value="Date:" />
+                    <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" />
+
+                </h:panelGrid>
+
+                <div class="dialog-footer">
+                    <p:commandButton value="#{transactionBean.selectedTransaction.id == null ? 'Create' : 'Update'}" 
+                                     action="#{transactionBean.selectOrUpdateTransaction()}"
+                                     update=":transactionListForm:transactions, :transactionListForm:msgs " 
+                                     oncomplete="PF('editTransactionDialog').hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
