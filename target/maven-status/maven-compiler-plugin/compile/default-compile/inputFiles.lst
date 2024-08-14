@@ -7,6 +7,7 @@
 /Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/bean/UserBean.java
 /Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/model/Account.java
 /Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/repository/GenericRepository.java
+/Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/repository/GenericRepositoryImpl.java
 /Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/model/Transaction.java
 /Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/JAXRSConfiguration.java
 /Users/shrijanakarki/Desktop/PEM/src/main/java/com/syntech/pem/model/User.java

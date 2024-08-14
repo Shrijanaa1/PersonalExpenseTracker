@@ -74,7 +74,7 @@ public class UserBean implements Serializable {
             userService.save(user);
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
-
+ 
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/userList.xhtml?faces-redirect=true");
         }
     }
@@ -92,20 +92,6 @@ public class UserBean implements Serializable {
         return userService.getAll();
     }
     
-    
-    public String login() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        User user = userService.getByUsername(username);
-
-        if (user != null && user.getPassword().equals(password)) { 
-            context.getExternalContext().getSessionMap().put("user", user);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Login successful"));
-            return "userDashboard?faces-redirect=true";
-        } else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid credentials.", "Please try again."));
-            return "login";
-        }
-    }
     
     // Getters and Setters
 

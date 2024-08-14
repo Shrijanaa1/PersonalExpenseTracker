@@ -1,3 +1,4 @@
+com/syntech/pem/bean/LoginBean.class
 com/syntech/pem/model/Main.class
 com/syntech/pem/model/User$UserBuilder.class
 com/syntech/pem/repository/GenericRepository.class

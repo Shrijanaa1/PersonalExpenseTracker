@@ -4,6 +4,7 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Login - Personal Finance System</title>
+    <h:outputStylesheet name="css/styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <style>
         body {
@@ -97,15 +98,15 @@
                 
                 <div class="input-group">
                     <i class="fa fa-user"></i>
-                    <p:inputText id="username" value="#{userBean.username}" placeholder="Username" required="true" label="Username"/>
+                    <p:inputText id="username" value="#{loginBean.username}" placeholder="Username" required="true" label="Username"/>
                 </div>
                 
                 <div class="input-group">
                     <i class="fa fa-lock"></i>
-                    <p:password id="password" value="#{userBean.password}" placeholder="Password" required="true" label="Password"/>
+                    <p:password id="password" value="#{loginBean.password}" placeholder="Password" required="true" label="Password"/>
                 </div>
                 
-                <p:commandButton value="Login" action="#{userBean.login}" update="messages"/>
+                <p:commandButton value="Login" action="#{loginBean.login}" update="messages"/>
                 
                 <div class="register-link">
                     <h:outputText value="Don't have an account? " />

@@ -117,7 +117,7 @@
                     <p:password id="password" value="#{userBean.password}" placeholder="Password" required="true" label="Password"/>
                 </div>
                 
-                <p:commandButton value="Sign Up" action="#{userBean.createUser}" update="messages"/>
+                <p:commandButton value="Sign Up" action="#{userBean.saveOrUpdateUser}" update="messages"/>
 
             </p:panel>
         </h:form>
