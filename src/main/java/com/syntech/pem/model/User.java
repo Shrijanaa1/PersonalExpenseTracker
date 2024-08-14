@@ -15,14 +15,7 @@ public class User extends BaseIdEntity{
     private String password;
 
     public User() {}
-    
-    //private constructor to enforce usage of the builder  
-    private User(UserBuilder builder){
-        this.username = builder.username;
-        this.password = builder.password;
-    }
 
-    //Put Getters and Setters here
     public String getUsername(){
         return username;
     } 
@@ -38,26 +31,5 @@ public class User extends BaseIdEntity{
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    public static class UserBuilder{
-        private String username;
-        private String password;
-        
-        public UserBuilder setUsername(String username){
-            this.username = username;
-            return this;
-        }
-        
-        public UserBuilder setPassword(String password){
-            this.password = password;
-            return this;
-        }
-        
-        public User build(){
-            return new User(this);
-        }
-    }
-    
    
 }

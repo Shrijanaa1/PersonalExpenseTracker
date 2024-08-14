@@ -67,11 +67,10 @@ public class UserBean implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
                 return;
             }
-            user = new User.UserBuilder()
-                .setUsername(username)
-                .setPassword(password)
-                .build();
-            userService.save(user);
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            userService.save(newUser);
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
  
@@ -120,7 +119,7 @@ public class UserBean implements Serializable {
         this.password = password;
     }
     
-    
+}  
     
 //        public String createUser() {
 //        FacesContext context = FacesContext.getCurrentInstance();
@@ -154,4 +153,4 @@ public class UserBean implements Serializable {
 //        }
 //    }
 //    
-}
+
