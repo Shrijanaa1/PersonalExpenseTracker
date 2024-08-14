@@ -2,10 +2,11 @@ package com.syntech.pem.repository;
 
 import com.syntech.pem.model.User;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-
+@Stateless
 public class UserRepository extends GenericRepository<User>{
 
     @Override
