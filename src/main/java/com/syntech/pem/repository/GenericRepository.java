@@ -29,6 +29,9 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
 
     @Transactional
     public void delete(T entity) {
+        if (!entityManager.contains(entity)) {
+            entity = entityManager.merge(entity);
+        }
         entityManager.remove(entity);
     }
 

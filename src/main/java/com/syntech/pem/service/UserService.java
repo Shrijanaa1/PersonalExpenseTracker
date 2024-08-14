@@ -5,7 +5,6 @@ import com.syntech.pem.repository.UserRepository;
 import java.io.Serializable;
 import java.util.List;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 
 public class UserService implements Serializable{
@@ -13,33 +12,28 @@ public class UserService implements Serializable{
     @Inject
     private UserRepository userRepository;
 
+    public User getUserById(Long id){
+        return userRepository.findById(id);
+    }
     
-    @Transactional
-    public void save(User user) {
-        userRepository.save(user);
+    public List<User> getAllUser(){
+        return userRepository.findAll();
+    } 
+    
+    public User createUser(User user){
+        return userRepository.save(user);
     }
-
-    public User getById(Long id) {
-        return userRepository.getById(id);
+    
+    public User updateUser(User user){
+        return userRepository.update(user);
     }
-
-    public List<User> getAll() {
-        return userRepository.getAll();
+    
+    public void deleteUser(User user){
+        userRepository.delete(user);
     }
     
     public User getByUsername(String username) {
     return userRepository.getByUsername(username);
-    }
-
-
-    @Transactional
-    public void update(User user) {
-        userRepository.update(user);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        userRepository.delete(id);
     }
     
 }

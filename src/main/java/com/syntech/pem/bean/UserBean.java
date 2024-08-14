@@ -17,10 +17,6 @@ public class UserBean implements Serializable {
         
     @Inject
     private UserService userService;
-
-    private Long id;
-    private String username;
-    private String password;
     
     private User selectedUser; //hold user being edited
     
@@ -30,57 +26,44 @@ public class UserBean implements Serializable {
         
     public void prepareEditUser(User user) {
         this.selectedUser = user;
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
     }
     
     public void prepareCreateUser() {
         this.selectedUser = new User();
-        this.id = null;
-        this.username = "";
-        this.password = "";
     }
     
     
     public void saveOrUpdateUser() throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
-        User user;
         
-        if(id != null){
+        if(selectedUser.getId() != null){
             
             //update existing user
-            user = userService.getById(id);
-            if(user == null){
+            User existingUser = userService.getUserById(selectedUser.getId());
+            if(existingUser == null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User not found"));
                 return;
             }
-            selectedUser.setUsername(username);
-            selectedUser.setPassword(password);
-            userService.update(selectedUser);
+            userService.updateUser(selectedUser);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
         
         }else{
-            //create new user
             
-            if(userService.getByUsername(username) != null){
+            //create new user
+            if(userService.getByUsername(selectedUser.getUsername()) != null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
                 return;
             }
-            User newUser = new User();
-            newUser.setUsername(username);
-            newUser.setPassword(password);
-            userService.save(newUser);
+            userService.createUser(selectedUser);
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
- 
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/userList.xhtml?faces-redirect=true");
         }
     }
     
     public String deleteUser(User user) {
         if(user != null){
-            userService.delete(user.getId());
+            userService.deleteUser(user);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully."));
         }
         return "userList?faces-redirect=true"; //return to user list page
@@ -88,69 +71,16 @@ public class UserBean implements Serializable {
         
     
     public List<User> getAllUsers() {
-        return userService.getAll();
+        return userService.getAllUser();
     }
     
     
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
+    public User getSelectedUser() {
+        return selectedUser;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
- 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSelectedUser(User selectedUser) {
+        this.selectedUser = selectedUser;
     }
     
 }  
-    
-//        public String createUser() {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        if (userService.getByUsername(username) != null) {
-//            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
-//            return "signUp"; // Return to the same signup page if username is taken
-//        }
-//
-//       User user = new User.UserBuilder()
-//            .setUsername(username)
-//            .setPassword(password)
-//            .build();
-//        
-//        userService.save(user);
-//        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
-//        return "login?faces-redirect=true"; // Redirect to login page after successful signup
-//    }
-    
-    
-    
-    
-//        public void updateUser() {
-//        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        try {
-//            selectedUser.setUsername(username);
-//            selectedUser.setPassword(password);
-//            userService.update(selectedUser);
-//            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
-//        } catch (Exception e) {
-//            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to update user"));
-//        }
-//    }
-//    
-

@@ -82,19 +82,19 @@
     <p:dialog widgetVar="editUserDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
         <h:form id="userForm">
             <h:panelGrid columns="1" id="dialogHeader" styleClass="centered-content">
-                <h:outputText value="#{userBean.id == null ? 'Create User' : 'Edit User'}" styleClass="dialog-header"/>
+                <h:outputText value="#{userBean.selectedUser.id == null ? 'Create User' : 'Edit User'}" styleClass="dialog-header"/>
             </h:panelGrid>
             
             <h:panelGrid id="editPanel" columns="2">
                 <h:outputLabel for="username" value="Username:" />
-                <p:inputText id="username" value="#{userBean.username}" required="true" />
+                <p:inputText id="username" value="#{userBean.selectedUser.username}" required="true" />
                 
                 <h:outputLabel for="password" value="Password:" />
-                <p:inputText id="password" value="#{userBean.password}" required="true" />
+                <p:inputText id="password" value="#{userBean.selectedUser.password}" required="true" />
                 
                </h:panelGrid>
                 <div class="dialog-footer">
-                     <p:commandButton value="#{userBean.id == null ? 'Create': 'Update'}" 
+                     <p:commandButton value="#{userBean.selectedUser.id == null ? 'Create': 'Update'}" 
                                  action="#{userBean.saveOrUpdateUser()}"
                                  update=":userListForm:users" 
                                  oncomplete="PF('editUserDialog').hide()" />

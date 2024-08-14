@@ -1,53 +1,33 @@
-    package com.syntech.pem.repository;
+package com.syntech.pem.repository;
 
-    import com.syntech.pem.model.User;
-    import java.util.List;
-    import javax.persistence.EntityManager;
-    import javax.persistence.PersistenceContext;
-    import javax.transaction.Transactional;
+import com.syntech.pem.model.User;
+import java.util.List;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 
-    public class UserRepository {
+public class UserRepository extends GenericRepository<User>{
 
-        @PersistenceContext(unitName = "PEM_DS")
-        private EntityManager entityManager;
+    @Override
+    public User findById(Long id){
+        return getEntityManager().find(User.class, id);
+    }
+    
+    @Override
+    public List<User> findAll(){
+        TypedQuery<User> query = getEntityManager().createQuery("SELECT  u FROM User u", User.class);
+        return query.getResultList();
+   } 
+    
 
-        @Transactional
-        public void save(User user){    
-            entityManager.persist(user);
-        }
-
-        public User getById(Long id){
-            return entityManager.find(User.class, id);
-        }
-
-        @Transactional
-        public void update(User user){
-            entityManager.merge(user);
-        }
-
-        @Transactional
-        public void delete(Long id){
-            User user = getById(id);
-            if(user != null){
-                entityManager.remove(user);
-            }
-        }
-
-        public List<User> getAll(){
-            return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
-        }
-
-        
-
-        public User getByUsername(String username) {
+    public User getByUsername(String username) {
             try {
-                return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                return getEntityManager().createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                         .setParameter("username", username)
                         .getSingleResult();
-            } catch (Exception e) {
+            } catch (NoResultException e) {
                 return null;
             }
         }
 
-    }
+}
