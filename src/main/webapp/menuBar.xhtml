@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>User Dashboard</title>
+         <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+            }
+            .ui-menubar {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                border: none;
+            }
+            .ui-menubar .ui-menuitem {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .logo-text {
+                margin-right: 15px; /* Add space between text and menu */
+                font-weight: bold;  /* Make the text bold */
+                font-size: 1.2em;   /* Optional: adjust font size */
+                align-items: center;
+            }
+        </style>
+    </h:head>
+    <h:body>
+    <h:form>
+        <p:growl id="messages"/>
+
+        <p:menubar hideDelay="1000">
+             <f:facet name="start">
+                <h:outputText value="PersonalExpenseTracker" styleClass="logo-text"/>
+
+            </f:facet>
+            
+            <p:submenu label="Transaction" icon="pi pi-fw pi-calendar-edit">
+                <p:menuitem value="View" icon="pi pi-fw pi-eye"/>
+                <p:menuitem value="Add Transaction" icon="pi pi-fw pi-plus"/>
+            </p:submenu>
+            
+            <p:submenu label="Budget" icon="pi pi-fw pi-wallet">
+                <p:menuitem value="View" icon="pi pi-fw pi-eye"/>
+                <p:menuitem value="Set Budget" icon="pi pi-fw pi-plus"/>
+            </p:submenu>
+            
+             <p:submenu label="Account" icon="pi pi-fw pi-credit-card">
+                <p:menuitem value="View" icon="pi pi-fw pi-eye"/>
+                <p:menuitem value="Add Account" icon="pi pi-fw pi-plus"/>
+            </p:submenu>
+            
+            <p:submenu label="Report" icon="pi pi-fw pi-chart-bar">
+                <p:menuitem value="Monthly Report" icon="pi pi-fw pi-calendar"/>
+                <p:menuitem value="Yearly Report" icon="pi pi-fw pi-calendar"/>
+            </p:submenu>
+
+            <p:submenu label="Users" icon="pi pi-fw pi-user">
+                <p:menuitem value="New" icon="pi pi-fw pi-user-plus"/>
+                <p:menuitem value="Delete" icon="pi pi-fw pi-user-minus"/>
+                <p:menuitem value="Update" icon="pi pi-fw pi-user-edit"/>
+            </p:submenu>
+
+
+            <f:facet name="end">
+                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+    </h:body>
+</html>
