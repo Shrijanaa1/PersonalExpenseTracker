@@ -1,7 +1,7 @@
 package com.syntech.pem.bean;
 
 import com.syntech.pem.model.User;
-import com.syntech.pem.service.UserService;
+import com.syntech.pem.repository.UserRepository;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.inject.Named;
 public class UserBean implements Serializable {
         
     @Inject
-    private UserService userService;
+    private UserRepository userRepository;
     
     private User selectedUser; //hold user being edited
     
@@ -39,22 +39,22 @@ public class UserBean implements Serializable {
         if(selectedUser.getId() != null){
             
             //update existing user
-            User existingUser = userService.getUserById(selectedUser.getId());
+            User existingUser = userRepository.findById(selectedUser.getId());
             if(existingUser == null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User not found"));
                 return;
             }
-            userService.updateUser(selectedUser);
+            userRepository.update(selectedUser);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
         
         }else{
             
             //create new user
-            if(userService.getByUsername(selectedUser.getUsername()) != null){
+            if(userRepository.getByUsername(selectedUser.getUsername()) != null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
                 return;
             }
-            userService.createUser(selectedUser);
+            userRepository.save(selectedUser);
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.xhtml?faces-redirect=true");
@@ -63,7 +63,7 @@ public class UserBean implements Serializable {
     
     public String deleteUser(User user) {
         if(user != null){
-            userService.deleteUser(user);
+            userRepository.delete(user);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully."));
         }
         return "userList?faces-redirect=true"; //return to user list page
@@ -71,7 +71,7 @@ public class UserBean implements Serializable {
         
     
     public List<User> getAllUsers() {
-        return userService.getAllUser();
+        return userRepository.findAll();
     }
     
     

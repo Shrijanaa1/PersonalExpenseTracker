@@ -1,7 +1,7 @@
 package com.syntech.pem.bean;
 
 import com.syntech.pem.model.User;
-import com.syntech.pem.service.UserService;
+import com.syntech.pem.repository.UserRepository;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -19,7 +19,7 @@ public class LoginBean implements Serializable {
     private String password;
 
     @Inject
-    private UserService userService;
+    private UserRepository userRepository;
 
     public String getUsername() {
         return username;
@@ -39,7 +39,7 @@ public class LoginBean implements Serializable {
 
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
-        User user = userService.getByUsername(username);
+        User user = userRepository.getByUsername(username);
 
         if (user != null && user.getPassword().equals(password)) { 
             context.getExternalContext().getSessionMap().put("user", user);

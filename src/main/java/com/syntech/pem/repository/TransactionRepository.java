@@ -2,8 +2,10 @@ package com.syntech.pem.repository;
 
 import com.syntech.pem.model.Transaction;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+@Stateless
 public class TransactionRepository extends GenericRepository<Transaction>{
     
     @Override

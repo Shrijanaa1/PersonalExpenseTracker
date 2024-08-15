@@ -1,7 +1,7 @@
 package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Transaction;
-import com.syntech.pem.service.TransactionService;
+import com.syntech.pem.repository.TransactionRepository;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import javax.inject.Named;
 public class TransactionBean implements Serializable{
     
     @Inject
-    private TransactionService transactionService;
+    private TransactionRepository transactionRepository;
     
     private Transaction selectedTransaction;
     
@@ -59,17 +59,17 @@ public class TransactionBean implements Serializable{
         if(selectedTransaction.getId() != null){
             //update existing trandaction
             
-            Transaction existingTransaction = transactionService.getTransactionById(selectedTransaction.getId());
+            Transaction existingTransaction = transactionRepository.findById(selectedTransaction.getId());
             if(existingTransaction == null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Transaction not found!"));
                 return;
             }
-            transactionService.updateTransaction(selectedTransaction);
+            transactionRepository.update(selectedTransaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction updated successfully1")); 
         }else{
             
             //create new Transaction
-            transactionService.createTransaction(selectedTransaction);
+            transactionRepository.save(selectedTransaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction created successfully!"));
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/transactionList.xhtml?faces-redirect=true");
             
@@ -79,25 +79,25 @@ public class TransactionBean implements Serializable{
     public void deleteTransaction(Transaction transaction) {
         FacesContext context = FacesContext.getCurrentInstance();
         if (transaction != null) {
-            transactionService.deleteTransaction(transaction);
+            transactionRepository.delete(transaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction deleted successfully."));
         }
     }
     
     public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransaction();
+        return transactionRepository.findAll();
     }
 
     public Transaction getSelectedTransaction() {
         return selectedTransaction;
     }
 
-    public TransactionService getTransactionService() {
-        return transactionService;
+    public TransactionRepository getTransactionService() {
+        return transactionRepository;
     }
 
-    public void setTransactionService(TransactionService transactionService) {
-        this.transactionService = transactionService;
+    public void setTransactionService(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
     }
 
     public void setSelectedTransaction(Transaction selectedTransaction) {
