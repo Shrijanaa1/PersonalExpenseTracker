@@ -4,6 +4,8 @@ import com.syntech.pem.model.Transaction;
 import com.syntech.pem.service.TransactionService;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -20,16 +22,36 @@ public class TransactionBean implements Serializable{
     
     private Transaction selectedTransaction;
     
+    private List<String> categoryOptions;
+    
     public TransactionBean(){
         selectedTransaction = new Transaction();
+        categoryOptions = new ArrayList<>();
     }
     
     public void prepareCreateTransaction(){
         this.selectedTransaction = new Transaction();
+        updateCategoryOptions();
     }
     
     public void prepareEditTransaction(Transaction transaction){
         this.selectedTransaction = transaction;
+        updateCategoryOptions();
+    }
+    
+    public void onTypeChange(){
+        updateCategoryOptions();
+    }
+    
+    private void updateCategoryOptions(){
+        if("Income".equals(selectedTransaction.getType())){
+            categoryOptions = Arrays.asList("Salary", "Rent", "Interest", "Freelancing");
+        }else if("Expense".equals(selectedTransaction.getType())){
+            categoryOptions = Arrays.asList("Food", "Entertainment", "Shopping", "Travel", "Education" , "Others");
+            
+        }else{
+            categoryOptions = new ArrayList<>();
+        }
     }
     
     public void selectOrUpdateTransaction() throws IOException{
@@ -61,7 +83,7 @@ public class TransactionBean implements Serializable{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction deleted successfully."));
         }
     }
-
+    
     public List<Transaction> getAllTransactions() {
         return transactionService.getAllTransaction();
     }
@@ -70,10 +92,26 @@ public class TransactionBean implements Serializable{
         return selectedTransaction;
     }
 
+    public TransactionService getTransactionService() {
+        return transactionService;
+    }
+
+    public void setTransactionService(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+
     public void setSelectedTransaction(Transaction selectedTransaction) {
         this.selectedTransaction = selectedTransaction;
     }
     
+    public List<String> getCategoryOptions() {
+        return categoryOptions;
+    }
+
+    public void setCategoryOptions(List<String> categoryOptions) {
+        this.categoryOptions = categoryOptions;
+    }
     
+
     
 }

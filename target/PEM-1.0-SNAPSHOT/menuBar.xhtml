@@ -28,7 +28,7 @@
                 margin-right: 15px; /* Add space between text and menu */
                 font-weight: bold;  /* Make the text bold */
                 font-size: 1.2em;   /* Optional: adjust font size */
-                align-items: center;
+                /*align-items: center;*/
             }
         </style>
     </h:head>
@@ -37,7 +37,12 @@
         <p:growl id="messages"/>
 
         <p:menubar hideDelay="1000">
-             <f:facet name="start">
+<!--          <p:menubar hideDelay="1000" style="background-color: beige">-->
+
+
+            <f:facet name="start">
+<!--                 <p:graphicImage name="images/expense2.png"  
+                                        style="width: 1in; height: 0.4in;"/>-->
 
                 <h:outputText value="PersonalExpenseTracker" styleClass="logo-text"/>
 

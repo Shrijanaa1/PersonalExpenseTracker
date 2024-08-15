@@ -47,3 +47,7 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
     
     
 }
+
+//genric bata create and update crud operations kaile bhako 
+//localdatetime
+//store in database

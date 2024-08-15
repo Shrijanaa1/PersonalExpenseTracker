@@ -16,6 +16,7 @@
             .dialog-header {
                 font-weight: bold;
                 text-align: center;
+                font-size: 24px;
                 margin-bottom: 10px;
                 margin-top: 0;
             }
@@ -27,19 +28,23 @@
             .button-space {
                 margin-right: 10px;
             }
+            .input-field {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            
         </style>
     </h:head>
     <h:body>
         <ui:include src="menuBar.xhtml" />
         <h:form id="transactionListForm">
-            <p:growl id="msgs" showDetail="true" life="2000" />
+            <p:growl id="msgs" showDetail="true" life="3000" />
             <p:dataTable id="transactions" value="#{transactionBean.allTransactions}" var="transaction" rowKey="#{transaction.id}">
                 <f:facet name="header">
                     Transaction List
 
                     <!-- Add Transaction button -->
                     <p:commandButton icon="pi pi-fw pi-plus"
-                                     value="Add Transaction"
                                      style="color: white; background-color: #007bff; margin: 4px;"
                                      action="#{transactionBean.prepareCreateTransaction()}" 
                                      oncomplete="PF('editTransactionDialog').show()"
@@ -74,6 +79,7 @@
                 
                 <p:column headerText="Actions">
                     <p:commandButton icon="pi pi-pencil"
+                                     style="color: white; background-color: #007bff; margin: 3px; "
                                      action="#{transactionBean.prepareEditTransaction(transaction)}" 
                                      update=":transactionForm:dialogHeader, :transactionForm:editPanel, :transactionForm:msgs" 
                                      oncomplete="PF('editTransactionDialog').show()"
@@ -83,7 +89,7 @@
                     <p:commandButton icon="pi pi-trash"
                                      action="#{transactionBean.deleteTransaction(transaction)}"
                                      update=":transactionListForm:transactions, :transactionListForm:msgs" 
-                                     styleClass="ui-button-danger">
+                                     styleClass="ui-button-danger mr-2">
                         <p:confirm header="Confirmation" 
                                    message="Are you sure you want to delete this transaction?" 
                                    icon="pi pi-exclamation-triangle"/>
@@ -102,26 +108,45 @@
         <!-- Dialog for Transaction Form -->
         <p:dialog widgetVar="editTransactionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <h:form id="transactionForm">
-                <h:panelGrid columns="1" id="dialogHeader" styleClass="centered-content">
-                    <h:outputText value="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" styleClass="dialog-header"/>
-                </h:panelGrid>
                 
-                <h:panelGrid id="editPanel" columns="2">
+                <p:panel id="dialogHeader" header="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" 
+                         styleClass="dialog-panel-header">
+                    
+<!--                <h:panelGrid columns="1" id="dialogHeader" styleClass="centered-content">
+                    <h:outputText value="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" styleClass="dialog-header"/>
+                </h:panelGrid>-->
+                
+                <h:panelGrid id="editPanel" columns="2" >
                     <h:outputLabel for="amount" value="Amount:" />
-                    <p:inputText id="amount" value="#{transactionBean.selectedTransaction.amount}" required="true" />
+                    <p:inputText id="amount" value="#{transactionBean.selectedTransaction.amount}" required="true" styleClass="input-field"/>
 
                     <h:outputLabel for="type" value="Type:" />
-                    <p:inputText id="type" value="#{transactionBean.selectedTransaction.type}" required="true" />
+                    <p:selectOneMenu id="type"  value="#{transactionBean.selectedTransaction.type}" required="true" styleClass="input-field">
+                        <f:selectItem itemLabel="Select Type" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Income" itemValue="Income"/>
+                        <f:selectItem itemLabel="Expense" itemValue="Expense"/>
+                        <p:ajax update="category" listener="#{transactionBean.onTypeChange}" />
+                    </p:selectOneMenu>
 
                     <h:outputLabel for="category" value="Category:" />
-                    <p:inputText id="category" value="#{transactionBean.selectedTransaction.category}" required="true" />
+                    <p:selectOneMenu id="category" value="#{transactionBean.selectedTransaction.category}" required="true" styleClass="input-field">
+                        <f:selectItems value="#{transactionBean.categoryOptions}" var="category" itemLabel="#{category}" itemValue="#{category}" />
+                    </p:selectOneMenu>
+               
 
                     <h:outputLabel for="description" value="Description:" />
-                    <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" />
+                    <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" styleClass="input-field"/>
 
                     <h:outputLabel for="date" value="Date:" />
-                    <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" />
-
+                    <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" styleClass="input-field"/>
+                    
+<!--                    <h:outputLabel for="account" value="Account:" />
+                    <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true">
+                        <f:selectItem itemLabel="Select Account" itemValue="" noSelectionOption="true" />
+                        <f:selectItem itemLabel="Bank" itemValue="Bank" />
+                        <f:selectItem itemLabel="Cash" itemValue="Cash" />
+                    </p:selectOneMenu>-->
+                    
                 </h:panelGrid>
 
                 <div class="dialog-footer">
@@ -130,6 +155,7 @@
                                      update=":transactionListForm:transactions, :transactionListForm:msgs " 
                                      oncomplete="PF('editTransactionDialog').hide()" />
                 </div>
+                </p:panel>
             </h:form>
         </p:dialog>
     </h:body>
