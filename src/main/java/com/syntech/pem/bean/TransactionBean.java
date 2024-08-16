@@ -20,6 +20,8 @@ import javax.inject.Named;
 @ViewScoped
 public class TransactionBean implements Serializable{
     
+    private static final long serialVersionUID = 1L;
+    
     @Inject
     private TransactionRepository transactionRepository;
     
@@ -28,20 +30,18 @@ public class TransactionBean implements Serializable{
     
     private Transaction selectedTransaction;
     
-    private List<String> categoryOptions;
-
+    private List<Transaction> transactions;
     
-    public TransactionBean(){
-        selectedTransaction = new Transaction();
-        categoryOptions = new ArrayList<>();
-
-    }
+    private List<String> categoryOptions;
     
     private List<Account> accounts;
 
     @PostConstruct
     public void init() {
         accounts = accountRepository.findAll(); // Load all accounts
+        transactions = transactionRepository.findAll();
+        selectedTransaction = new Transaction();
+        categoryOptions = new ArrayList<>();
     }
     
     public void prepareCreateTransaction(){
@@ -86,9 +86,12 @@ public class TransactionBean implements Serializable{
             //create new Transaction
             transactionRepository.save(selectedTransaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction created successfully!"));
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/transactionList.xhtml?faces-redirect=true");
+//            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/transactionList.xhtml?faces-redirect=true");
             
         }
+           transactions = transactionRepository.findAll(); // Reload transactions
+           selectedTransaction = new Transaction(); // Reset the selectedTransaction after save/update
+           
     }
     
     public void deleteTransaction(Transaction transaction) {
@@ -102,19 +105,6 @@ public class TransactionBean implements Serializable{
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
-
-//    public Transaction getSelectedTransaction() {
-//        return selectedTransaction;
-//    }
-
-    public TransactionRepository getTransactionService() {
-        return transactionRepository;
-    }
-
-    public void setTransactionService(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
-    }
-
     
     public List<String> getCategoryOptions() {
         return categoryOptions;
@@ -131,9 +121,6 @@ public class TransactionBean implements Serializable{
 
     public void setSelectedTransaction(Transaction selectedTransaction) {
         this.selectedTransaction = selectedTransaction;
-        if (selectedTransaction != null && selectedTransaction.getAccount() != null) {
-            this.selectedTransaction.setAccountName(selectedTransaction.getAccount().getName());
-        }
     }
     
     public List<Account> getAccounts() {

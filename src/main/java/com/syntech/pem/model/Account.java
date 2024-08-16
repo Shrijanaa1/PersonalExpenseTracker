@@ -4,13 +4,16 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "accounts")
 public class Account extends BaseIdEntity{
     
+    @NotNull
     private String name; 
     
+    @NotNull
     private double balance;
 
     @OneToMany(mappedBy="account")

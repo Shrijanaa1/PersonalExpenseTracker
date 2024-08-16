@@ -78,7 +78,7 @@
                 </p:column>
                 
                 <p:column headerText="Account">
-                    <h:outputText value="#{transaction.accountName}" />
+                    <h:outputText value="#{transaction.account.name}" />
                 </p:column>
                 
                 <p:column headerText="Actions">
@@ -142,9 +142,9 @@
                     <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" styleClass="input-field"/>
                     
                     <h:outputLabel for="account" value="Account:" />
-                        <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.accountName}" required="true" styleClass="input-field">
+                        <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" converter="accountConverter" required="true" styleClass="input-field">
                             <f:selectItem itemLabel="Select Account" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{accountBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account.name}" />
+                            <f:selectItems value="#{transactionBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account}" />
                         </p:selectOneMenu>
                     
                 </h:panelGrid>
