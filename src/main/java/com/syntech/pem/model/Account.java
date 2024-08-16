@@ -1,16 +1,21 @@
 package com.syntech.pem.model;
 
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "accounts")
 public class Account extends BaseIdEntity{
     
-    private String name;
+    private String name; 
     
     private double balance;
 
+    @OneToMany(mappedBy="account")
+    private List<Transaction> transactions;
+    
     public Account() {}
     
     
@@ -29,6 +34,23 @@ public class Account extends BaseIdEntity{
     public double getBalance(){
         return balance;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+    
 
     //Builder class
     public static class AccountBuilder{

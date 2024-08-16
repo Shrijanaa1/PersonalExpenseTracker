@@ -1,12 +1,15 @@
 package com.syntech.pem.bean;
 
+import com.syntech.pem.model.Account;
 import com.syntech.pem.model.Transaction;
+import com.syntech.pem.repository.AccountRepository;
 import com.syntech.pem.repository.TransactionRepository;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -20,13 +23,25 @@ public class TransactionBean implements Serializable{
     @Inject
     private TransactionRepository transactionRepository;
     
+    @Inject
+    private AccountRepository accountRepository; 
+    
     private Transaction selectedTransaction;
     
     private List<String> categoryOptions;
+
     
     public TransactionBean(){
         selectedTransaction = new Transaction();
         categoryOptions = new ArrayList<>();
+
+    }
+    
+    private List<Account> accounts;
+
+    @PostConstruct
+    public void init() {
+        accounts = accountRepository.findAll(); // Load all accounts
     }
     
     public void prepareCreateTransaction(){
@@ -88,9 +103,9 @@ public class TransactionBean implements Serializable{
         return transactionRepository.findAll();
     }
 
-    public Transaction getSelectedTransaction() {
-        return selectedTransaction;
-    }
+//    public Transaction getSelectedTransaction() {
+//        return selectedTransaction;
+//    }
 
     public TransactionRepository getTransactionService() {
         return transactionRepository;
@@ -100,9 +115,6 @@ public class TransactionBean implements Serializable{
         this.transactionRepository = transactionRepository;
     }
 
-    public void setSelectedTransaction(Transaction selectedTransaction) {
-        this.selectedTransaction = selectedTransaction;
-    }
     
     public List<String> getCategoryOptions() {
         return categoryOptions;
@@ -111,7 +123,44 @@ public class TransactionBean implements Serializable{
     public void setCategoryOptions(List<String> categoryOptions) {
         this.categoryOptions = categoryOptions;
     }
-    
 
     
+    public Transaction getSelectedTransaction() {
+        return selectedTransaction;
+    }
+
+    public void setSelectedTransaction(Transaction selectedTransaction) {
+        this.selectedTransaction = selectedTransaction;
+        if (selectedTransaction != null && selectedTransaction.getAccount() != null) {
+            this.selectedTransaction.setAccountName(selectedTransaction.getAccount().getName());
+        }
+    }
+    
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+  
 }
+
+
+
+
+
+
+//    @Inject
+//    private AccountRepository accountRepository;
+//    private List<Account> accounts;
+
+
+//  public List<Account> getAccounts() {  // Getter for accounts
+//        return accounts;
+//    }
+
+//    @PostConstruct
+//    public void init() {
+//        accounts = accountRepository.findAll();  // Fetch all accounts from the database
+//    }

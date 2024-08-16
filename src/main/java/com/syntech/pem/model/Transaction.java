@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="transactions")
@@ -22,6 +23,9 @@ public class Transaction extends BaseIdEntity{
     
     @Temporal(TemporalType.DATE)
     private Date date;
+    
+    @Transient
+    private String accountName; // Use this for UI binding
     
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -69,12 +73,23 @@ public class Transaction extends BaseIdEntity{
         this.date = date;
     }
 
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
     public Account getAccount() {
         return account;
     }
 
     public void setAccount(Account account) {
         this.account = account;
+        if (account != null) {
+            this.accountName = account.getName();
+        }
     }
 
     

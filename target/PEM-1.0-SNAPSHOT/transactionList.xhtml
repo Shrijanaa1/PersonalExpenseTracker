@@ -77,6 +77,10 @@
                     <h:outputText value="#{transaction.date}" />
                 </p:column>
                 
+                <p:column headerText="Account">
+                    <h:outputText value="#{transaction.accountName}" />
+                </p:column>
+                
                 <p:column headerText="Actions">
                     <p:commandButton icon="pi pi-pencil"
                                      style="color: white; background-color: #007bff; margin: 3px; "
@@ -110,11 +114,7 @@
             <h:form id="transactionForm">
                 
                 <p:panel id="dialogHeader" header="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" 
-                         styleClass="dialog-panel-header">
-                    
-<!--                <h:panelGrid columns="1" id="dialogHeader" styleClass="centered-content">
-                    <h:outputText value="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" styleClass="dialog-header"/>
-                </h:panelGrid>-->
+                         styleClass="dialog-panel-header">        
                 
                 <h:panelGrid id="editPanel" columns="2" >
                     <h:outputLabel for="amount" value="Amount:" />
@@ -130,6 +130,7 @@
 
                     <h:outputLabel for="category" value="Category:" />
                     <p:selectOneMenu id="category" value="#{transactionBean.selectedTransaction.category}" required="true" styleClass="input-field">
+                        <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{transactionBean.categoryOptions}" var="category" itemLabel="#{category}" itemValue="#{category}" />
                     </p:selectOneMenu>
                
@@ -140,12 +141,11 @@
                     <h:outputLabel for="date" value="Date:" />
                     <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" styleClass="input-field"/>
                     
-<!--                    <h:outputLabel for="account" value="Account:" />
-                    <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true">
-                        <f:selectItem itemLabel="Select Account" itemValue="" noSelectionOption="true" />
-                        <f:selectItem itemLabel="Bank" itemValue="Bank" />
-                        <f:selectItem itemLabel="Cash" itemValue="Cash" />
-                    </p:selectOneMenu>-->
+                    <h:outputLabel for="account" value="Account:" />
+                        <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.accountName}" required="true" styleClass="input-field">
+                            <f:selectItem itemLabel="Select Account" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{accountBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account.name}" />
+                        </p:selectOneMenu>
                     
                 </h:panelGrid>
 
