@@ -25,10 +25,15 @@
             }
             
             .logo-text {
-                margin-right: 15px; /* Add space between text and menu */
-                font-weight: bold;  /* Make the text bold */
-                font-size: 1.2em;   /* Optional: adjust font size */
-                /*align-items: center;*/
+                margin-top: 10px;
+                margin-right: 5px;
+                font-weight: bold;  
+                font-size: 1.2em;  
+                display: flex;
+                align-items: center;
+            }
+            .ui-button-info {
+                background-color: #007bff !important;
             }
         </style>
     </h:head>
@@ -37,15 +42,9 @@
         <p:growl id="messages"/>
 
         <p:menubar hideDelay="1000">
-<!--          <p:menubar hideDelay="1000" style="background-color: beige">-->
-
 
             <f:facet name="start">
-<!--                 <p:graphicImage name="images/expense2.png"  
-                                        style="width: 1in; height: 0.4in;"/>-->
-
-                <h:outputText value="PersonalExpenseTracker" styleClass="logo-text"/>
-
+                <h:outputText value="PersonalExpenseTracker" styleClass ="logo-text"/>
             </f:facet>
             
             <p:menuitem value="Transaction" icon="pi pi-fw pi-receipt" outcome="transactionList"/>
