@@ -8,25 +8,10 @@
     <h:head>
         <title>Transactions</title>
         <style>
-            .centered-content {
-                text-align: center;
-                margin: 0;
-                padding: 0;
-            }
-            .dialog-header {
-                font-weight: bold;
-                text-align: center;
-                font-size: 24px;
-                margin-bottom: 10px;
-                margin-top: 0;
-            }
             .dialog-footer {
                 display: flex;
                 justify-content: center;
                 margin-top: 10px;
-            }
-            .button-space {
-                margin-right: 10px;
             }
             .input-field {
                 margin-bottom: 10px;
@@ -45,10 +30,11 @@
 
                     <!-- Add Transaction button -->
                     <p:commandButton icon="pi pi-fw pi-plus"
-                                     style="color: white; background-color: #007bff; margin: 4px;"
+                                     title="Add New Transaction"
+                                     style="color: white; background-color: #007bff; margin: 4px; margin-left: 82%"
                                      action="#{transactionBean.prepareCreateTransaction()}" 
                                      oncomplete="PF('editTransactionDialog').show()"
-                                     update=":transactionForm:dialogHeader, :transactionForm:msgs" 
+                                     update=":transactionForm:dialogHeader :transactionForm:msgs" 
                                      ajax="true" />
                 </f:facet>
         
@@ -83,16 +69,15 @@
                 
                 <p:column headerText="Actions">
                     <p:commandButton icon="pi pi-pencil"
-                                     style="color: white; background-color: #007bff; margin: 3px; "
+                                     style="color: white; background-color: #007bff; margin-right: 10px;"
                                      action="#{transactionBean.prepareEditTransaction(transaction)}" 
-                                     update=":transactionForm:dialogHeader, :transactionForm:editPanel, :transactionForm:msgs" 
+                                     update=":transactionForm:dialogHeader :transactionForm:editPanel :transactionForm:msgs" 
                                      oncomplete="PF('editTransactionDialog').show()"
-                                     ajax="true"
-                                     styleClass="button-space"/>
+                                     ajax="true"/>
                     
                     <p:commandButton icon="pi pi-trash"
                                      action="#{transactionBean.deleteTransaction(transaction)}"
-                                     update=":transactionListForm:transactions, :transactionListForm:msgs" 
+                                     update=":transactionListForm:transactions :transactionListForm:msgs" 
                                      styleClass="ui-button-danger mr-2">
                         <p:confirm header="Confirmation" 
                                    message="Are you sure you want to delete this transaction?" 
@@ -110,7 +95,7 @@
        </h:form>
         
         <!-- Dialog for Transaction Form -->
-        <p:dialog widgetVar="editTransactionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:dialog widgetVar="editTransactionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" header="Manage Transaction" style="text-align: center">
             <h:form id="transactionForm">
                 
                 <p:panel id="dialogHeader" header="#{transactionBean.selectedTransaction.id == null ? 'Create Transaction' : 'Edit Transaction'}" 
@@ -139,7 +124,7 @@
                     <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" styleClass="input-field"/>
 
                     <h:outputLabel for="date" value="Date:" />
-                    <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" styleClass="input-field"/>
+                    <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="yyyy/MM//dd" styleClass="input-field"/>
                     
                     <h:outputLabel for="account" value="Account:" />
                         <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" converter="accountConverter" required="true" styleClass="input-field">
@@ -150,9 +135,9 @@
                 </h:panelGrid>
 
                 <div class="dialog-footer">
-                    <p:commandButton value="#{transactionBean.selectedTransaction.id == null ? 'Create' : 'Update'}" 
+                    <p:commandButton value="#{transactionBean.selectedTransaction.id eq null ? 'Create' : 'Update'}" 
                                      action="#{transactionBean.selectOrUpdateTransaction()}"
-                                     update=":transactionListForm:transactions, :transactionListForm:msgs " 
+                                     update=":transactionListForm:transactions :transactionListForm:msgs " 
                                      oncomplete="PF('editTransactionDialog').hide()" />
                 </div>
                 </p:panel>
