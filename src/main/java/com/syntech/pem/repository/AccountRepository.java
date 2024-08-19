@@ -6,16 +6,16 @@ import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 @Stateless
-public class AccountRepository extends GenericRepository<Account>{
+public class AccountRepository extends GenericRepository<Account> {
+    
     @Override
-    public Account findById(Long id){
+    public Account findById(Long id) {
         return getEntityManager().find(Account.class, id);
     }
     
     @Override
-    public List<Account> findAll(){
-        TypedQuery<Account> query = getEntityManager().createQuery("SELECT  a FROM Account a", Account.class);
+    public List<Account> findAll() {
+        TypedQuery<Account> query = getEntityManager().createQuery("SELECT a FROM Account a", Account.class);
         return query.getResultList();
-   } 
-
+    }
 }

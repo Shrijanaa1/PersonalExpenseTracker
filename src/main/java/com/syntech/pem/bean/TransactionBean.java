@@ -135,19 +135,4 @@ public class TransactionBean implements Serializable{
 
 
 
-
-
-
-//    @Inject
-//    private AccountRepository accountRepository;
-//    private List<Account> accounts;
-
-
-//  public List<Account> getAccounts() {  // Getter for accounts
-//        return accounts;
-//    }
-
-//    @PostConstruct
-//    public void init() {
-//        accounts = accountRepository.findAll();  // Fetch all accounts from the database
-//    }
+ 

@@ -1,6 +1,7 @@
 package com.syntech.pem.model;
 
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -10,13 +11,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "accounts")
 public class Account extends BaseIdEntity{
     
-    @NotNull
+    @NotNull(message = "Account name should not be null")
     private String name; 
     
     @NotNull
     private double balance;
 
-    @OneToMany(mappedBy="account")
+    @OneToMany(mappedBy = "account")
     private List<Transaction> transactions;
     
     public Account() {}
@@ -29,7 +30,6 @@ public class Account extends BaseIdEntity{
         this.balance = builder.balance;
     }
     
-    //Put Getters and Setters here
     public String getName(){
         return name;
     } 
@@ -69,11 +69,58 @@ public class Account extends BaseIdEntity{
             this.balance = balance;
             return this;
         }
-        
+            
         public Account build(){
             return new Account(this);
         }
     }
+   
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.balance) ^ (Double.doubleToLongBits(this.balance) >>> 32));
+        hash = 79 * hash + Objects.hashCode(this.transactions);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Account other = (Account) obj;
+        if (Double.doubleToLongBits(this.balance) != Double.doubleToLongBits(other.balance)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.transactions, other.transactions);
+    }
     
-    
+    //       
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Account)) return false;
+//        Account account = (Account) o;
+//        return getId() != null && getId().equals(account.getId());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return getClass().hashCode();
+//    }
 }
+
+
+
+ 

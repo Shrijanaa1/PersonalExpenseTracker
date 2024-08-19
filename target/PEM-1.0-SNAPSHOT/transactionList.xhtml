@@ -128,7 +128,7 @@
                     
                     <h:outputLabel for="account" value="Account:" />
                         <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" converter="accountConverter" required="true" styleClass="input-field">
-                            <f:selectItem itemLabel="Select Account" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Select Account" itemValue="#{null}" noSelectionOption="true" />
                             <f:selectItems value="#{transactionBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account}" />
                         </p:selectOneMenu>
                     
