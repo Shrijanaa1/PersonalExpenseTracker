@@ -21,7 +21,8 @@ public class Transaction extends BaseIdEntity{
     
     @NotNull
     private String category;
-
+    
+    
     @NotNull
     private String description;
     

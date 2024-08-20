@@ -25,7 +25,9 @@
         <h:form id="accountListForm">
             <p:growl id="msgs" showDetail="true" life="3000" />
 
-            <p:dataTable id="accounts" value="#{accountBean.accounts}" var="account" rowKey="#{account.id}">
+            <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
+                         rowKey="#{account.id}" paginator="true" rows="10"
+                         lazy="true" rowsPerPageTemplate="5,10,15">
                 <f:facet name="header">
                     Account List
 
