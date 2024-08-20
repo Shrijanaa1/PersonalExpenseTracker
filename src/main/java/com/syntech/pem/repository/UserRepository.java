@@ -23,15 +23,5 @@ public class UserRepository extends GenericRepository<User>{
         List<User> users = findByAttribute("username", username, User.class);
         return users.isEmpty() ? null : users.get(0);
     }
-
-//    public User getByUsername(String username) {
-//            try {
-//                return getEntityManager().createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
-//                        .setParameter("username", username)
-//                        .getSingleResult();
-//            } catch (NoResultException e) {
-//                return null;
-//            }
-//        }
-
+    
 }

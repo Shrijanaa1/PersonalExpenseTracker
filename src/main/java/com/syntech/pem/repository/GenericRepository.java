@@ -56,15 +56,14 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
         criteriaQuery.select(entityRoot).where(predicate);
         
         return findByCriteria(criteriaQuery);
-    }
+    }   
+    
     
     protected List<T> findAll(Class<T> entityClass){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<T> entityRoot = criteriaQuery.from(entityClass);
-       
         criteriaQuery.select(entityRoot);
-        
         return findByCriteria(criteriaQuery);
     }
     

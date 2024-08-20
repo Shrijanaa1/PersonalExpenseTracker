@@ -37,7 +37,7 @@
 
     <!-- Welcome File Configuration -->
     <welcome-file-list>
-        <welcome-file>userList.xhtml</welcome-file> 
+        <welcome-file>login.xhtml</welcome-file> 
     </welcome-file-list>
     
 </web-app>

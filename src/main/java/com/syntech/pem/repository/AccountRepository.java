@@ -4,7 +4,6 @@ import com.syntech.pem.model.Account;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
 import org.primefaces.model.FilterMeta;
 
 @Stateless
@@ -15,10 +14,10 @@ public class AccountRepository extends GenericRepository<Account> {
         return getEntityManager().find(Account.class, id);
     }
     
+    
     @Override
-    public List<Account> findAll() {
-        TypedQuery<Account> query = getEntityManager().createQuery("SELECT a FROM Account a", Account.class);
-        return query.getResultList();
+    public List<Account> findAll(){
+        return findAll(Account.class);
     }
     
     
