@@ -28,6 +28,12 @@
             30
         </session-timeout>
     </session-config>
+    
+    <context-param>
+         <param-name>javax.faces.ENABLE_CDI_RESOLVER_CHAIN</param-name>
+         <param-value>true</param-value>
+     </context-param>
+     
 
     <!-- Welcome File Configuration -->
     <welcome-file-list>

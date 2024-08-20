@@ -127,7 +127,8 @@
                     <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="yyyy/MM//dd" styleClass="input-field"/>
                     
                     <h:outputLabel for="account" value="Account:" />
-                        <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" converter="accountConverter" required="true" styleClass="input-field">
+                        <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true" styleClass="input-field">
+                            <f:converter converterId="accountConverter" />
                             <f:selectItem itemLabel="Select Account" itemValue="#{null}" noSelectionOption="true" />
                             <f:selectItems value="#{transactionBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account}" />
                         </p:selectOneMenu>

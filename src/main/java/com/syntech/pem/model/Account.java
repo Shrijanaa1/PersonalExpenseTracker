@@ -106,19 +106,6 @@ public class Account extends BaseIdEntity{
         return Objects.equals(this.transactions, other.transactions);
     }
     
-    //       
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Account)) return false;
-//        Account account = (Account) o;
-//        return getId() != null && getId().equals(account.getId());
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return getClass().hashCode();
-//    }
 }
 
 

@@ -2,12 +2,16 @@ package com.syntech.pem.converter;
 
 import com.syntech.pem.model.Account;
 import com.syntech.pem.repository.AccountRepository;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.annotation.FacesConfig;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
    
+@RequestScoped
+@FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @FacesConverter(value = "accountConverter", forClass = Account.class, managed = true)
 public class AccountConverter implements Converter{
     
@@ -31,35 +35,6 @@ public class AccountConverter implements Converter{
     }
 }
 
-//package com.syntech.pem.converter;
-//
-//import com.syntech.pem.model.Account;
-//import com.syntech.pem.repository.AccountRepository;
-//import javax.faces.component.UIComponent;
-//import javax.faces.context.FacesContext;
-//import javax.faces.convert.Converter;
-//import javax.faces.convert.FacesConverter;
-//import javax.inject.Inject;
-//
-//@FacesConverter(value = "accountConverter", managed = true)
-//public class AccountConverter implements Converter<Account> {
-//    
-//    @Inject
-//    private AccountRepository accountRepository;
-//    
-//    @Override
-//    public Account getAsObject(FacesContext context, UIComponent component, String value) {
-//        if (value == null || value.isEmpty()) {
-//            return null;
-//        }
-//        return accountRepository.findById(Long.valueOf(value));
-//    }
-//
-//    @Override
-//    public String getAsString(FacesContext context, UIComponent component, Account account) {
-//        if (account == null || account.getId() == null) {
-//            return "";
-//        }
-//        return account.getId().toString();
-//    }
-//}
+
+
+//omni 
