@@ -2,6 +2,8 @@ package com.syntech.pem.model;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,11 +19,12 @@ public class Transaction extends BaseIdEntity{
     private double amount;
     
     @NotNull
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
     
     @NotNull
-    private String category;
-    
+    @Enumerated(EnumType.STRING)
+    private CategoryType category;
     
     @NotNull
     private String description;
@@ -45,21 +48,22 @@ public class Transaction extends BaseIdEntity{
         this.amount = amount;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
-    public String getCategory() {
+    public CategoryType getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryType category) {
         this.category = category;
     }
+
 
     public String getDescription() {
         return description;
@@ -85,69 +89,4 @@ public class Transaction extends BaseIdEntity{
         this.account = account;
     }
 
-    
-    
-//    
-//    //Private Constructor to enforce usage of builder
-//    
-//    private Transaction(TransactionBuilder builder){
-//        this.amount = builder.amount;
-//        this.type = builder.type;
-//        this.category = builder.category;
-//        this.description = builder.description;
-//        this.date = builder.date;
-//        this.account = builder.account;
-//    }
-//    
-//    public String getDescription(){
-//        return description;
-//    } 
-//    
-//    //Builder class
-//    public static class TransactionBuilder{
-//        private double amount;
-//        private String type;
-//        private String category;
-//        private String description;
-//        private Date date;
-//        private Account account;   
-//    
-//        
-//    public TransactionBuilder setAmount(double amount){
-//        this.amount = amount;
-//        return this;
-//    }
-//    
-//    public TransactionBuilder setType(String type){
-//        this.type = type;
-//        return this;
-//    }
-//    
-//    public TransactionBuilder setCategory(String category){
-//        this.category = category;
-//        return this;
-//    }
-//    
-//    public TransactionBuilder setDescription(String description){
-//        this.description = description;
-//        return this;
-//    }
-//    
-//    public TransactionBuilder setDate(Date date){
-//        this.date = date;
-//        return this;
-//    }
-//    
-//    public TransactionBuilder setAccount(Account account){
-//        this.account = account;
-//        return this;
-//    }
-//    
-//    public Transaction build(){
-//        return new Transaction(this);
-//    }
-//    
-//    }
-
-    
 }

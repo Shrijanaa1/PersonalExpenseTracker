@@ -10,7 +10,9 @@
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/repository/GenericRepository.java
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/converter/AccountConverter.java
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/JAXRSConfiguration.java
+/Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/model/TransactionType.java
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/repository/TransactionRepository.java
+/Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/model/CategoryType.java
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/model/User.java
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/model/Transaction.java
 /Users/shrijanakarki/Desktop/PersonalExpenseTracker/src/main/java/com/syntech/pem/resources/JavaEE8Resource.java

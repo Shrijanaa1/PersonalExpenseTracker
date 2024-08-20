@@ -1,13 +1,13 @@
 package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Account;
+import com.syntech.pem.model.CategoryType;
 import com.syntech.pem.model.Transaction;
 import com.syntech.pem.repository.AccountRepository;
 import com.syntech.pem.repository.TransactionRepository;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -32,7 +32,7 @@ public class TransactionBean implements Serializable{
     
     private List<Transaction> transactions;
     
-    private List<String> categoryOptions;
+    private List<CategoryType> categoryOptions;
     
     private List<Account> accounts;
 
@@ -58,16 +58,15 @@ public class TransactionBean implements Serializable{
         updateCategoryOptions();
     }
     
-    private void updateCategoryOptions(){
-        if("Income".equals(selectedTransaction.getType())){
-            categoryOptions = Arrays.asList("Salary", "Rent", "Interest", "Freelancing");
-        }else if("Expense".equals(selectedTransaction.getType())){
-            categoryOptions = Arrays.asList("Food", "Entertainment", "Shopping", "Travel", "Education" , "Others");
-            
-        }else{
+    
+     private void updateCategoryOptions() {
+        if (selectedTransaction.getType() != null) {
+            categoryOptions = CategoryType.getCategoriesForType(selectedTransaction.getType());
+        } else {
             categoryOptions = new ArrayList<>();
         }
     }
+     
     
     public void selectOrUpdateTransaction() throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
@@ -85,9 +84,7 @@ public class TransactionBean implements Serializable{
             
             //create new Transaction
             transactionRepository.save(selectedTransaction);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction created successfully!"));
-//            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/transactionList.xhtml?faces-redirect=true");
-            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction created successfully!"));            
         }
            transactions = transactionRepository.findAll(); // Reload transactions
            selectedTransaction = new Transaction(); // Reset the selectedTransaction after save/update
@@ -106,14 +103,14 @@ public class TransactionBean implements Serializable{
         return transactionRepository.findAll();
     }
     
-    public List<String> getCategoryOptions() {
+
+    public List<CategoryType> getCategoryOptions() {
         return categoryOptions;
     }
 
-    public void setCategoryOptions(List<String> categoryOptions) {
+    public void setCategoryOptions(List<CategoryType> categoryOptions) {
         this.categoryOptions = categoryOptions;
     }
-
     
     public Transaction getSelectedTransaction() {
         return selectedTransaction;
