@@ -4,6 +4,10 @@ import com.syntech.pem.model.BaseIdEntity;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 public abstract class GenericRepository<T extends BaseIdEntity> {
@@ -34,8 +38,35 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
         }
         entityManager.remove(entity);
     }
-
-    // Getter and setter for entityManager for subclasses to use
+    
+    
+    //Criteria Queries
+    
+    protected List<T> findByCriteria(CriteriaQuery<T> criteriaQuery){
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+    
+    //Generic method to create a criteria query by a single attribute
+    protected List<T> findByAttribute(String attributeName, Object attributeValue, Class<T> entityClass){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> entityRoot = criteriaQuery.from(entityClass);
+        
+        Predicate predicate = criteriaBuilder.equal(entityRoot.get(attributeName), attributeValue);
+        criteriaQuery.select(entityRoot).where(predicate);
+        
+        return findByCriteria(criteriaQuery);
+    }
+    
+    protected List<T> findAll(Class<T> entityClass){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> entityRoot = criteriaQuery.from(entityClass);
+       
+        criteriaQuery.select(entityRoot);
+        
+        return findByCriteria(criteriaQuery);
+    }
     
     protected EntityManager getEntityManager() {
         return entityManager;
@@ -47,7 +78,3 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
     
     
 }
-
-//genric bata create and update crud operations kaile bhako 
-//localdatetime
-//store in database
