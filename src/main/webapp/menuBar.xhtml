@@ -25,6 +25,9 @@
             }
             
             .logo-text {
+                text-decoration: none;
+                color: black;
+                font-weight: bold;
                 margin-top: 10px;
                 margin-right: 5px;
                 font-weight: bold;  
@@ -44,7 +47,7 @@
         <p:menubar hideDelay="1000">
 
             <f:facet name="start">
-                <h:outputText value="PersonalExpenseTracker" styleClass ="logo-text"/>
+                <h:link value="PersonalExpenseTracker" styleClass ="logo-text" outcome="userDashboard"/>
             </f:facet>
             
             <p:menuitem value="Transaction" icon="pi pi-fw pi-receipt" outcome="transactionList"/>

@@ -37,7 +37,7 @@
                                      style="color: white; background-color: #007bff; margin: 4px; margin-left: 82%"
                                      action="#{accountBean.prepareCreateAccount}" 
                                      oncomplete="PF('editAccountDialog').show()"
-                                     update=":accountForm:dialogHeader, :accountForm:msgs" 
+                                     update=":accountForm:dialogHeader :accountForm:msgs" 
                                      ajax="true" />
                 </f:facet>
                 
@@ -57,7 +57,7 @@
                     <p:commandButton icon="pi pi-pencil"
                                      style="color: white; background-color: #007bff; margin-right: 10px; "
                                      action="#{accountBean.prepareEditAccount(account)}" 
-                                     update=":accountForm:dialogHeader, :accountForm:editPanel, :accountForm:msgs" 
+                                     update=":accountForm:dialogHeader :accountForm:editPanel :accountForm:msgs" 
                                      oncomplete="PF('editAccountDialog').show()"
                                      ajax="true"
                                      styleClass="button-space"/>
@@ -98,7 +98,7 @@
                     <div class="dialog-footer">
                         <p:commandButton value="#{accountBean.selectedAccount.id == null ? 'Create' : 'Update'}" 
                                          actionListener="#{accountBean.saveOrUpdateAccount()}"
-                                         update=":accountListForm:accounts, :accountListForm:msgs" 
+                                         update=":accountListForm:accounts :accountListForm:msgs" 
                                          oncomplete="PF('editAccountDialog').hide()" />
                     </div>
                     
