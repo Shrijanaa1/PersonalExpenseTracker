@@ -68,7 +68,6 @@ public class AccountBean implements Serializable{
             } else {
                 accountRepository.save(selectedAccount);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account created successfully!"));
-//                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/accountList.xhtml?faces-redirect=true");
                 accounts = accountRepository.findAll();
                 
             }

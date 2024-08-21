@@ -3,12 +3,13 @@ package com.syntech.pem.bean;
 import com.syntech.pem.model.Budget;
 import com.syntech.pem.repository.BudgetRepository;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -22,17 +23,28 @@ public class BudgetBean implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    @EJB
+    @Inject
     private BudgetRepository budgetRepository;
     
     private List<Budget> budgets;
     
     private Budget selectedBudget;
     
+//    @PostConstruct
+//    public void init(){
+//        selectedBudget = new Budget();
+//        budgets = budgetRepository.findAll();
+//    }
+    
     @PostConstruct
-    public void init(){
+    public void init() {
+        if (budgetRepository == null) {
+        System.out.println("BudgetRepository is null!");
+    } else {
+        System.out.println("BudgetRepository injected successfully.");
+    }
+        budgets = budgetRepository.findAll(); 
         selectedBudget = new Budget();
-        budgets = budgetRepository.findAll();
     }
     
     public void prepareCreateBudget() {
@@ -51,10 +63,10 @@ public class BudgetBean implements Serializable{
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget updated successfully!"));
             } else {
                 budgetRepository.save(selectedBudget);
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget created successfully!"));
-                budgets = budgetRepository.findAll();
-                
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget created successfully!"));                
             }
+            budgets = budgetRepository.findAll(); // Refresh the list after save/update
+
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update budget: " + e.getMessage()));
         }
@@ -73,6 +85,17 @@ public class BudgetBean implements Serializable{
             }
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Budget is null!"));
+        }
+    }
+    
+    public String getRemark(Budget budget){
+        BigDecimal remaining = budget.getRemainingAmount();
+        if(remaining.compareTo(BigDecimal.ZERO) < 0){
+            return "Overspent";
+        }else if(remaining.compareTo(budget.getBudgetLimit()) < 0){
+            return "Within Limit";
+        }else{
+            return "Budget Intact";
         }
     }
 

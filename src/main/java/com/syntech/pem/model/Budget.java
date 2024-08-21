@@ -1,10 +1,12 @@
 package com.syntech.pem.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,7 +23,10 @@ public class Budget extends BaseIdEntity{
     private CategoryType category;
     
     @NotNull
-    private double limit;
+    private BigDecimal budgetLimit;
+    
+    @NotNull
+    private BigDecimal remainingAmount;
     
     @NotNull
     private Date startDate;
@@ -29,13 +34,18 @@ public class Budget extends BaseIdEntity{
     @NotNull
     private Date endDate;
     
+    @Transient
+    private String remark;
+    
     public Budget() { }
 
-    public Budget(CategoryType category, double limit, Date startDate, Date endDate) {
+    public Budget(CategoryType category, BigDecimal budgetLimit, BigDecimal remainingAmount, Date startDate, Date endDate, String remark) {
         this.category = category;
-        this.limit = limit;
+        this.budgetLimit = budgetLimit;
+        this.remainingAmount = remainingAmount;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.remark = remark;
     }
     
 
@@ -45,14 +55,6 @@ public class Budget extends BaseIdEntity{
 
     public void setCategory(CategoryType category) {
         this.category = category;
-    }
-
-    public double getLimit() {
-        return limit;
-    }
-
-    public void setLimit(double limit) {
-        this.limit = limit;
     }
 
     public Date getStartDate() {
@@ -70,6 +72,31 @@ public class Budget extends BaseIdEntity{
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    public BigDecimal getBudgetLimit() {
+        return budgetLimit;
+    }
+
+    public void setBudgetLimit(BigDecimal budgetLimit) {
+        this.budgetLimit = budgetLimit;
+    }
+
+    public BigDecimal getRemainingAmount() {
+        return remainingAmount;
+    }
+
+    public void setRemainingAmount(BigDecimal remainingAmount) {
+        this.remainingAmount = remainingAmount;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    
     
     
 }

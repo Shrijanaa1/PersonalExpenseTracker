@@ -38,7 +38,7 @@ public class TransactionBean implements Serializable{
 
     @PostConstruct
     public void init() {
-        accounts = accountRepository.findAll(); // Load all accounts
+        accounts = accountRepository.findAll(); 
         transactions = transactionRepository.findAll();
         selectedTransaction = new Transaction();
         categoryOptions = new ArrayList<>();

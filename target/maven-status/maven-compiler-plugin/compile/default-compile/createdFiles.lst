@@ -2,12 +2,15 @@ com/syntech/pem/bean/LoginBean.class
 com/syntech/pem/bean/AccountBean$1.class
 com/syntech/pem/repository/GenericRepository.class
 com/syntech/pem/model/TransactionType.class
+com/syntech/pem/bean/BudgetBean.class
 com/syntech/pem/model/BaseIdEntity.class
+com/syntech/pem/repository/BudgetRepository.class
 com/syntech/pem/bean/UserBean.class
 com/syntech/pem/repository/UserRepository.class
 com/syntech/pem/bean/AccountBean.class
 com/syntech/pem/resources/JavaEE8Resource.class
 com/syntech/pem/model/Transaction.class
+com/syntech/pem/model/Budget.class
 com/syntech/pem/repository/AccountRepository.class
 com/syntech/pem/repository/TransactionRepository.class
 com/syntech/pem/converter/AbstractConverter.class
