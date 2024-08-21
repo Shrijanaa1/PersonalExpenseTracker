@@ -2,20 +2,17 @@ package com.syntech.pem.converter;
 
 import com.syntech.pem.model.Account;
 import com.syntech.pem.repository.AccountRepository;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.annotation.FacesConfig;
+import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.inject.Inject;
    
-@RequestScoped
-@FacesConfig(version = FacesConfig.Version.JSF_2_3)
-@FacesConverter(value = "accountConverter", forClass = Account.class, managed = true)
+
+@FacesConverter(value = "accountConverter", forClass = com.syntech.pem.model.Account.class)
 public class AccountConverter implements Converter{
     
-    @Inject
+    @EJB
     private AccountRepository accountRepository;
     
     @Override
@@ -31,10 +28,6 @@ public class AccountConverter implements Converter{
         if (o == null || o.equals("")) {
             return "";
         }
-        return ((Account) o).getId().toString();
+        return String.valueOf(((Account) o).getId());
     }
 }
-
-
-
-//omni 

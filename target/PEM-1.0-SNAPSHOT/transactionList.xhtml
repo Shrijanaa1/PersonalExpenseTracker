@@ -119,20 +119,22 @@
                         <f:selectItems value="#{transactionBean.categoryOptions}" var="category" itemLabel="#{category}" itemValue="#{category}" />
                     </p:selectOneMenu>
                
-
                     <h:outputLabel for="description" value="Description:" />
                     <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" styleClass="input-field"/>
 
                     <h:outputLabel for="date" value="Date:" />
                     <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" pattern="dd/MM/yyyy" styleClass="input-field"/>
                     
-<!--                    <h:outputLabel for="account" value="Account:" />
-                        <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true" styleClass="input-field">
-                            <f:converter converterId="accountConverter" />
-                            <f:selectItem itemLabel="Select Account" itemValue="#{null}" noSelectionOption="true" />
-                            <f:selectItems value="#{transactionBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account}" />
-                        </p:selectOneMenu>-->
                     
+                    <h:outputLabel for="account" value="Account:" />
+                    <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true" 
+                                     
+                                     styleClass="input-field">
+                        <f:selectItem itemLabel="Select Account" itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{transactionBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account}" />
+                        <p:ajax event="change" update="@this"  />
+                        <f:converter converterId="accountConverter" />
+                    </p:selectOneMenu>
                 </h:panelGrid>
 
                 <div class="dialog-footer">

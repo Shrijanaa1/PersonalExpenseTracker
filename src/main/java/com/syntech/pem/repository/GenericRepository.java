@@ -2,8 +2,8 @@ package com.syntech.pem.repository;
 
 import com.syntech.pem.model.BaseIdEntity;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -11,69 +11,107 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 public abstract class GenericRepository<T extends BaseIdEntity> {
-        
-    @PersistenceContext(unitName = "PEM_DS")
-    private EntityManager entityManager;
     
-    //Abstract methods to be implemented by subclasses
-    public abstract T findById(Long id);
-    public abstract List<T> findAll();
+    protected abstract EntityManager entityManager();
+        
+    private Class<T> entityClass;
+    protected CriteriaQuery<T> criteriaQuery;
+    protected CriteriaBuilder criteriaBuilder;
+    protected Root<T> root;
+    
+    
+    public GenericRepository(Class<T> entityClass){
+        this.entityClass = entityClass;
+    }
+    
+    @PostConstruct
+    protected void _startQuery(){
+        this.criteriaBuilder = entityManager().getCriteriaBuilder();
+        this.criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        root = this.criteriaQuery.from(entityClass);
+    }
+    
+    public GenericRepository<T> startQuery(){
+        this._startQuery();
+        return this;
+    }
     
     
     @Transactional
     public T save(T entity) {
-        entityManager.persist(entity);
+        entityManager().persist(entity);
         return entity;
     }
 
     @Transactional
     public T update(T entity) {
-        return entityManager.merge(entity);
+        return entityManager().merge(entity);
     }
 
     @Transactional
     public void delete(T entity) {
-        if (!entityManager.contains(entity)) {
-            entity = entityManager.merge(entity);
+        if (!entityManager().contains(entity)) {
+            entity = entityManager().merge(entity);
         }
-        entityManager.remove(entity);
+        entityManager().remove(entity);
     }
     
     
-    //Criteria Queries
-    
-    protected List<T> findByCriteria(CriteriaQuery<T> criteriaQuery){
-        return entityManager.createQuery(criteriaQuery).getResultList();
+    public T findById(Long id){
+        return entityManager().find(entityClass, id);
     }
     
-    //Generic method to create a criteria query by a single attribute
-    protected List<T> findByAttribute(String attributeName, Object attributeValue, Class<T> entityClass){
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
-        Root<T> entityRoot = criteriaQuery.from(entityClass);
-        
-        Predicate predicate = criteriaBuilder.equal(entityRoot.get(attributeName), attributeValue);
-        criteriaQuery.select(entityRoot).where(predicate);
-        
-        return findByCriteria(criteriaQuery);
-    }   
+    public List<T> findAll(){
+        return entityManager().createQuery(criteriaQuery).getResultList();
+    } 
     
     
-    protected List<T> findAll(Class<T> entityClass){
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
-        Root<T> entityRoot = criteriaQuery.from(entityClass);
-        criteriaQuery.select(entityRoot);
-        return findByCriteria(criteriaQuery);
-    }
-    
-    protected EntityManager getEntityManager() {
-        return entityManager;
+    protected List<T> findByCriteria(CriteriaQuery<T> criteriaQuery) {
+        return entityManager().createQuery(criteriaQuery).getResultList();
     }
 
-    protected void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public List<T> findByAttribute(String attributeName, Object attributeValue) {
+        startQuery(); // Ensure criteria query is initialized
+        Predicate predicate = criteriaBuilder.equal(root.get(attributeName), attributeValue);
+        criteriaQuery.select(root).where(predicate);
+        return findByCriteria(criteriaQuery);
     }
+    
+
+    public Class<T> getEntityClass() {
+        return entityClass;
+    }
+
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
+    public CriteriaQuery<T> getCriteriaQuery() {
+        return criteriaQuery;
+    }
+
+    public void setCriteriaQuery(CriteriaQuery<T> criteriaQuery) {
+        this.criteriaQuery = criteriaQuery;
+    }
+
+    public CriteriaBuilder getCriteriaBuilder() {
+        return criteriaBuilder;
+    }
+
+    public void setCriteriaBuilder(CriteriaBuilder criteriaBuilder) {
+        this.criteriaBuilder = criteriaBuilder;
+    }
+
+    public Root<T> getRoot() {
+        return root;
+    }
+
+    public void setRoot(Root<T> root) {
+        this.root = root;
+    }
+    
+    
+    
     
     
 }

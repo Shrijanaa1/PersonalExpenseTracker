@@ -47,7 +47,6 @@ public class AccountBean implements Serializable{
                 return accounts;
             }
             
-            
         };
     }
     

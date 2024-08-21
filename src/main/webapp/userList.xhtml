@@ -39,7 +39,7 @@
                                      margin-left: 83%"
                                      action="#{userBean.prepareCreateUser()}" 
                                      oncomplete="PF('editUserDialog').show()"
-                                     update=":userForm:editPanel, :userForm:dialogHeader, :userForm:msgs" 
+                                     update=":userForm:editPanel :userForm:dialogHeader :userForm:msgs" 
                                      ajax="true" />
                 </f:facet>
              
@@ -55,14 +55,14 @@
             <p:column headerText="Actions">
                 <p:commandButton icon="pi pi-pencil"
                                  action="#{userBean.prepareEditUser(user)}" 
-                                 update=":userForm:editPanel, :userForm:dialogHeader, :userForm:msgs" 
+                                 update=":userForm:editPanel :userForm:dialogHeader :userForm:msgs" 
                                  oncomplete="PF('editUserDialog').show()"
                                  ajax="true"
                                  styleClass="button-space"/>
                 
                 <p:commandButton icon="pi pi-trash"
                                  action="#{userBean.deleteUser(user)}"
-                                 update=":userListForm:users, :userListForm:msgs" 
+                                 update=":userListForm:users :userListForm:msgs" 
                                  styleClass="ui-button-danger mr-2">
                     <p:confirm header="Confirmation" 
                                message="Are you sure you want to proceed?" 
@@ -96,7 +96,7 @@
                 <div class="dialog-footer">
                      <p:commandButton value="#{userBean.selectedUser.id == null ? 'Create': 'Update'}" 
                                  action="#{userBean.saveOrUpdateUser()}"
-                                 update=":userListForm:users, :userListForm:msgs" 
+                                 update=":userListForm:users :userListForm:msgs" 
                                  oncomplete="PF('editUserDialog').hide()" />
                 </div>
             

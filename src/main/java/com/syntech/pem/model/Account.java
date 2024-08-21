@@ -77,7 +77,7 @@ public class Account extends BaseIdEntity{
    
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 3;
         hash = 79 * hash + Objects.hashCode(this.name);
         hash = 79 * hash + (int) (Double.doubleToLongBits(this.balance) ^ (Double.doubleToLongBits(this.balance) >>> 32));
@@ -86,14 +86,11 @@ public class Account extends BaseIdEntity{
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+    public final boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof Account)) {
             return false;
         }
         final Account other = (Account) obj;
