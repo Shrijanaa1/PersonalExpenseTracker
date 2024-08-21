@@ -96,7 +96,11 @@
                 
                     <h:panelGrid id="editPanel" columns="2" >
                         <h:outputLabel for="category" value="Category:" />
-                        <p:inputText id="category" value="#{budgetBean.selectedBudget.category}" required="true" styleClass="input-field"/>
+                        <p:selectOneMenu id="category" value="#{budgetBean.selectedBudget.category}" required="true" styleClass="input-field">
+                            <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{budgetBean.expenseCategories}" var="category" itemLabel="#{category.name()}" itemValue="#{category}"/>
+                        </p:selectOneMenu>
+ 
 
                         <h:outputLabel for="limit" value="Limit:" />
                         <p:inputText id="limit" value="#{budgetBean.selectedBudget.budgetLimit}" required="true" styleClass="input-field"/>

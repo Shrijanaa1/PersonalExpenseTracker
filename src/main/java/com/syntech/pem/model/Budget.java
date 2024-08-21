@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -25,13 +27,15 @@ public class Budget extends BaseIdEntity{
     @NotNull
     private BigDecimal budgetLimit;
     
-    @NotNull
+    
     private BigDecimal remainingAmount;
     
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date startDate;
     
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date endDate;
     
     @Transient
@@ -42,7 +46,7 @@ public class Budget extends BaseIdEntity{
     public Budget(CategoryType category, BigDecimal budgetLimit, BigDecimal remainingAmount, Date startDate, Date endDate, String remark) {
         this.category = category;
         this.budgetLimit = budgetLimit;
-        this.remainingAmount = remainingAmount;
+        this.remainingAmount = BigDecimal.ZERO;
         this.startDate = startDate;
         this.endDate = endDate;
         this.remark = remark;

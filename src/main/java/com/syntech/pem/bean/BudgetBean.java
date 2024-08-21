@@ -1,6 +1,8 @@
 package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Budget;
+import com.syntech.pem.model.CategoryType;
+import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.BudgetRepository;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -30,21 +32,17 @@ public class BudgetBean implements Serializable{
     
     private Budget selectedBudget;
     
-//    @PostConstruct
-//    public void init(){
-//        selectedBudget = new Budget();
-//        budgets = budgetRepository.findAll();
-//    }
+    private List<CategoryType> expenseCategories;
     
     @PostConstruct
-    public void init() {
-        if (budgetRepository == null) {
-        System.out.println("BudgetRepository is null!");
-    } else {
-        System.out.println("BudgetRepository injected successfully.");
-    }
-        budgets = budgetRepository.findAll(); 
+    public void init(){
         selectedBudget = new Budget();
+        budgets = budgetRepository.findAll();
+        
+        // Filter expense categories
+        expenseCategories = CategoryType.getCategoriesForType(TransactionType.Expense);
+
+        
     }
     
     public void prepareCreateBudget() {
@@ -58,6 +56,10 @@ public class BudgetBean implements Serializable{
      public void saveOrUpdateBudget() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
+            if (selectedBudget.getRemainingAmount() == null) {
+            selectedBudget.setRemainingAmount(BigDecimal.ZERO); // Set default value if null
+            }
+            
             if (selectedBudget.getId() != null) {
                 budgetRepository.update(selectedBudget);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget updated successfully!"));
@@ -68,7 +70,7 @@ public class BudgetBean implements Serializable{
             budgets = budgetRepository.findAll(); // Refresh the list after save/update
 
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update budget: " + e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update budget: "));
         }
     }
 
@@ -113,6 +115,14 @@ public class BudgetBean implements Serializable{
 
     public void setSelectedBudget(Budget selectedBudget) {
         this.selectedBudget = selectedBudget;
+    }
+
+    public List<CategoryType> getExpenseCategories() {
+        return expenseCategories;
+    }
+
+    public void setExpenseCategories(List<CategoryType> expenseCategories) {
+        this.expenseCategories = expenseCategories;
     }
     
     
