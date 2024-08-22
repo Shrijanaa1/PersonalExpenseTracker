@@ -23,7 +23,10 @@
         <h:form id="budgetListForm">
             <p:growl id="msgs" showDetail="true" life="3000" />
 
-            <p:dataTable id="budgets" value="#{budgetBean.budgets}" var="budget" rowKey="#{budget.id}">
+            <p:dataTable id="budgets" value="#{budgetBean.budgets}" 
+                         var="budget" rowKey="#{budget.id}"
+                         paginator="true" rows="5"
+                         lazy="true" rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
                         Budget List
 
