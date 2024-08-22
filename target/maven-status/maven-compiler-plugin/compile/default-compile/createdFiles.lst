@@ -13,7 +13,6 @@ com/syntech/pem/model/Transaction.class
 com/syntech/pem/model/Budget.class
 com/syntech/pem/repository/AccountRepository.class
 com/syntech/pem/repository/TransactionRepository.class
-com/syntech/pem/converter/AbstractConverter.class
 com/syntech/pem/model/Account.class
 com/syntech/pem/JAXRSConfiguration.class
 com/syntech/pem/model/CategoryType.class
