@@ -4,29 +4,36 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-    <title>Budget Management</title>
-    <style>
-         .dialog-footer {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
+    <h:head>
+        <title>Budget Management</title>
+        <style>
+            .dialog-footer {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
             }
-        .input-field {
-            margin-bottom: 10px;
-            width: 100%;
+            .input-field {
+                margin-bottom: 10px;
+                width: 100%;
             }
-    </style>
-</h:head>
-<h:body>
-    <ui:include src="menuBar.xhtml" />
-        <h:form id="budgetListForm">
-            <p:growl id="msgs" showDetail="true" life="3000" />
 
-            <p:dataTable id="budgets" value="#{budgetBean.budgets}" 
-                         var="budget" rowKey="#{budget.id}"
-                         paginator="true" rows="5"
-                         lazy="true" rowsPerPageTemplate="5,10,15">
+            .content{
+                padding-top: 3rem;
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        <ui:include src="menuBar.xhtml" />
+
+        <div class="content">
+            <h:form id="budgetListForm">
+                <p:growl id="msgs" showDetail="true" life="3000" />
+
+                <p:dataTable id="budgets" value="#{budgetBean.budgets}" 
+                             var="budget" rowKey="#{budget.id}"
+                             paginator="true" rows="5"
+                             lazy="true" rowsPerPageTemplate="5,10,15">
                     <f:facet name="header">
                         Budget List
 
@@ -52,11 +59,11 @@
                     <p:column headerText="Limit">
                         <h:outputText value="#{budget.budgetLimit}" />
                     </p:column>
-                
+
                     <p:column headerText="Remaining Amt">
                         <h:outputText value="#{budget.remainingAmount}" />
                     </p:column>
-                
+
                     <p:column headerText="Remarks">
                         <h:outputText value="#{budgetBean.getRemark(budget)}" />
                     </p:column>
@@ -73,6 +80,7 @@
                         <p:commandButton icon="pi pi-trash"
                                          action="#{budgetBean.deleteBudget(budget)}"
                                          update=":budgetListForm:budgets :budgetListForm:msgs" 
+                                         process="@this"
                                          styleClass="ui-button-danger mr-2">
                             <p:confirm header="Confirmation" 
                                        message="Are you sure you want to remove this budget?" 
@@ -87,44 +95,46 @@
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
                 </p:confirmDialog>
 
-        </h:form>
-    
-        <!-- Dialog for Budget Form -->
-        
-        <p:dialog widgetVar="editBudgetDialog" modal="true" showEffect="fade" header="Manage Budgets" hideEffect="fade" resizable="false" style="text-align: center">
-            <h:form id="budgetForm">
-                
-                <p:panel id="dialogHeader" header="#{budgetBean.selectedBudget.id == null ? 'Create Budget' : 'Edit Budget'}" 
-                         styleClass="dialog-panel-header">
-                
-                    <h:panelGrid id="editPanel" columns="2" >
-                        <h:outputLabel for="category" value="Category:" />
-                        <p:selectOneMenu id="category" value="#{budgetBean.selectedBudget.category}" required="true" styleClass="input-field">
-                            <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{budgetBean.expenseCategories}" var="category" itemLabel="#{category.name()}" itemValue="#{category}"/>
-                        </p:selectOneMenu>
- 
-
-                        <h:outputLabel for="limit" value="Limit:" />
-                        <p:inputText id="limit" value="#{budgetBean.selectedBudget.budgetLimit}" required="true" styleClass="input-field"/>
-                        
-                        <h:outputLabel for="startDate" value="Start Date:" />
-                        <p:calendar id="startDate" value="#{budgetBean.selectedBudget.startDate}" required="true" styleClass="input-field"/>
-
-                        <h:outputLabel for="endDate" value="End Date:" />
-                        <p:calendar id="endDate" value="#{budgetBean.selectedBudget.endDate}" required="true" styleClass="input-field"/>
-
-                    </h:panelGrid>
-
-                    <div class="dialog-footer">
-                        <p:commandButton value="#{budgetBean.selectedBudget.id == null ? 'Create' : 'Update'}" 
-                                         actionListener="#{budgetBean.saveOrUpdateBudget()}"
-                                         update=":budgetListForm:budgets :budgetListForm:msgs" 
-                                         oncomplete="PF('editBudgetDialog').hide()" />
-                    </div>
-                    
-                </p:panel>
             </h:form>
-        </p:dialog>
-</h:body>
+
+
+            <!-- Dialog for Budget Form -->
+
+            <p:dialog widgetVar="editBudgetDialog" modal="true" showEffect="fade" header="Manage Budgets" hideEffect="fade" resizable="false" style="text-align: center">
+                <h:form id="budgetForm">
+
+                    <p:panel id="dialogHeader" header="#{budgetBean.selectedBudget.id == null ? 'Create Budget' : 'Edit Budget'}" 
+                             styleClass="dialog-panel-header">
+
+                        <h:panelGrid id="editPanel" columns="2" >
+                            <h:outputLabel for="category" value="Category:" />
+                            <p:selectOneMenu id="category" value="#{budgetBean.selectedBudget.category}" required="true" styleClass="input-field">
+                                <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{budgetBean.expenseCategories}" var="category" itemLabel="#{category.name()}" itemValue="#{category}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputLabel for="limit" value="Limit:" />
+                            <p:inputText id="limit" value="#{budgetBean.selectedBudget.budgetLimit}" required="true" styleClass="input-field"/>
+
+                            <h:outputLabel for="startDate" value="Start Date:" />
+                            <p:calendar id="startDate" value="#{budgetBean.selectedBudget.startDate}" required="true" styleClass="input-field"/>
+
+                            <h:outputLabel for="endDate" value="End Date:" />
+                            <p:calendar id="endDate" value="#{budgetBean.selectedBudget.endDate}" required="true" styleClass="input-field"/>
+
+                        </h:panelGrid>
+
+                        <div class="dialog-footer">
+                            <p:commandButton value="#{budgetBean.selectedBudget.id == null ? 'Create' : 'Update'}" 
+                                             action="#{budgetBean.saveOrUpdateBudget()}"
+                                             update=":budgetListForm:budgets :budgetListForm:msgs" 
+                                             oncomplete="PF('editBudgetDialog').hide()" />
+                        </div>
+
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </div>
+    </h:body>
 </html>

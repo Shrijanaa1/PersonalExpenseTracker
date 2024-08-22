@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Account List</title>
-            <style>
+        <style>
             .dialog-footer {
                 display: flex;
                 justify-content: center;
@@ -17,94 +17,99 @@
                 margin-bottom: 10px;
                 width: 100%;
             }
-            
+
+            .content{
+                padding-top: 3rem;
+            }
+
         </style>
     </h:head>
     <h:body>
         <ui:include src="menuBar.xhtml" />
-        <h:form id="accountListForm">
-            <p:growl id="msgs" showDetail="true" life="3000" />
+        <div class="content">
+            <h:form id="accountListForm">
+                <p:growl id="msgs" showDetail="true" life="3000" />
 
-            <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
-                         rowKey="#{account.id}" paginator="true" rows="5"
-                         lazy="true" rowsPerPageTemplate="5,10,15">
-                <f:facet name="header">
-                    Account List
+                <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
+                             rowKey="#{account.id}" paginator="true" rows="5"
+                             lazy="true" rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        Account List
 
-                    <!-- Add Account button -->
-                    <p:commandButton icon="pi pi-fw pi-plus"
-                                     title="Add New Account"
-                                     style="color: white; background-color: #007bff; margin: 4px; margin-left: 82%"
-                                     action="#{accountBean.prepareCreateAccount}" 
-                                     oncomplete="PF('editAccountDialog').show()"
-                                     update=":accountForm:dialogHeader :accountForm:msgs" 
-                                     ajax="true" />
-                </f:facet>
-                
-                <p:column headerText="ID">
-                    <h:outputText value="#{account.id}" />
-                </p:column>
+                        <!-- Add Account button -->
+                        <p:commandButton icon="pi pi-fw pi-plus"
+                                         title="Add New Account"
+                                         style="color: white; background-color: #007bff; margin: 4px; margin-left: 82%"
+                                         action="#{accountBean.prepareCreateAccount}" 
+                                         oncomplete="PF('editAccountDialog').show()"
+                                         update=":accountForm:dialogHeader :accountForm:msgs" 
+                                         ajax="true" />
+                    </f:facet>
 
-                <p:column headerText="Name">
-                    <h:outputText value="#{account.name}" />
-                </p:column>
+                    <p:column headerText="ID">
+                        <h:outputText value="#{account.id}" />
+                    </p:column>
 
-                <p:column headerText="Balance">
-                    <h:outputText value="#{account.balance}" />
-                </p:column>
-                
-                <p:column headerText="Actions">
-                    <p:commandButton icon="pi pi-pencil"
-                                     style="color: white; background-color: #007bff; margin-right: 10px; "
-                                     action="#{accountBean.prepareEditAccount(account)}" 
-                                     update=":accountForm:dialogHeader :accountForm:editPanel :accountForm:msgs" 
-                                     oncomplete="PF('editAccountDialog').show()"
-                                     ajax="true"
-                                     styleClass="button-space"/>
-                    
-                    <p:commandButton icon="pi pi-trash"
-                                     action="#{accountBean.deleteAccount(account)}"
-                                     update=":accountListForm:accounts, :accountListForm:msgs" 
-                                     styleClass="ui-button-danger mr-2">
-                        <p:confirm header="Confirmation" 
-                                   message="Are you sure you want to delete this account?" 
-                                   icon="pi pi-exclamation-triangle"/>
-                    </p:commandButton>
-                </p:column>
-                
-            </p:dataTable>
-            
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-            </p:confirmDialog>
-        </h:form>
-        
-        <!-- Dialog for Account Form -->
-        <p:dialog widgetVar="editAccountDialog" modal="true" showEffect="fade" header="Manage Accounts" hideEffect="fade" resizable="false" style="text-align: center">
-            <h:form id="accountForm">
-                
-                <p:panel id="dialogHeader" header="#{accountBean.selectedAccount.id == null ? 'Create Account' : 'Edit Account'}" 
-                         styleClass="dialog-panel-header">
-                
-                    <h:panelGrid id="editPanel" columns="2" >
-                        <h:outputLabel for="name" value="Name:" />
-                        <p:inputText id="name" value="#{accountBean.selectedAccount.name}" required="true" styleClass="input-field"/>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{account.name}" />
+                    </p:column>
 
-                        <h:outputLabel for="balance" value="Balance:" />
-                        <p:inputText id="balance" value="#{accountBean.selectedAccount.balance}" required="true" styleClass="input-field"/>
-                    </h:panelGrid>
+                    <p:column headerText="Balance">
+                        <h:outputText value="#{account.balance}" />
+                    </p:column>
 
-                    <div class="dialog-footer">
-                        <p:commandButton value="#{accountBean.selectedAccount.id == null ? 'Create' : 'Update'}" 
-                                         actionListener="#{accountBean.saveOrUpdateAccount()}"
-                                         update=":accountListForm:accounts :accountListForm:msgs" 
-                                         oncomplete="PF('editAccountDialog').hide()" />
-                    </div>
-                    
-                </p:panel>
+                    <p:column headerText="Actions">
+                        <p:commandButton icon="pi pi-pencil"
+                                         style="color: white; background-color: #007bff; margin-right: 10px; "
+                                         action="#{accountBean.prepareEditAccount(account)}" 
+                                         update=":accountForm:dialogHeader :accountForm:editPanel :accountForm:msgs" 
+                                         oncomplete="PF('editAccountDialog').show()"
+                                         ajax="true"
+                                         styleClass="button-space"/>
+
+                        <p:commandButton icon="pi pi-trash"
+                                         action="#{accountBean.deleteAccount(account)}"
+                                         update=":accountListForm:accounts, :accountListForm:msgs" 
+                                         styleClass="ui-button-danger mr-2">
+                            <p:confirm header="Confirmation" 
+                                       message="Are you sure you want to delete this account?" 
+                                       icon="pi pi-exclamation-triangle"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+                </p:confirmDialog>
             </h:form>
-        </p:dialog>
-            
+
+            <!-- Dialog for Account Form -->
+            <p:dialog widgetVar="editAccountDialog" modal="true" showEffect="fade" header="Manage Accounts" hideEffect="fade" resizable="false" style="text-align: center">
+                <h:form id="accountForm">
+
+                    <p:panel id="dialogHeader" header="#{accountBean.selectedAccount.id == null ? 'Create Account' : 'Edit Account'}" 
+                             styleClass="dialog-panel-header">
+
+                        <h:panelGrid id="editPanel" columns="2" >
+                            <h:outputLabel for="name" value="Name:" />
+                            <p:inputText id="name" value="#{accountBean.selectedAccount.name}" required="true" styleClass="input-field"/>
+
+                            <h:outputLabel for="balance" value="Balance:" />
+                            <p:inputText id="balance" value="#{accountBean.selectedAccount.balance}" required="true" styleClass="input-field"/>
+                        </h:panelGrid>
+
+                        <div class="dialog-footer">
+                            <p:commandButton value="#{accountBean.selectedAccount.id == null ? 'Create' : 'Update'}" 
+                                             actionListener="#{accountBean.saveOrUpdateAccount()}"
+                                             update=":accountListForm:accounts :accountListForm:msgs" 
+                                             oncomplete="PF('editAccountDialog').hide()" />
+                        </div>
+
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </div>
     </h:body>
 </html>

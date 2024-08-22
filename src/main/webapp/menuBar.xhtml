@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>User Dashboard</title>
-         <style>
+        <style>
             html, body {
                 margin: 0;
                 padding: 0;
@@ -14,60 +14,63 @@
                 width: 100%;
             }
             .ui-menubar {
+                position:fixed;
                 margin: 0;
                 padding: 0;
                 width: 100%;
                 border: none;
+                z-index: 1000;
+                height: 3.5rem;
             }
             .ui-menubar .ui-menuitem {
                 margin: 0;
                 padding: 0;
             }
-            
+
             .logo-text {
                 text-decoration: none;
                 color: black;
                 font-weight: bold;
                 margin-top: 10px;
                 margin-right: 5px;
-                font-weight: bold;  
-                font-size: 1.2em;  
+                font-size: 1.2em;
                 display: flex;
                 align-items: center;
             }
+
             .ui-button-info {
                 background-color: #007bff !important;
             }
         </style>
     </h:head>
     <h:body>
-    <h:form>
-        <p:growl id="messages"/>
+        <h:form>
+            <p:growl id="messages"/>
 
-        <p:menubar hideDelay="1000">
+            <p:menubar hideDelay="1000">
 
-            <f:facet name="start">
-                <h:link value="PersonalExpenseTracker" styleClass ="logo-text" outcome="userDashboard"/>
-            </f:facet>
-            
-            <p:menuitem value="Transaction" icon="pi pi-fw pi-receipt" outcome="transactionList"/>
+                <f:facet name="start">
+                    <h:link value="PersonalExpenseTracker" styleClass ="logo-text" outcome="userDashboard"/>
+                </f:facet>
 
-            <p:menuitem value="Budget" icon="pi pi-fw pi-wallet" outcome="budgetList"/>
-            
-            <p:menuitem value="Account" icon="pi pi-fw pi-credit-card" outcome="accountList"/>
-            
-            
-            <p:submenu label="Report" icon="pi pi-fw pi-chart-bar">
-                <p:menuitem value="Monthly Report" icon="pi pi-fw pi-calendar"/>
-                <p:menuitem value="Yearly Report" icon="pi pi-fw pi-calendar"/>
-            </p:submenu>
+                <p:menuitem value="Transaction" icon="pi pi-fw pi-receipt" outcome="transactionList"/>
 
-            <p:menuitem value="Settings" icon="pi pi-fw pi-cog" outcome=""/>
+                <p:menuitem value="Budget" icon="pi pi-fw pi-wallet" outcome="budgetList"/>
 
-            <f:facet name="end">
-                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" outcome="login"/>
-            </f:facet>
-        </p:menubar>
-    </h:form>
+                <p:menuitem value="Account" icon="pi pi-fw pi-credit-card" outcome="accountList"/>
+
+
+                <p:submenu label="Report" icon="pi pi-fw pi-chart-bar">
+                    <p:menuitem value="Monthly Report" icon="pi pi-fw pi-calendar"/>
+                    <p:menuitem value="Yearly Report" icon="pi pi-fw pi-calendar"/>
+                </p:submenu>
+
+                <p:menuitem value="Settings" icon="pi pi-fw pi-cog" outcome=""/>
+
+                <f:facet name="end">
+                    <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" outcome="login"/>
+                </f:facet>
+            </p:menubar>
+        </h:form>
     </h:body>
 </html>
