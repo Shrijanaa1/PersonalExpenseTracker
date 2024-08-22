@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Account List</title>
+        <title>Account Management</title>
         <style>
             .dialog-footer {
                 display: flex;
@@ -32,7 +32,8 @@
 
                 <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
                              rowKey="#{account.id}" paginator="true" rows="5"
-                             lazy="true" rowsPerPageTemplate="5,10,15">
+                             lazy="true" rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom">
                     <f:facet name="header">
                         Account List
 
