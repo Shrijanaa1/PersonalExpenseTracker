@@ -1,5 +1,5 @@
 com/syntech/pem/bean/LoginBean.class
-com/syntech/pem/bean/AccountBean$1.class
+com/syntech/pem/model/GenericLazyDataModel.class
 com/syntech/pem/repository/GenericRepository.class
 com/syntech/pem/model/TransactionType.class
 com/syntech/pem/bean/BudgetBean.class
