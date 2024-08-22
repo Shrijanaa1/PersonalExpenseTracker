@@ -24,7 +24,10 @@
         <ui:include src="menuBar.xhtml" />
         <h:form id="transactionListForm">
             <p:growl id="msgs" showDetail="true" life="3000" />
-            <p:dataTable id="transactions" value="#{transactionBean.allTransactions}" var="transaction" rowKey="#{transaction.id}">
+            <p:dataTable id="transactions" value="#{transactionBean.allTransactions}" 
+                         var="transaction" rowKey="#{transaction.id}"
+                         paginator="true" rows="5"
+                         lazy="true" rowsPerPageTemplate="5,10,15">
                 <f:facet name="header">
                     Transaction List
 
