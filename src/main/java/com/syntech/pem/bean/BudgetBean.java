@@ -2,6 +2,7 @@ package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Budget;
 import com.syntech.pem.model.CategoryType;
+import com.syntech.pem.model.GenericLazyDataModel;
 import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.BudgetRepository;
 import java.io.Serializable;
@@ -34,6 +35,8 @@ public class BudgetBean implements Serializable{
     
     private List<CategoryType> expenseCategories;
     
+    private GenericLazyDataModel<Budget> lazyBudgets;
+    
     @PostConstruct
     public void init(){
         selectedBudget = new Budget();
@@ -41,7 +44,7 @@ public class BudgetBean implements Serializable{
         
         // Filter expense categories
         expenseCategories = CategoryType.getCategoriesForType(TransactionType.Expense);
-
+        lazyBudgets  = new GenericLazyDataModel<>(budgetRepository, Budget.class);
         
     }
     
@@ -123,6 +126,10 @@ public class BudgetBean implements Serializable{
 
     public void setExpenseCategories(List<CategoryType> expenseCategories) {
         this.expenseCategories = expenseCategories;
+    }
+
+    public void setLazyBudgets(GenericLazyDataModel<Budget> lazyBudgets) {
+        this.lazyBudgets = lazyBudgets;
     }
     
     
