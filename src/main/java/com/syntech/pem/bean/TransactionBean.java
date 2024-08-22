@@ -2,6 +2,7 @@ package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Account;
 import com.syntech.pem.model.CategoryType;
+import com.syntech.pem.model.GenericLazyDataModel;
 import com.syntech.pem.model.Transaction;
 import com.syntech.pem.repository.AccountRepository;
 import com.syntech.pem.repository.TransactionRepository;
@@ -35,6 +36,8 @@ public class TransactionBean implements Serializable{
     private List<CategoryType> categoryOptions;
     
     private List<Account> accounts;
+    
+    private GenericLazyDataModel<Transaction> lazyTransactions;
 
     @PostConstruct
     public void init() {
@@ -42,6 +45,7 @@ public class TransactionBean implements Serializable{
         transactions = transactionRepository.findAll();
         selectedTransaction = new Transaction();
         categoryOptions = new ArrayList<>();
+        lazyTransactions  = new GenericLazyDataModel<>(transactionRepository, Transaction.class);
     }
     
     public void prepareCreateTransaction(){
