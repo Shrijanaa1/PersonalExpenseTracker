@@ -3,15 +3,12 @@ package com.syntech.pem.repository;
 import com.syntech.pem.model.Account;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.ManagedBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import org.primefaces.model.FilterMeta;
 
 @Stateless
-//@ManagedBean
 public class AccountRepository extends GenericRepository<Account> {
     
     @PersistenceContext(unitName = "PEM_DS")
@@ -28,7 +25,7 @@ public class AccountRepository extends GenericRepository<Account> {
     
     @Override
     public Account findById(Long id) {
-        return entityManager().find(Account.class, id);
+        return super.findById(id);
     }
     
     
@@ -39,10 +36,9 @@ public class AccountRepository extends GenericRepository<Account> {
     
     
     public Account findAccountByName(String name){
-        TypedQuery<Account> query = entityManager.createQuery("SELECT a FROM Account a WHERE a.name = :name", Account.class);
-        query.setParameter("name", name);
-        return query.getResultStream().findFirst().orElse(null);
+        return findByAttribute("name", name).stream().findFirst().orElse(null);
     }
+    
     
     public List<Account> findRange(int first, int pageSize) {
         String query = "SELECT a FROM Account a";

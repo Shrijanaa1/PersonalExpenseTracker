@@ -29,7 +29,12 @@
             <version>14.0.0</version>
         </dependency>
         
-        
+        <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>3.14</version> 
+        </dependency>
+
         <!-- Hibernate Core -->
         <dependency>
             <groupId>org.hibernate</groupId>

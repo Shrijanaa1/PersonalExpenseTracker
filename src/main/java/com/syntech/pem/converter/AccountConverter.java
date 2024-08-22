@@ -2,17 +2,17 @@ package com.syntech.pem.converter;
 
 import com.syntech.pem.model.Account;
 import com.syntech.pem.repository.AccountRepository;
-import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
    
 
-@FacesConverter(value = "accountConverter", forClass = com.syntech.pem.model.Account.class)
+@FacesConverter(value = "accountConverter")
 public class AccountConverter implements Converter{
     
-    @EJB
+    @Inject
     private AccountRepository accountRepository;
     
     @Override
@@ -20,6 +20,7 @@ public class AccountConverter implements Converter{
         if (value == null || value.isEmpty() || value.length() == 0 || value.equals("")) {
             return null;
         }        
+        
         return accountRepository.findById(Long.valueOf(value));
     }
 

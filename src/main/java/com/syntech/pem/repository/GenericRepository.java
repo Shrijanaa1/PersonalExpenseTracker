@@ -77,7 +77,7 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
         return findByCriteria(criteriaQuery);
     }
     
-
+    
     public Class<T> getEntityClass() {
         return entityClass;
     }

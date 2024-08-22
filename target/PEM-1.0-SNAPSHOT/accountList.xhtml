@@ -26,7 +26,7 @@
             <p:growl id="msgs" showDetail="true" life="3000" />
 
             <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
-                         rowKey="#{account.id}" paginator="true" rows="10"
+                         rowKey="#{account.id}" paginator="true" rows="5"
                          lazy="true" rowsPerPageTemplate="5,10,15">
                 <f:facet name="header">
                     Account List

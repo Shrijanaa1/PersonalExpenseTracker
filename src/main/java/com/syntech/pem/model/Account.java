@@ -1,7 +1,6 @@
 package com.syntech.pem.model;
 
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -77,30 +76,20 @@ public class Account extends BaseIdEntity{
    
 
     @Override
-    public final int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + Objects.hashCode(this.name);
-        hash = 79 * hash + (int) (Double.doubleToLongBits(this.balance) ^ (Double.doubleToLongBits(this.balance) >>> 32));
-        hash = 79 * hash + Objects.hashCode(this.transactions);
-        return hash;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Account account = (Account) obj;
+        return getId() != null && getId().equals(account.getId());
     }
 
     @Override
-    public final boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Account)) {
-            return false;
-        }
-        final Account other = (Account) obj;
-        if (Double.doubleToLongBits(this.balance) != Double.doubleToLongBits(other.balance)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return Objects.equals(this.transactions, other.transactions);
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
     }
     
 }

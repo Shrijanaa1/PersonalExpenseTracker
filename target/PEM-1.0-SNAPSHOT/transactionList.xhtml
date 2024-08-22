@@ -128,12 +128,11 @@
                     
                     <h:outputLabel for="account" value="Account:" />
                     <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true" 
-                                     
-                                     styleClass="input-field">
+                                     styleClass="input-field"
+                                     converter="accountConverter">
                         <f:selectItem itemLabel="Select Account" itemValue="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{transactionBean.accounts}" var="account" itemLabel="#{account.name}" itemValue="#{account}" />
                         <p:ajax event="change" update="@this"  />
-                        <f:converter converterId="accountConverter" />
                     </p:selectOneMenu>
                 </h:panelGrid>
 
