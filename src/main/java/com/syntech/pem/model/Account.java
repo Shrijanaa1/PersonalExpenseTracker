@@ -1,6 +1,7 @@
 package com.syntech.pem.model;
 
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -11,9 +12,11 @@ import javax.validation.constraints.NotNull;
 public class Account extends BaseIdEntity{
     
     @NotNull(message = "Account name should not be null")
+    @Column(name = "name", nullable = false)
     private String name; 
     
     @NotNull
+    @Column(name = "balance", nullable = false)
     private double balance;
 
     @OneToMany(mappedBy = "account")

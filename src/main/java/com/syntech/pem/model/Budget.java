@@ -1,14 +1,13 @@
 package com.syntech.pem.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -23,28 +22,32 @@ public class Budget extends BaseIdEntity{
     
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
     private CategoryType category;
     
     @NotNull
+    @Column(name = "budgetLimit", nullable = false)
     private BigDecimal budgetLimit;
     
-    
+    @NotNull
+    @Column(name = "remainingAmount", nullable = false)
     private BigDecimal remainingAmount;
     
     @NotNull
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
+    @Column(name = "startDate", nullable = false)
+    private LocalDate startDate;
     
     @NotNull
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+    @Column(name = "endDate", nullable = false)
+    private LocalDate endDate;
     
     @Transient
+    @Column(name = "remark", nullable = false)
     private String remark;
     
     public Budget() { }
 
-    public Budget(CategoryType category, BigDecimal budgetLimit, BigDecimal remainingAmount, Date startDate, Date endDate, String remark) {
+    public Budget(CategoryType category, BigDecimal budgetLimit, BigDecimal remainingAmount, LocalDate startDate, LocalDate endDate, String remark) {
         this.category = category;
         this.budgetLimit = budgetLimit;
         this.remainingAmount = remainingAmount;
@@ -70,21 +73,22 @@ public class Budget extends BaseIdEntity{
         this.category = category;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
 
     public BigDecimal getBudgetLimit() {
         return budgetLimit;
