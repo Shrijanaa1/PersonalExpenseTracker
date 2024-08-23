@@ -4,6 +4,7 @@ import com.syntech.pem.model.Account;
 import com.syntech.pem.model.CategoryType;
 import com.syntech.pem.model.GenericLazyDataModel;
 import com.syntech.pem.model.Transaction;
+import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.AccountRepository;
 import com.syntech.pem.repository.TransactionRepository;
 import java.io.IOException;
@@ -74,14 +75,19 @@ public class TransactionBean implements Serializable{
     
     public void selectOrUpdateTransaction() throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
+
+        Account account = selectedTransaction.getAccount();
         if(selectedTransaction.getId() != null){
-            //update existing trandaction
+            //update existing transaction
             
             Transaction existingTransaction = transactionRepository.findById(selectedTransaction.getId());
             if(existingTransaction == null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Transaction not found!"));
                 return;
             }
+            
+            //Revert old transaction's impact on the account balance
+            updateAccountBalance(existingTransaction, true);
             transactionRepository.update(selectedTransaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction updated successfully1")); 
         }else{
@@ -90,9 +96,25 @@ public class TransactionBean implements Serializable{
             transactionRepository.save(selectedTransaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction created successfully!"));            
         }
+        
+           //Apply new transaction's impact on the account balance
+           updateAccountBalance(selectedTransaction, false);
            transactions = transactionRepository.findAll(); // Reload transactions
            selectedTransaction = new Transaction(); // Reset the selectedTransaction after save/update
            
+    }
+    
+    
+    private void updateAccountBalance(Transaction transaction, boolean isReverting){
+        Account account = transaction.getAccount();
+        double amount = transaction.getAmount();
+        
+        if(transaction.getType() == TransactionType.Expense){
+            account.setBalance(account.getBalance() + (isReverting ? amount : -amount));
+        }else if(transaction.getType() == TransactionType.Income){
+            account.setBalance(account.getBalance() + (isReverting ? -amount : amount));
+        }
+        accountRepository.update(account); //Persist the account updated balance
     }
     
     public void deleteTransaction(Transaction transaction) {
