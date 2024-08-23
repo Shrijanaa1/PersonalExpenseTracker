@@ -59,14 +59,14 @@ public class BudgetBean implements Serializable{
      public void saveOrUpdateBudget() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (selectedBudget.getRemainingAmount() == null) {
-            selectedBudget.setRemainingAmount(BigDecimal.ZERO); // Set default value if null
-            }
             
             if (selectedBudget.getId() != null) {
                 budgetRepository.update(selectedBudget);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget updated successfully!"));
             } else {
+                
+                //New budget: initialize remainingAmount to limitAmount
+                selectedBudget.setRemainingAmount(selectedBudget.getBudgetLimit());
                 budgetRepository.save(selectedBudget);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget created successfully!"));                
             }

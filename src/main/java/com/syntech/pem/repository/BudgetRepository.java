@@ -1,6 +1,7 @@
 package com.syntech.pem.repository;
 
 import com.syntech.pem.model.Budget;
+import com.syntech.pem.model.CategoryType;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,5 +35,12 @@ public class BudgetRepository extends GenericRepository<Budget>{
     @Override
     public List<Budget> findAll(){
         return super.findAll();
+    }
+    
+    public Budget findByCategory(CategoryType category){
+        String query = "SELECT b FROM Budget b WHERE b.category = :category";
+        return entityManager.createQuery(query, Budget.class)
+                .setParameter("category", category)
+                .getSingleResult();
     }
 }

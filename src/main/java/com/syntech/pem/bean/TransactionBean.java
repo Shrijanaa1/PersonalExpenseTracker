@@ -1,14 +1,17 @@
 package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Account;
+import com.syntech.pem.model.Budget;
 import com.syntech.pem.model.CategoryType;
 import com.syntech.pem.model.GenericLazyDataModel;
 import com.syntech.pem.model.Transaction;
 import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.AccountRepository;
+import com.syntech.pem.repository.BudgetRepository;
 import com.syntech.pem.repository.TransactionRepository;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -29,6 +32,9 @@ public class TransactionBean implements Serializable{
     
     @Inject
     private AccountRepository accountRepository; 
+    
+    @Inject 
+    private BudgetRepository budgetRepository;
     
     private Transaction selectedTransaction;
     
@@ -88,6 +94,7 @@ public class TransactionBean implements Serializable{
             
             //Revert old transaction's impact on the account balance
             updateAccountBalance(existingTransaction, true);
+            updateBudgetBalance(existingTransaction, true);
             transactionRepository.update(selectedTransaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction updated successfully1")); 
         }else{
@@ -99,9 +106,22 @@ public class TransactionBean implements Serializable{
         
            //Apply new transaction's impact on the account balance
            updateAccountBalance(selectedTransaction, false);
+           updateBudgetBalance(selectedTransaction, true);
            transactions = transactionRepository.findAll(); // Reload transactions
            selectedTransaction = new Transaction(); // Reset the selectedTransaction after save/update
            
+    }
+    
+    
+    public void deleteTransaction(Transaction transaction) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (transaction != null) {
+            
+            //Rever transaction's impact on the account balance before deleting
+            updateAccountBalance(transaction, true);
+            transactionRepository.delete(transaction);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction deleted successfully."));
+        }
     }
     
     
@@ -117,13 +137,35 @@ public class TransactionBean implements Serializable{
         accountRepository.update(account); //Persist the account updated balance
     }
     
-    public void deleteTransaction(Transaction transaction) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (transaction != null) {
-            transactionRepository.delete(transaction);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction deleted successfully."));
+    
+    private void updateBudgetBalance (Transaction transaction, boolean isReverting){
+        if(transaction.getType() == TransactionType.Expense){
+            Budget budget = budgetRepository.findByCategory(transaction.getCategory());
+            if(budget != null){
+                BigDecimal amount = BigDecimal.valueOf(transaction.getAmount());
+                BigDecimal updatedAmount;
+                
+                if(isReverting){
+                    updatedAmount = budget.getRemainingAmount().subtract(amount);
+                }else{
+                    updatedAmount = budget.getRemainingAmount().add(amount);
+                }
+                budget.setRemainingAmount(updatedAmount);
+                budgetRepository.update(budget);
+            }
         }
     }
+    
+//     private void updateBudgetBalance(Transaction transaction, boolean isReverting) {
+//        if (transaction.getType() == TransactionType.Expense) {
+//            Budget budget = budgetRepository.findByCategory(transaction.getCategory());
+//            if (budget != null) {
+//                double amount = transaction.getAmount();
+//                budget.setRemainingAmount(budget.getRemainingAmount() + (isReverting ? amount : -amount));
+//                budgetRepository.update(budget);
+//            }
+//        }
+//    }
     
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
