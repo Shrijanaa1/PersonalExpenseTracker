@@ -61,6 +61,17 @@ public class BudgetBean implements Serializable{
         try {
             
             if (selectedBudget.getId() != null) {
+                
+                //check if budget limit has changed
+                Budget existingBudget = budgetRepository.findById(selectedBudget.getId());
+                if(existingBudget != null && existingBudget.getBudgetLimit().compareTo(selectedBudget.getBudgetLimit()) != 0){
+                    
+                    //Recalculate remaining amount based on the new budget limit
+                    BigDecimal difference = selectedBudget.getBudgetLimit().subtract(existingBudget.getBudgetLimit());
+                    BigDecimal newRemainingAmount = existingBudget.getRemainingAmount().add(difference);     
+                    selectedBudget.setRemainingAmount(newRemainingAmount);
+                }
+                
                 budgetRepository.update(selectedBudget);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget updated successfully!"));
             } else {
@@ -130,6 +141,10 @@ public class BudgetBean implements Serializable{
 
     public void setLazyBudgets(GenericLazyDataModel<Budget> lazyBudgets) {
         this.lazyBudgets = lazyBudgets;
+    }
+
+    public GenericLazyDataModel<Budget> getLazyBudgets() {
+        return lazyBudgets;
     }
     
     

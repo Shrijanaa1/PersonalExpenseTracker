@@ -156,22 +156,11 @@ public class TransactionBean implements Serializable{
         }
     }
     
-//     private void updateBudgetBalance(Transaction transaction, boolean isReverting) {
-//        if (transaction.getType() == TransactionType.Expense) {
-//            Budget budget = budgetRepository.findByCategory(transaction.getCategory());
-//            if (budget != null) {
-//                double amount = transaction.getAmount();
-//                budget.setRemainingAmount(budget.getRemainingAmount() + (isReverting ? amount : -amount));
-//                budgetRepository.update(budget);
-//            }
-//        }
-//    }
-    
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
-    public GenericLazyDataModel<Transaction> getLazyTransactions() {
+public GenericLazyDataModel<Transaction> getLazyTransactions() {
         return lazyTransactions;
     }
     
