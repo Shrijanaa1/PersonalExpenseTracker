@@ -113,10 +113,10 @@
                              styleClass="dialog-panel-header">        
 
                         <h:panelGrid id="editPanel" columns="2" >
-                            <h:outputLabel for="amount" value="Amount:" />
+                            <h:outputLabel for="amount" value="Amount" />
                             <p:inputText id="amount" value="#{transactionBean.selectedTransaction.amount}" required="true" styleClass="input-field"/>
 
-                            <h:outputLabel for="type" value="Type:" />
+                            <h:outputLabel for="type" value="Type" />
                             <p:selectOneMenu id="type"  value="#{transactionBean.selectedTransaction.type}" required="true" styleClass="input-field">
                                 <f:selectItem itemLabel="Select Type" itemValue="" noSelectionOption="true"/>
                                 <f:selectItem itemLabel="Income" itemValue="Income"/>
@@ -124,20 +124,20 @@
                                 <p:ajax update="category" listener="#{transactionBean.onTypeChange}" />
                             </p:selectOneMenu>
 
-                            <h:outputLabel for="category" value="Category:" />
+                            <h:outputLabel for="category" value="Category" />
                             <p:selectOneMenu id="category" value="#{transactionBean.selectedTransaction.category}" required="true" styleClass="input-field">
                                 <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{transactionBean.categoryOptions}" var="category" itemLabel="#{category}" itemValue="#{category}" />
                             </p:selectOneMenu>
 
-                            <h:outputLabel for="description" value="Description:" />
+                            <h:outputLabel for="description" value="Description" />
                             <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" styleClass="input-field"/>
 
-                            <h:outputLabel for="date" value="Date:" />
+                            <h:outputLabel for="date" value="Date" />
                             <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" styleClass="input-field"/>
 
 
-                            <h:outputLabel for="account" value="Account:" />
+                            <h:outputLabel for="account" value="Account" />
                             <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true" 
                                              styleClass="input-field"
                                              converter="accountConverter">
@@ -151,7 +151,7 @@
                             <p:commandButton value="#{transactionBean.selectedTransaction.id eq null ? 'Create' : 'Update'}" 
                                              action="#{transactionBean.selectOrUpdateTransaction()}"
                                              update=":transactionListForm:transactions :transactionListForm:msgs " 
-                                             oncomplete="PF('editTransactionDialog').hide()" />
+                                             oncomplete="PF('editTransactionDialog').show()" />
                         </div>
                     </p:panel>
                 </h:form>

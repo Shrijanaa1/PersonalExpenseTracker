@@ -130,7 +130,7 @@
                             <p:commandButton value="#{budgetBean.selectedBudget.id == null ? 'Create' : 'Update'}" 
                                              action="#{budgetBean.saveOrUpdateBudget()}"
                                              update=":budgetListForm:budgets :budgetListForm:msgs" 
-                                             oncomplete="PF('editBudgetDialog').hide()" />
+                                             oncomplete="PF('editBudgetDialog').show()" />
                         </div>
 
                     </p:panel>

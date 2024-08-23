@@ -105,7 +105,7 @@
                             <p:commandButton value="#{accountBean.selectedAccount.id == null ? 'Create' : 'Update'}" 
                                              actionListener="#{accountBean.saveOrUpdateAccount()}"
                                              update=":accountListForm:accounts :accountListForm:msgs" 
-                                             oncomplete="PF('editAccountDialog').hide()" />
+                                             oncomplete="PF('editAccountDialog').show()" />
                         </div>
 
                     </p:panel>
