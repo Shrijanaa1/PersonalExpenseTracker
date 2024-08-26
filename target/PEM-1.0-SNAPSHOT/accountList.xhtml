@@ -45,6 +45,16 @@
                                          oncomplete="PF('editAccountDialog').show()"
                                          update=":accountForm:dialogHeader :accountForm:msgs" 
                                          ajax="true" />
+                        
+                        <!--Global Refresh button -->
+                        
+                        <p:commandButton icon="pi pi-refresh"
+                                         title="Refresh All data"
+                                         action="#{accountBean.refreshAccounts()}"
+                                         update=":accountListForm:accounts :accountListForm:msgs"
+                                         ajax="true"
+                                         style="color: white; background-color: gold; margin-right: 10px;"/>
+                        
                     </f:facet>
 
                     <p:column headerText="ID">
@@ -65,17 +75,24 @@
                                          action="#{accountBean.prepareEditAccount(account)}" 
                                          update=":accountForm:dialogHeader :accountForm:editPanel :accountForm:msgs" 
                                          oncomplete="PF('editAccountDialog').show()"
-                                         ajax="true"
-                                         styleClass="button-space"/>
-
+                                         ajax="true" />
+                                        
                         <p:commandButton icon="pi pi-trash"
                                          action="#{accountBean.deleteAccount(account)}"
-                                         update=":accountListForm:accounts, :accountListForm:msgs" 
-                                         styleClass="ui-button-danger mr-2">
+                                         update=":accountListForm:accounts :accountListForm:msgs" 
+                                         styleClass="ui-button-danger mr-10">
                             <p:confirm header="Confirmation" 
                                        message="Are you sure you want to delete this account?" 
                                        icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
+                        
+                        <p:commandButton icon="pi pi-refresh"
+                                         title="Refresh Account"
+                                         action="#{accountBean.refreshAccount(account)}"
+                                         update="@this :accountListForm:msgs"
+                                         ajax="true"
+                                         style="color: white; background-color: gold; margin-left: 10px;"/>
+                        
                     </p:column>
 
                 </p:dataTable>
