@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="transactions")
@@ -31,7 +30,6 @@ public class Transaction extends BaseIdEntity{
     
     @NotNull
     @Column(name = "description", nullable = false)
-    @Size(min = 5, max = 50, message = "Description should be between 5 to 50 characters")
     private String description;
     
     @NotNull

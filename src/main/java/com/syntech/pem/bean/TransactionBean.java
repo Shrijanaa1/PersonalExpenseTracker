@@ -106,7 +106,7 @@ public class TransactionBean implements Serializable{
         
            //Apply new transaction's impact on the account balance
            updateAccountBalance(selectedTransaction, false);
-           updateBudgetBalance(selectedTransaction, true);
+           updateBudgetBalance(selectedTransaction, false);
            transactions = transactionRepository.findAll(); // Reload transactions
            selectedTransaction = new Transaction(); // Reset the selectedTransaction after save/update
            
@@ -146,9 +146,9 @@ public class TransactionBean implements Serializable{
                 BigDecimal updatedAmount;
                 
                 if(isReverting){
-                    updatedAmount = budget.getRemainingAmount().subtract(amount);
-                }else{
                     updatedAmount = budget.getRemainingAmount().add(amount);
+                }else{
+                    updatedAmount = budget.getRemainingAmount().subtract(amount);
                 }
                 budget.setRemainingAmount(updatedAmount);
                 budgetRepository.update(budget);
