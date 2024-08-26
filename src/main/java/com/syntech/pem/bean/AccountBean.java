@@ -27,7 +27,6 @@ public class AccountBean implements Serializable{
     @PostConstruct
     public void init() {
         selectedAccount = new Account(); 
-        accounts = accountRepository.findAll(); //Initialize accounts list
         lazyAccounts  = new GenericLazyDataModel<>(accountRepository, Account.class); 
     }
     
@@ -47,12 +46,13 @@ public class AccountBean implements Serializable{
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account updated successfully!"));
             } else {
                 accountRepository.save(selectedAccount);
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account created successfully!"));
-                accounts = accountRepository.findAll();
-                
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account created successfully!"));                
             }
+            
+            refreshAccounts(); // Refresh the lazy data model after saving or updating
+
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update account: " + e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update account: "));
         }
     }
 
@@ -63,7 +63,7 @@ public class AccountBean implements Serializable{
             try {
                 accountRepository.delete(account);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account deleted successfully!"));
-                accounts = accountRepository.findAll(); // Refresh the list after deletion
+                refreshAccounts(); // Refresh the lazy data model after deletion
             } catch (Exception e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to delete account: "));
             }
@@ -75,29 +75,28 @@ public class AccountBean implements Serializable{
     
     //Refresh all accounts
     public void refreshAccounts(){
-        accounts = accountRepository.findAll();
         lazyAccounts = new GenericLazyDataModel<>(accountRepository, Account.class); //Reinitialize lazy data model
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "All accounts refreshed successfully!"));
 
     }
     
-    //Row Specific Refresh 
-    public void refreshAccount(Account account) {
-     FacesContext context = FacesContext.getCurrentInstance();
-     if (account != null) {
-         try {
-             Account refreshedAccount = accountRepository.findById(account.getId());
-             int index = accounts.indexOf(account);
-             if (index >= 0) {
-                 accounts.set(index, refreshedAccount); // Update the specific account in the list
-             }
-             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account refreshed successfully!"));
-         } catch (Exception e) {
-             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to refresh account: " + e.getMessage()));
-         }
-     }
-    }
+//    //Row Specific Refresh 
+//    public void refreshAccount(Account account) {
+//     FacesContext context = FacesContext.getCurrentInstance();
+//     if (account != null) {
+//         try {
+//             Account refreshedAccount = accountRepository.findById(account.getId());
+//             int index = accounts.indexOf(account);
+//             if (index >= 0) {
+//                 accounts.set(index, refreshedAccount); // Update the specific account in the list
+//             }
+//             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account refreshed successfully!"));
+//         } catch (Exception e) {
+//             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to refresh account: " + e.getMessage()));
+//         }
+//     }
+//    }
 
     public GenericLazyDataModel<Account> getLazyAccounts() {
         return lazyAccounts;
@@ -122,3 +121,5 @@ public class AccountBean implements Serializable{
 
     
 }
+
+//lazy loading
