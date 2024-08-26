@@ -1,6 +1,7 @@
 package com.syntech.pem.repository;
 
 import com.syntech.pem.model.Transaction;
+import com.syntech.pem.model.TransactionType;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -46,4 +47,26 @@ public class TransactionRepository extends GenericRepository<Transaction>{
                 .setParameter("year", year)
                 .getResultList();
     }
+    
+//    public List<Object[]> getMonthlyExpenseReport(int month, int year) {
+//        String jpql = "SELECT t.category, SUM(t.amount) FROM Transaction t " +
+//                      "WHERE FUNCTION('MONTH', t.date) = :month AND FUNCTION('YEAR', t.date) = :year " +
+//                      "AND t.type = :type GROUP BY t.category";
+//        return entityManager.createQuery(jpql, Object[].class)
+//                            .setParameter("month", month)
+//                            .setParameter("year", year)
+//                            .setParameter("type", TransactionType.Expense)
+//                            .getResultList();
+//    }
+//    
+//    public List<Object[]> getYearlyExpenseReport(int year) {
+//        String jpql = "SELECT t.category, SUM(t.amount) FROM Transaction t " +
+//                      "WHERE FUNCTION('YEAR', t.date) = :year " +
+//                      "AND t.type = :type GROUP BY t.category";
+//        return entityManager.createQuery(jpql, Object[].class)
+//                            .setParameter("year", year)
+//                            .setParameter("type", TransactionType.Expense)
+//                            .getResultList();
+//    }
+            
 }
