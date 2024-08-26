@@ -151,7 +151,8 @@
                             <p:commandButton value="#{transactionBean.selectedTransaction.id eq null ? 'Create' : 'Update'}" 
                                              action="#{transactionBean.selectOrUpdateTransaction()}"
                                              update=":transactionListForm:transactions :transactionListForm:msgs " 
-                                             oncomplete="PF('editTransactionDialog').show()" />
+                                             oncomplete="if (args.validationFailed) { PF('editTransactionDialog').show(); } else { PF('editTransactionDialog').hide(); }" />
+
                         </div>
                     </p:panel>
                 </h:form>
