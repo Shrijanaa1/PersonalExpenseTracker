@@ -89,9 +89,10 @@
                         <p:commandButton icon="pi pi-refresh"
                                          title="Refresh Account"
                                          action="#{accountBean.refreshAccount(account)}"
-                                         update="@this :accountListForm:msgs"
+                                         update=":accountListForm:accounts :accountListForm:msgs"
                                          ajax="true"
                                          style="color: white; background-color: gold; margin-left: 10px;"/>
+                        
                         
                     </p:column>
 

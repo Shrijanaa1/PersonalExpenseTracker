@@ -32,4 +32,18 @@ public class TransactionRepository extends GenericRepository<Transaction>{
         return super.findAll();
     }
     
+    public List<Transaction> findByMonthAndYear(int month, int year){
+        return entityManager.createQuery(
+                "SELECT t FROM Transaction t WHERE MONTH(t.date) = :month AND YEAR(t.date) = :year", Transaction.class)
+                .setParameter("month", month)
+                .setParameter("year", year)
+                .getResultList();
+    }
+    
+    public List<Transaction> findByYear(int year){
+        return entityManager.createQuery(
+                "SELECT t FROM Transaction t WHERE YEAR(t.date) = :year", Transaction.class)
+                .setParameter("year", year)
+                .getResultList();
+    }
 }
