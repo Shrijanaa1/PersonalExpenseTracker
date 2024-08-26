@@ -29,8 +29,6 @@ public class BudgetBean implements Serializable{
     @Inject
     private BudgetRepository budgetRepository;
     
-    private List<Budget> budgets;
-    
     private Budget selectedBudget;
     
     private List<CategoryType> expenseCategories;
@@ -40,7 +38,6 @@ public class BudgetBean implements Serializable{
     @PostConstruct
     public void init(){
         selectedBudget = new Budget();
-        budgets = budgetRepository.findAll();
         
         // Filter expense categories
         expenseCategories = CategoryType.getCategoriesForType(TransactionType.Expense);
@@ -81,8 +78,6 @@ public class BudgetBean implements Serializable{
                 budgetRepository.save(selectedBudget);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget created successfully!"));                
             }
-            budgets = budgetRepository.findAll(); // Refresh the list after save/update
-
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update budget: "));
         }
@@ -95,7 +90,6 @@ public class BudgetBean implements Serializable{
             try {
                 budgetRepository.delete(budget);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget deleted successfully!"));
-                budgets = budgetRepository.findAll(); // Refresh the list after deletion
             } catch (Exception e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to delete budget: " + e.getMessage()));
             }
@@ -113,14 +107,6 @@ public class BudgetBean implements Serializable{
         }else{
             return "Budget Intact";
         }
-    }
-
-    public List<Budget> getBudgets() {
-        return budgets;
-    }
-
-    public void setBudgets(List<Budget> budgets) {
-        this.budgets = budgets;
     }
 
     public Budget getSelectedBudget() {

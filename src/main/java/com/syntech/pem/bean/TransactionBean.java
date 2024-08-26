@@ -38,8 +38,6 @@ public class TransactionBean implements Serializable{
     
     private Transaction selectedTransaction;
     
-    private List<Transaction> transactions;
-    
     private List<CategoryType> categoryOptions;
     
     private List<Account> accounts;
@@ -49,7 +47,6 @@ public class TransactionBean implements Serializable{
     @PostConstruct
     public void init() {
         accounts = accountRepository.findAll(); 
-        transactions = transactionRepository.findAll();
         selectedTransaction = new Transaction();
         categoryOptions = new ArrayList<>();
         lazyTransactions  = new GenericLazyDataModel<>(transactionRepository, Transaction.class);
@@ -107,7 +104,6 @@ public class TransactionBean implements Serializable{
            //Apply new transaction's impact on the account balance
            updateAccountBalance(selectedTransaction, false);
            updateBudgetBalance(selectedTransaction, false);
-           transactions = transactionRepository.findAll(); // Reload transactions
            selectedTransaction = new Transaction(); // Reset the selectedTransaction after save/update
            
     }
@@ -117,7 +113,7 @@ public class TransactionBean implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         if (transaction != null) {
             
-            //Rever transaction's impact on the account balance before deleting
+            //Revert transaction's impact on the account balance before deleting
             updateAccountBalance(transaction, true);
             transactionRepository.delete(transaction);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Transaction deleted successfully."));

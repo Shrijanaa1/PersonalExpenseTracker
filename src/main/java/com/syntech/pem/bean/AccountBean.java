@@ -4,7 +4,6 @@ import com.syntech.pem.model.Account;
 import com.syntech.pem.model.GenericLazyDataModel;
 import com.syntech.pem.repository.AccountRepository;
 import java.io.Serializable;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -18,7 +17,6 @@ public class AccountBean implements Serializable{
     
     @Inject
     private AccountRepository accountRepository;
-    private List<Account> accounts; 
     
     private Account selectedAccount;
     
@@ -49,7 +47,7 @@ public class AccountBean implements Serializable{
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account created successfully!"));                
             }
             
-            refreshAccounts(); // Refresh the lazy data model after saving or updating
+//            refreshAccounts(); // Refresh the lazy data model after saving or updating
 
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update account: "));
@@ -63,7 +61,7 @@ public class AccountBean implements Serializable{
             try {
                 accountRepository.delete(account);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account deleted successfully!"));
-                refreshAccounts(); // Refresh the lazy data model after deletion
+//                refreshAccounts(); // Refresh the lazy data model after deletion
             } catch (Exception e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to delete account: "));
             }
@@ -111,13 +109,6 @@ public class AccountBean implements Serializable{
         this.selectedAccount = selectedAccount;
     }
      
-     public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
 
     
 }
