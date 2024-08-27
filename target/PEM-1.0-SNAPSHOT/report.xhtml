@@ -5,45 +5,165 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Reports</title>
-    </h:head>
-    <h:body>
-        <ui:include src="menuBar.xhtml" />
-        
-        <h:form>
-            <p:panel header="Generate Reports">
-                <p:outputLabel for="month" value="Select Month: " />
-                <p:selectOneMenu id="month" value="#{reportBean.selectedMonth}" style="width:150px; margin-right: 10px;">
-                    <f:selectItems value="#{reportBean.availableMonths}" var="month" itemValue="#{month}" itemLabel="#{month}" />
-                </p:selectOneMenu>
 
-                <p:outputLabel for="year" value="Select Year: " />
-                <p:selectOneMenu id="year" value="#{reportBean.selectedYear}" style="width:150px; margin-right: 10px;">
-                    <f:selectItems value="#{reportBean.availableYears}" var="year" itemValue="#{year}" itemLabel="#{year}" />
-                </p:selectOneMenu>
+<h:head>
+    <title>Reports</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</h:head>
+<h:body>
+    <ui:include src="menuBar.xhtml" />
 
-                
-                <p:commandButton value="Generate Monthly Report" 
-                                 action="#{reportBean.generateMonthlyReport}" 
-                                 update="monthlyChart"
-                                 style="color: white; background-color: #007bff; margin-right: 10px;" />
-                
-                
-                <p:commandButton value="Generate Yearly Report" 
-                                 action="#{reportBean.generateYearlyReport}" 
-                                 update="yearlyChart" 
-                                 style="color: white; background-color: #007bff; margin-right: 10px;"/>
-                
-            </p:panel>
+    <h:form>
+        <p:panel header="Generate Reports">
+            <p:outputLabel for="month" value="Select Month: " />
+            <p:selectOneMenu id="month" value="#{reportBean.selectedMonth}" style="width:150px; margin-right: 10px;">
+                <f:selectItems value="#{reportBean.availableMonths}" var="month" itemValue="#{month}" itemLabel="#{month}" />
+            </p:selectOneMenu>
 
-            <p:panel header="Monthly Expense Report">
-                <p:chart id="monthlyChart" value="#{reportBean.monthlyReport}" />
-            </p:panel>
+            <p:outputLabel for="year" value="Select Year: " />
+            <p:selectOneMenu id="year" value="#{reportBean.selectedYear}" style="width:150px; margin-right: 10px;">
+                <f:selectItems value="#{reportBean.availableYears}" var="year" itemValue="#{year}" itemLabel="#{year}" />
+            </p:selectOneMenu>
 
-            <p:panel header="Yearly Expense Report">
-                <p:chart id="yearlyChart" value="#{reportBean.yearlyReport}" />
-            </p:panel>
-        </h:form>
-    </h:body>
+            <p:commandButton value="Generate Reports" action="#{reportBean.generateReports}" 
+                             update="charts" 
+                             oncomplete="updateCharts()" 
+                             style="color: white; background-color: #007bff; margin-right: 10px;" />
+        </p:panel>
+
+        <p:panel id="charts" header="Reports">
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:panel header="Monthly Expense Report">
+                    <canvas id="monthlyExpenseCanvas"></canvas>
+                </p:panel>
+
+                <p:panel header="Monthly Income Report">
+                    <canvas id="monthlyIncomeCanvas"></canvas>
+                </p:panel>
+
+                <p:panel header="Yearly Expense Report">
+                    <canvas id="yearlyExpenseCanvas"></canvas>
+                </p:panel>
+
+                <p:panel header="Yearly Income Report">
+                    <canvas id="yearlyIncomeCanvas"></canvas>
+                </p:panel>
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+
+    <script>
+        // Initialize Chart.js instances
+        var monthlyExpenseChart, monthlyIncomeChart, yearlyExpenseChart, yearlyIncomeChart;
+
+        function updateCharts() {
+            // Get data from JSF bean (using JSON.stringify for proper formatting)
+            var monthlyExpenseData = JSON.parse('#{reportBean.monthlyExpenseReportAsJson}');
+            var monthlyIncomeData = JSON.parse('#{reportBean.monthlyIncomeReportAsJson}');
+            var yearlyExpenseData = JSON.parse('#{reportBean.yearlyExpenseReportAsJson}');
+            var yearlyIncomeData = JSON.parse('#{reportBean.yearlyIncomeReportAsJson}');
+
+            // Update or initialize the monthly expense chart
+            if (monthlyExpenseChart) {
+                monthlyExpenseChart.destroy();
+            }
+            monthlyExpenseChart = new Chart(document.getElementById('monthlyExpenseCanvas'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(monthlyExpenseData),
+                    datasets: [{
+                        label: 'Monthly Expenses',
+                        data: Object.values(monthlyExpenseData),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Similar chart initialization logic for monthlyIncomeChart, yearlyExpenseChart, yearlyIncomeChart
+            // Ensure to destroy any existing charts before creating new ones to avoid memory leaks
+            if (monthlyIncomeChart) {
+                monthlyIncomeChart.destroy();
+            }
+            monthlyIncomeChart = new Chart(document.getElementById('monthlyIncomeCanvas'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(monthlyIncomeData),
+                    datasets: [{
+                        label: 'Monthly Income',
+                        data: Object.values(monthlyIncomeData),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            if (yearlyExpenseChart) {
+                yearlyExpenseChart.destroy();
+            }
+            yearlyExpenseChart = new Chart(document.getElementById('yearlyExpenseCanvas'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(yearlyExpenseData),
+                    datasets: [{
+                        label: 'Yearly Expenses',
+                        data: Object.values(yearlyExpenseData),
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            if (yearlyIncomeChart) {
+                yearlyIncomeChart.destroy();
+            }
+            yearlyIncomeChart = new Chart(document.getElementById('yearlyIncomeCanvas'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(yearlyIncomeData),
+                    datasets: [{
+                        label: 'Yearly Income',
+                        data: Object.values(yearlyIncomeData),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onload = updateCharts; // Call updateCharts on page load
+    </script>
+</h:body>
 </html>

@@ -1,5 +1,7 @@
 package com.syntech.pem.bean;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syntech.pem.model.Transaction;
 import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.TransactionRepository;
@@ -16,8 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.primefaces.model.charts.bar.BarChartModel;
-import org.primefaces.model.charts.pie.PieChartModel;
+
 
 @Named
 @ViewScoped
@@ -30,12 +31,11 @@ public class ReportBean implements Serializable {
 
     private int selectedMonth;
     private int selectedYear;
-    private Map<String, BigDecimal> monthlyReport;
-    private Map<String, BigDecimal> yearlyReport;
+    private Map<String, BigDecimal> monthlyExpenseReport;
+    private Map<String, BigDecimal> monthlyIncomeReport;
+    private Map<String, BigDecimal> yearlyExpenseReport;
+    private Map<String, BigDecimal> yearlyIncomeReport;
     
-
-//    private PieChartModel pieModel;
-//    private BarChartModel barModel;
 
     private List<Integer> availableMonths;
     private List<Integer> availableYears;
@@ -52,34 +52,45 @@ public class ReportBean implements Serializable {
         availableYears = IntStream.rangeClosed(selectedYear - 10, selectedYear).boxed().collect(Collectors.toList());
         
         //Generate initial reports
-        generateMonthlyReport();
-        generateYearlyReport();
+        generateReports();
+    }
+    
+    public void generateReports(){
+        monthlyExpenseReport = generateExpenseReport(selectedMonth, selectedYear);
+        monthlyIncomeReport = generateIncomeReport(selectedMonth, selectedYear);
+        yearlyExpenseReport = generateExpenseReport(selectedYear);
+        yearlyIncomeReport = generateIncomeReport(selectedYear);
+    }
+    
+    
+    public Map<String, BigDecimal> generateExpenseReport(int month, int year){
+        List<Transaction> transactions = transactionRepository.findByMonthAndYear(month, year);
+        return aggregateTransactionsByCategory(transactions, TransactionType.Expense);
+    }
+    
+    public Map<String, BigDecimal> generateIncomeReport(int month, int year){
+        List<Transaction> transactions = transactionRepository.findByMonthAndYear(month, year);
+        return aggregateTransactionsByCategory(transactions, TransactionType.Income);
+    }
+    
+    public Map<String, BigDecimal> generateExpenseReport(int year){
+        List<Transaction> transactions = transactionRepository.findByYear(year);
+        return aggregateTransactionsByCategory(transactions, TransactionType.Expense);
+    }
+    
+     public Map<String, BigDecimal> generateIncomeReport(int year){
+        List<Transaction> transactions = transactionRepository.findByYear(year);
+        return aggregateTransactionsByCategory(transactions, TransactionType.Income);
     }
 
-    public void generateMonthlyReport() {
-        //Fetch transactions for the selected month and year
-        List<Transaction> transactions = transactionRepository.findByMonthAndYear(selectedMonth, selectedYear);
-        monthlyReport = aggregateTransactionsByCategory(transactions);
-//        createPieModel(monthlyReport);
-//        createBarModel(monthlyReport);
-    }
 
-    public void generateYearlyReport() {
-        List<Transaction> transactions = transactionRepository.findByYear(selectedYear);
-        yearlyReport = aggregateTransactionsByCategory(transactions);
-//        createPieModel(yearlyReport);
-//        createBarModel(yearlyReport);
-    }
-
-    private Map<String, BigDecimal> aggregateTransactionsByCategory(List<Transaction> transactions) {
+    private Map<String, BigDecimal> aggregateTransactionsByCategory(List<Transaction> transactions, TransactionType type) {
         Map<String, BigDecimal> report = new HashMap<>();
         
-        //Iterate over transactions and sum the amounts by category
         for (Transaction transaction : transactions) {
-            if (transaction.getType() == TransactionType.Expense) {
+            if (transaction.getType() == type) {
                 String category = transaction.getCategory().name();
                 BigDecimal amount = transaction.getAmount();
-                
                 report.put(category, report.getOrDefault(category, BigDecimal.ZERO).add(amount));
             }
         }
@@ -87,40 +98,6 @@ public class ReportBean implements Serializable {
     }
     
     
-
-//    private void createPieModel(Map<String, BigDecimal> report) {
-//        pieModel = new PieChartModel();
-//        for (Map.Entry<String, BigDecimal> entry : report.entrySet()) {
-//            pieModel.set(entry.getKey(), entry.getValue());
-//        }
-//        pieModel.setTitle("Expenses by Category");
-//        pieModel.setLegendPosition("w");
-//        pieModel.setShowDataLabels(true);
-//        pieModel.setDataFormat("value");
-//    }
-//
-//    private void createBarModel(Map<String, BigDecimal> report) {
-//        barModel = new BarChartModel();
-//        ChartSeries expenses = new ChartSeries();
-//        expenses.setLabel("Expenses");
-//
-//        for (Map.Entry<String, BigDecimal> entry : report.entrySet()) {
-//            expenses.set(entry.getKey(), entry.getValue());
-//        }
-//        barModel.addSeries(expenses);
-//        barModel.setTitle("Expenses by Category");
-//        barModel.setLegendPosition("ne");
-//        barModel.setAnimate(true);
-//    }
-
-//    public PieChartModel getPieModel() {
-//        return pieModel;
-//    }
-//
-//    public BarChartModel getBarModel() {
-//        return barModel;
-//    }
-
     public int getSelectedMonth() {
         return selectedMonth;
     }
@@ -137,20 +114,36 @@ public class ReportBean implements Serializable {
         this.selectedYear = selectedYear;
     }
 
-    public Map<String, BigDecimal> getMonthlyReport() {
-        return monthlyReport;
+    public Map<String, BigDecimal> getMonthlyExpenseReport() {
+        return monthlyExpenseReport;
     }
 
-    public void setMonthlyReport(Map<String, BigDecimal> monthlyReport) {
-        this.monthlyReport = monthlyReport;
+    public void setMonthlyExpenseReport(Map<String, BigDecimal> monthlyExpenseReport) {
+        this.monthlyExpenseReport = monthlyExpenseReport;
     }
 
-    public Map<String, BigDecimal> getYearlyReport() {
-        return yearlyReport;
+    public Map<String, BigDecimal> getMonthlyIncomeReport() {
+        return monthlyIncomeReport;
     }
 
-    public void setYearlyReport(Map<String, BigDecimal> yearlyReport) {
-        this.yearlyReport = yearlyReport;
+    public void setMonthlyIncomeReport(Map<String, BigDecimal> monthlyIncomeReport) {
+        this.monthlyIncomeReport = monthlyIncomeReport;
+    }
+
+    public Map<String, BigDecimal> getYearlyExpenseReport() {
+        return yearlyExpenseReport;
+    }
+
+    public void setYearlyExpenseReport(Map<String, BigDecimal> yearlyExpenseReport) {
+        this.yearlyExpenseReport = yearlyExpenseReport;
+    }
+
+    public Map<String, BigDecimal> getYearlyIncomeReport() {
+        return yearlyIncomeReport;
+    }
+
+    public void setYearlyIncomeReport(Map<String, BigDecimal> yearlyIncomeReport) {
+        this.yearlyIncomeReport = yearlyIncomeReport;
     }
 
     public List<Integer> getAvailableMonths() {
@@ -167,5 +160,32 @@ public class ReportBean implements Serializable {
 
     public void setAvailableYears(List<Integer> availableYears) {
         this.availableYears = availableYears;
+    }
+    
+    // Method to convert report data to JSON
+    public String getMonthlyExpenseReportAsJson() {
+        return convertMapToJson(monthlyExpenseReport);
+    }
+
+    public String getMonthlyIncomeReportAsJson() {
+        return convertMapToJson(monthlyIncomeReport);
+    }
+
+    public String getYearlyExpenseReportAsJson() {
+        return convertMapToJson(yearlyExpenseReport);
+    }
+
+    public String getYearlyIncomeReportAsJson() {
+        return convertMapToJson(yearlyIncomeReport);
+    }
+
+    private String convertMapToJson(Map<String, BigDecimal> reportData) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(reportData);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "{}"; // Return empty JSON object in case of error
+        }
     }
 }
