@@ -28,7 +28,7 @@
 
         <div class="content">
             <h:form id="budgetListForm">
-                <p:growl id="msgs" showDetail="true" life="3000" />
+                <p:growl id="msgs" showDetail="true" life="2000" />
 
                 <p:dataTable id="budgets" value="#{budgetBean.lazyBudgets}" 
                              var="budget" rowKey="#{budget.id}"
@@ -46,6 +46,16 @@
                                          oncomplete="PF('editBudgetDialog').show()"
                                          update=":budgetForm:dialogHeader :budgetForm:msgs" 
                                          ajax="true" />
+                        
+                        <!--Global Reload button -->
+                        
+                        <p:commandButton icon="pi pi-refresh"
+                                         title="Reload All Budgets"
+                                         action="#{budgetBean.recalculateAllRemainingAmount()}"
+                                         update=":budgetListForm:budgets :budgetListForm:msgs"
+                                         ajax="true"
+                                         style="color: white; background-color: gold; margin-right: 10px;"/>
+                        
                     </f:facet>
 
 
@@ -87,6 +97,13 @@
                                        message="Are you sure you want to remove this budget?" 
                                        icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
+                        
+                        <p:commandButton icon="pi pi-refresh"
+                                         title="Reload Account"
+                                         style="color: white; background-color: gold; margin-left: 10px; "
+                                         action="#{budgetBean.recalculateRemainingAmount(budget)}" 
+                                         update=":budgetListForm:budgets :budgetListForm:msgs" 
+                                         ajax="true" />
                     </p:column>
 
                 </p:dataTable>

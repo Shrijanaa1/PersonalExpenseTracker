@@ -3,8 +3,10 @@ package com.syntech.pem.bean;
 import com.syntech.pem.model.Budget;
 import com.syntech.pem.model.CategoryType;
 import com.syntech.pem.model.GenericLazyDataModel;
+import com.syntech.pem.model.Transaction;
 import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.BudgetRepository;
+import com.syntech.pem.repository.TransactionRepository;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +30,9 @@ public class BudgetBean implements Serializable{
     
     @Inject
     private BudgetRepository budgetRepository;
+    
+    @Inject
+    private TransactionRepository transactionRepository;
     
     private Budget selectedBudget;
     
@@ -96,6 +101,36 @@ public class BudgetBean implements Serializable{
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Budget is null!"));
         }
+    }
+    
+    public void recalculateRemainingAmount(Budget budget){
+        if(budget != null && budget.getCategory()!= null){
+            List<Transaction> transactions = transactionRepository.findByCategoryAndType(budget.getCategory(), TransactionType.Expense);
+            BigDecimal totalExpenses = BigDecimal.ZERO;
+            
+            for(Transaction transaction: transactions){
+                totalExpenses = totalExpenses.add(transaction.getAmount());
+            }
+            
+            BigDecimal remainingAmount = budget.getBudgetLimit().subtract(totalExpenses);
+            budget.setRemainingAmount(remainingAmount);
+            budgetRepository.update(budget);
+        }else{
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Budget or Category is null!"));
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Budget Remaining balance recalculated successfully!"));
+    
+    }
+    
+    public void recalculateAllRemainingAmount(){
+        List<Budget> budgets = budgetRepository.findAll();
+        for(Budget budget: budgets){
+            recalculateRemainingAmount(budget);
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "All remaining budgets recalculated successfully!"));
     }
     
     public String getRemark(Budget budget){

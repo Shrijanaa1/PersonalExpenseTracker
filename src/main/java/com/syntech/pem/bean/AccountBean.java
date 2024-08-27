@@ -34,6 +34,8 @@ public class AccountBean implements Serializable{
     public void init() {
         selectedAccount = new Account(); 
         lazyAccounts  = new GenericLazyDataModel<>(accountRepository, Account.class); 
+        recalculateAllAccountBalances(); // Initial balance calculation
+
     }
     
     public void prepareCreateAccount() {
@@ -55,8 +57,6 @@ public class AccountBean implements Serializable{
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account created successfully!"));                
             }
             
-//            refreshAccounts(); // Refresh the lazy data model after saving or updating
-
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save/update account: "));
         }
@@ -69,7 +69,6 @@ public class AccountBean implements Serializable{
             try {
                 accountRepository.delete(account);
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account deleted successfully!"));
-//                refreshAccounts(); // Refresh the lazy data model after deletion
             } catch (Exception e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to delete account: "));
             }
