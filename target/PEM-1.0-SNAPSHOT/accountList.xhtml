@@ -28,7 +28,7 @@
         <ui:include src="menuBar.xhtml" />
         <div class="content">
             <h:form id="accountListForm">
-                <p:growl id="msgs" showDetail="true" life="3000" />
+                <p:growl id="msgs" showDetail="true" life="2000" />
 
                 <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
                              rowKey="#{account.id}" paginator="true" rows="5"
@@ -49,8 +49,8 @@
                         <!--Global Refresh button -->
                         
                         <p:commandButton icon="pi pi-refresh"
-                                         title="Refresh All data"
-                                         action="#{accountBean.refreshAccounts()}"
+                                         title="Reload All Accounts"
+                                         action="#{accountBean.recalculateAllAccountBalances()}"
                                          update=":accountListForm:accounts :accountListForm:msgs"
                                          ajax="true"
                                          style="color: white; background-color: gold; margin-right: 10px;"/>
@@ -71,6 +71,7 @@
 
                     <p:column headerText="Actions">
                         <p:commandButton icon="pi pi-pencil"
+                                         title="Edit Account"
                                          style="color: white; background-color: #007bff; margin-right: 10px; "
                                          action="#{accountBean.prepareEditAccount(account)}" 
                                          update=":accountForm:dialogHeader :accountForm:editPanel :accountForm:msgs" 
@@ -78,6 +79,7 @@
                                          ajax="true" />
                                         
                         <p:commandButton icon="pi pi-trash"
+                                         title="Delete Account"
                                          action="#{accountBean.deleteAccount(account)}"
                                          update=":accountListForm:accounts :accountListForm:msgs" 
                                          styleClass="ui-button-danger mr-10">
@@ -85,6 +87,13 @@
                                        message="Are you sure you want to delete this account?" 
                                        icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
+                        
+                        <p:commandButton icon="pi pi-refresh"
+                                         title="Reload Account"
+                                         style="color: white; background-color: gold; margin-left: 10px; "
+                                         action="#{accountBean.recalculatedAccountBalance(account)}" 
+                                         update=":accountListForm:accounts :accountListForm:msgs" 
+                                         ajax="true" />
                         
                         
                     </p:column>

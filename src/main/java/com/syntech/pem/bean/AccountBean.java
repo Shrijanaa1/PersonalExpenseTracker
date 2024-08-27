@@ -3,6 +3,7 @@ package com.syntech.pem.bean;
 import com.syntech.pem.model.Account;
 import com.syntech.pem.model.GenericLazyDataModel;
 import com.syntech.pem.model.Transaction;
+import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.AccountRepository;
 import com.syntech.pem.repository.TransactionRepository;
 import java.io.Serializable;
@@ -78,25 +79,33 @@ public class AccountBean implements Serializable{
     }
     
     
-    //Refresh all accounts
-    public void refreshAccounts(){
-        lazyAccounts = new GenericLazyDataModel<>(accountRepository, Account.class); //Reinitialize lazy data model
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "All accounts refreshed successfully!"));
-
-    }
-    
-    
     public void recalculatedAccountBalance(Account account){
         if(account != null && account.getId() != null){
             List<Transaction> transactions = transactionRepository.findByAccount(account);
             BigDecimal totalBalance = BigDecimal.ZERO;
             for(Transaction transaction : transactions){
-                if(transaction.isIncome()){
+                if(transaction.getType() == TransactionType.Income){
                     totalBalance = totalBalance.add(transaction.getAmount());
+                }else{
+                    totalBalance = totalBalance.subtract(transaction.getAmount());
                 }
             }
+            account.setBalance(totalBalance);
+            accountRepository.update(account); //update account with new balance
         }
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account balance recalculated successfully!"));
+    
+    }
+    
+    public void recalculateAllAccountBalances(){
+        List<Account> accounts = accountRepository.findAll();
+        for(Account account: accounts){
+            recalculatedAccountBalance(account);
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "All account balances recalculated successfully!"));
+    
     }
     
     public GenericLazyDataModel<Account> getLazyAccounts() {

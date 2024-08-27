@@ -16,6 +16,7 @@ com/syntech/pem/repository/TransactionRepository.class
 com/syntech/pem/model/Account.class
 com/syntech/pem/JAXRSConfiguration.class
 com/syntech/pem/model/CategoryType.class
+com/syntech/pem/bean/ReportBean.class
 com/syntech/pem/model/Account$AccountBuilder.class
 com/syntech/pem/converter/AccountConverter.class
 com/syntech/pem/bean/TransactionBean.class
