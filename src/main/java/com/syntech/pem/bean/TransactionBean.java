@@ -123,12 +123,12 @@ public class TransactionBean implements Serializable{
     
     private void updateAccountBalance(Transaction transaction, boolean isReverting){
         Account account = transaction.getAccount();
-        double amount = transaction.getAmount();
+        BigDecimal amount = transaction.getAmount();
         
         if(transaction.getType() == TransactionType.Expense){
-            account.setBalance(account.getBalance() + (isReverting ? amount : -amount));
+            account.setBalance(account.getBalance().add(isReverting ? amount : amount.negate()));
         }else if(transaction.getType() == TransactionType.Income){
-            account.setBalance(account.getBalance() + (isReverting ? -amount : amount));
+            account.setBalance(account.getBalance().add(isReverting ? amount.negate() : amount));
         }
         accountRepository.update(account); //Persist the account updated balance
     }
@@ -138,7 +138,7 @@ public class TransactionBean implements Serializable{
         if(transaction.getType() == TransactionType.Expense){
             Budget budget = budgetRepository.findByCategory(transaction.getCategory());
             if(budget != null){
-                BigDecimal amount = BigDecimal.valueOf(transaction.getAmount());
+                BigDecimal amount = transaction.getAmount();
                 BigDecimal updatedAmount;
                 
                 if(isReverting){

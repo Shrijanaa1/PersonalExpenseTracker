@@ -1,5 +1,6 @@
 package com.syntech.pem.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ public class Transaction extends BaseIdEntity{
         
     @NotNull
     @Column(name = "amount", nullable = false)
-    private double amount;
+    private BigDecimal amount;
     
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -41,14 +42,15 @@ public class Transaction extends BaseIdEntity{
     private Account account;
 
     public Transaction() {}
-    
-    public double getAmount() {
+
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+    
 
     public TransactionType getType() {
         return type;

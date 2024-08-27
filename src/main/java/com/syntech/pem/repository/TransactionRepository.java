@@ -1,11 +1,12 @@
 package com.syntech.pem.repository;
 
+import com.syntech.pem.model.Account;
 import com.syntech.pem.model.Transaction;
-import com.syntech.pem.model.TransactionType;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class TransactionRepository extends GenericRepository<Transaction>{
@@ -33,6 +34,14 @@ public class TransactionRepository extends GenericRepository<Transaction>{
         return super.findAll();
     }
     
+    
+    public List<Transaction> findByAccount(Account account){
+        TypedQuery<Transaction> query  = entityManager.createQuery(
+            "SELECT t FROM Transaction t WHERE t.account = :account ", Transaction.class);
+        query.setParameter("account", account);
+        return query.getResultList();
+    }
+            
     public List<Transaction> findByMonthAndYear(int month, int year){
         return entityManager.createQuery(
                 "SELECT t FROM Transaction t WHERE MONTH(t.date) = :month AND YEAR(t.date) = :year", Transaction.class)

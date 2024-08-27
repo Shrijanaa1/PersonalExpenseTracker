@@ -2,8 +2,12 @@ package com.syntech.pem.bean;
 
 import com.syntech.pem.model.Account;
 import com.syntech.pem.model.GenericLazyDataModel;
+import com.syntech.pem.model.Transaction;
 import com.syntech.pem.repository.AccountRepository;
+import com.syntech.pem.repository.TransactionRepository;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -17,6 +21,9 @@ public class AccountBean implements Serializable{
     
     @Inject
     private AccountRepository accountRepository;
+    
+    @Inject 
+    private TransactionRepository transactionRepository;
     
     private Account selectedAccount;
     
@@ -79,23 +86,19 @@ public class AccountBean implements Serializable{
 
     }
     
-//    //Row Specific Refresh 
-//    public void refreshAccount(Account account) {
-//     FacesContext context = FacesContext.getCurrentInstance();
-//     if (account != null) {
-//         try {
-//             Account refreshedAccount = accountRepository.findById(account.getId());
-//             int index = accounts.indexOf(account);
-//             if (index >= 0) {
-//                 accounts.set(index, refreshedAccount); // Update the specific account in the list
-//             }
-//             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Account refreshed successfully!"));
-//         } catch (Exception e) {
-//             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to refresh account: " + e.getMessage()));
-//         }
-//     }
-//    }
-
+    
+    public void recalculatedAccountBalance(Account account){
+        if(account != null && account.getId() != null){
+            List<Transaction> transactions = transactionRepository.findByAccount(account);
+            BigDecimal totalBalance = BigDecimal.ZERO;
+            for(Transaction transaction : transactions){
+                if(transaction.isIncome()){
+                    totalBalance = totalBalance.add(transaction.getAmount());
+                }
+            }
+        }
+    }
+    
     public GenericLazyDataModel<Account> getLazyAccounts() {
         return lazyAccounts;
     }
@@ -112,5 +115,3 @@ public class AccountBean implements Serializable{
 
     
 }
-
-//lazy loading
