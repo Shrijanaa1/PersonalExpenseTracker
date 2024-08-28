@@ -35,7 +35,9 @@
                              var="transaction" rowKey="#{transaction.id}"
                              paginator="true" rows="5"
                              lazy="true" rowsPerPageTemplate="5,10,15"
-                             paginatorPosition="bottom">
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
+                         {CurrentPageReport} {NextPageLink} {LastPageLink}">
                     <f:facet name="header">
                         Transaction List
 

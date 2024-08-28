@@ -189,3 +189,183 @@ public class ReportBean implements Serializable {
         }
     }
 }
+
+
+//    
+//    private static final long serialVersionUID = 1L;
+//    
+//    @Inject
+//    private TransactionRepository transactionRepository;
+//
+//    private int selectedMonth;
+//    private int selectedYear;
+//    private Map<String, BigDecimal> monthlyExpenseReport;
+//    private Map<String, BigDecimal> monthlyIncomeReport;
+//    private Map<String, BigDecimal> yearlyExpenseReport;
+//    private Map<String, BigDecimal> yearlyIncomeReport;
+//    
+//
+//    private List<Integer> availableMonths;
+//    private List<Integer> availableYears;
+//    
+////    private boolean showCharts;
+//
+//    @PostConstruct
+//    public void init() {
+////        showCharts = false; // Hide charts initially
+//        
+//        //Initialize selected month and year to the current date
+//        selectedMonth = LocalDate.now().getMonthValue();
+//        selectedYear = LocalDate.now().getYear();
+//        
+//        //Initialize available months (1 to 12) and available years (last 10 years including current)
+//        availableMonths = IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList());
+//        availableYears = IntStream.rangeClosed(selectedYear - 10, selectedYear).boxed().collect(Collectors.toList());
+//        
+//        //Generate initial reports
+////        generateExpenseReports();
+////        generateIncomeReports();
+//            
+////        generateReports();
+//    }
+//    
+//    public void generateReports(){
+//        monthlyExpenseReport = generateExpenseReport(selectedMonth, selectedYear); 
+//        monthlyIncomeReport = generateIncomeReport(selectedMonth, selectedYear);
+//        yearlyExpenseReport = generateExpenseReport(selectedYear);
+//        yearlyIncomeReport = generateIncomeReport(selectedYear);  
+////        showCharts = true; // Show charts after generating reports
+//
+//    }
+//    
+////    public void generateExpenseReports(){
+////        monthlyExpenseReport = generateExpenseReport(selectedMonth, selectedYear);       
+////        yearlyExpenseReport = generateExpenseReport(selectedYear);  
+////    }
+////    
+////    public void generateIncomeReports(){
+////        monthlyIncomeReport = generateIncomeReport(selectedMonth, selectedYear);
+////        yearlyIncomeReport = generateIncomeReport(selectedYear);
+////    }
+//    
+//    
+//
+//
+//    private Map<String, BigDecimal> aggregateTransactionsByCategory(List<Transaction> transactions, TransactionType type) {
+//        Map<String, BigDecimal> report = new HashMap<>();
+//        
+//        for (Transaction transaction : transactions) {
+//            if (transaction.getType() == type) {
+//                String category = transaction.getCategory().name();
+//                BigDecimal amount = transaction.getAmount();
+//                report.put(category, report.getOrDefault(category, BigDecimal.ZERO).add(amount));
+//            }
+//        }
+//        return report;
+//    }
+//    
+//    
+//    public int getSelectedMonth() {
+//        return selectedMonth;
+//    }
+//
+//    public void setSelectedMonth(int selectedMonth) {
+//        this.selectedMonth = selectedMonth;
+//        generateReports();
+//    }
+//
+//    public int getSelectedYear() {
+//        return selectedYear;
+//    }
+//
+//    public void setSelectedYear(int selectedYear) {
+//        this.selectedYear = selectedYear;
+//        generateReports();
+//    }
+//
+//    public Map<String, BigDecimal> getMonthlyExpenseReport() {
+//        return monthlyExpenseReport;
+//    }
+//
+//    public void setMonthlyExpenseReport(Map<String, BigDecimal> monthlyExpenseReport) {
+//        this.monthlyExpenseReport = monthlyExpenseReport;
+//    }
+//
+//    public Map<String, BigDecimal> getMonthlyIncomeReport() {
+//        return monthlyIncomeReport;
+//    }
+//
+//    public void setMonthlyIncomeReport(Map<String, BigDecimal> monthlyIncomeReport) {
+//        this.monthlyIncomeReport = monthlyIncomeReport;
+//    }
+//
+//    public Map<String, BigDecimal> getYearlyExpenseReport() {
+//        return yearlyExpenseReport;
+//    }
+//
+//    public void setYearlyExpenseReport(Map<String, BigDecimal> yearlyExpenseReport) {
+//        this.yearlyExpenseReport = yearlyExpenseReport;
+//    }
+//
+//    public Map<String, BigDecimal> getYearlyIncomeReport() {
+//        return yearlyIncomeReport;
+//    }
+//
+//    public void setYearlyIncomeReport(Map<String, BigDecimal> yearlyIncomeReport) {
+//        this.yearlyIncomeReport = yearlyIncomeReport;
+//    }
+//
+//    public List<Integer> getAvailableMonths() {
+//        return availableMonths;
+//    }
+//
+//    public void setAvailableMonths(List<Integer> availableMonths) {
+//        this.availableMonths = availableMonths;
+//    }
+//
+//    public List<Integer> getAvailableYears() {
+//        return availableYears;
+//    }
+//
+//    public void setAvailableYears(List<Integer> availableYears) {
+//        this.availableYears = availableYears;
+//    }
+//
+////    public boolean isShowCharts() {
+////      return showCharts;
+////    }
+////
+////    public void setShowCharts(boolean showCharts) {
+////        this.showCharts = showCharts;
+////    }
+//    
+//   
+//    
+//    // Method to convert report data to JSON
+//    public String getMonthlyExpenseReportAsJson() {
+//        return convertMapToJson(monthlyExpenseReport);
+//    }
+//
+//    public String getMonthlyIncomeReportAsJson() {
+//        return convertMapToJson(monthlyIncomeReport);
+//    }
+//
+//    public String getYearlyExpenseReportAsJson() {
+//        return convertMapToJson(yearlyExpenseReport);
+//    }
+//
+//    public String getYearlyIncomeReportAsJson() {
+//        return convertMapToJson(yearlyIncomeReport);
+//    }
+//
+//    
+//    private String convertMapToJson(Map<String, BigDecimal> reportData) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        try {
+//            return objectMapper.writeValueAsString(reportData);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//            return "{}"; // Return empty JSON object in case of error
+//        }
+//    }
+//}

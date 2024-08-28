@@ -47,9 +47,9 @@ public class TransactionRepository extends GenericRepository<Transaction>{
     public List<Transaction> findByCategoryAndType(CategoryType category, TransactionType type){
         TypedQuery<Transaction> query  = entityManager.createQuery(
             "SELECT t FROM Transaction t WHERE t.category = :category AND t.type = :type", Transaction.class);
-        query.setParameter("category", category);
-        query.setParameter("type", type);
-        return query.getResultList();
+            query.setParameter("category", category);
+            query.setParameter("type", type);
+            return query.getResultList();
     }
     
     public List<Transaction> findByMonthAndYear(int month, int year){

@@ -1,6 +1,7 @@
 package com.syntech.pem.repository;
 
 import com.syntech.pem.model.BaseIdEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -21,7 +22,7 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
     protected CriteriaQuery<T> criteriaQuery;
     protected CriteriaBuilder criteriaBuilder;
     protected Root<T> root;
-    
+    protected List<Predicate> predicateList;
     
     public GenericRepository(Class<T> entityClass){
         this.entityClass = entityClass;
@@ -32,6 +33,7 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
         this.criteriaBuilder = entityManager().getCriteriaBuilder();
         this.criteriaQuery = criteriaBuilder.createQuery(entityClass);
         root = this.criteriaQuery.from(entityClass);
+        this.predicateList = new ArrayList<>();
     }
     
     public GenericRepository<T> startQuery(){
@@ -69,6 +71,18 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
     } 
     
     
+    public GenericRepository<T> addPredicates(Predicate p) {
+        this.predicateList.add(p);
+        return this;
+    }
+
+    protected void applyPredicates() {
+        if (!predicateList.isEmpty()) {
+            criteriaQuery.where(criteriaBuilder.and(predicateList.toArray(new Predicate[0])));
+        }
+    }
+
+
     protected List<T> findByCriteria(CriteriaQuery<T> criteriaQuery) {
         return entityManager().createQuery(criteriaQuery).getResultList();
     }
@@ -80,46 +94,41 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
         return findByCriteria(criteriaQuery);
     }
     
-    public List<T> findRange(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        startQuery();
-        applyFilters(filterBy);
-        applySorting(sortBy);
-        return entityManager().createQuery(criteriaQuery)
-                .setFirstResult(first)
-                .setMaxResults(pageSize)
-                .getResultList();
-    }
     
-    public int count(Map<String, FilterMeta> filterBy) {
-        startQuery();
-        applyFilters(filterBy);
+    public T getSingleResult() {
+        applyPredicates();
+        return entityManager().createQuery(criteriaQuery).getSingleResult();
+    }
+
+    public List<T> getResultList() {
+        applyPredicates();
+        return entityManager().createQuery(criteriaQuery).getResultList();
+    }
+        
+    public int countEntity(Map<String, FilterMeta> filters) {
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
         countQuery.select(criteriaBuilder.count(countQuery.from(entityClass)));
         return entityManager().createQuery(countQuery).getSingleResult().intValue();
     }
-    
-    
 
-    private void applyFilters(Map<String, FilterMeta> filterBy) {
-        if (filterBy != null && !filterBy.isEmpty()) {
-            Predicate[] predicates = filterBy.values().stream()
-                    .map(filterMeta -> criteriaBuilder.like(root.get(filterMeta.getField()), "%" + filterMeta.getFilterValue() + "%"))
+        
+    public List<T> getEntity(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filters) {
+            applyFilters(filters, root, criteriaQuery);
+
+            return entityManager().createQuery(criteriaQuery)
+                    .setFirstResult(first)
+                    .setMaxResults(pageSize)
+                    .getResultList();
+        }
+        
+            private void applyFilters(Map<String, FilterMeta> filters, Root<T> root, CriteriaQuery<?> query) {
+            Predicate[] predicates = filters.values().stream()
+                    .map(filter -> criteriaBuilder.like(root.get(filter.getField()), "%" + filter.getFilterValue() + "%"))
+                    //similar to sql, where username like '%john%' ==> filter.getField=username , filter.getFilterValue=john
                     .toArray(Predicate[]::new);
-            criteriaQuery.where(predicates);
+            query.where(predicates);
         }
-    }
     
-    private void applySorting(Map<String, SortMeta> sortBy) {
-        if (sortBy != null && !sortBy.isEmpty()) {
-            sortBy.values().forEach(sortMeta -> {
-                if (sortMeta.getOrder().isAscending()) {
-                    criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortMeta.getField())));
-                } else {
-                    criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortMeta.getField())));
-                }
-            });
-        }
-    }
         
     public Class<T> getEntityClass() {
         return entityClass;
@@ -152,8 +161,14 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
     public void setRoot(Root<T> root) {
         this.root = root;
     }
-    
-    
+
+    public List<Predicate> getPredicateList() {
+        return predicateList;
+    }
+
+    public void setPredicateList(List<Predicate> predicateList) {
+        this.predicateList = predicateList;
+    }
     
     
     

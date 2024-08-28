@@ -105,13 +105,16 @@ public class BudgetBean implements Serializable{
     
     public void recalculateRemainingAmount(Budget budget){
         if(budget != null && budget.getCategory()!= null){
+            // Retrieve all expense transactions for the category associated with the budget
             List<Transaction> transactions = transactionRepository.findByCategoryAndType(budget.getCategory(), TransactionType.Expense);
             BigDecimal totalExpenses = BigDecimal.ZERO;
             
+            // Sum up all expenses
             for(Transaction transaction: transactions){
                 totalExpenses = totalExpenses.add(transaction.getAmount());
             }
             
+            // Calculate remaining amount and update the budget
             BigDecimal remainingAmount = budget.getBudgetLimit().subtract(totalExpenses);
             budget.setRemainingAmount(remainingAmount);
             budgetRepository.update(budget);

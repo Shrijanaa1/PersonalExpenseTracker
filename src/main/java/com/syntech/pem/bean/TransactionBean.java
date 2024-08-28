@@ -156,9 +156,14 @@ public class TransactionBean implements Serializable{
         return transactionRepository.findAll();
     }
 
-public GenericLazyDataModel<Transaction> getLazyTransactions() {
+    public GenericLazyDataModel<Transaction> getLazyTransactions() {
         return lazyTransactions;
     }
+
+    public void setLazyTransactions(GenericLazyDataModel<Transaction> lazyTransactions) {
+        this.lazyTransactions = lazyTransactions;
+    }
+    
     
     
     public List<CategoryType> getCategoryOptions() {
