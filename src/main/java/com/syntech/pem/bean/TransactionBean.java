@@ -152,6 +152,21 @@ public class TransactionBean implements Serializable{
         }
     }
     
+    public BigDecimal getTotalIncome() {
+        return transactionRepository.findAll().stream()
+            .filter(t -> t.getType() == TransactionType.Income)
+            .map(Transaction::getAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    public BigDecimal getTotalExpense() {
+        return transactionRepository.findAll().stream()
+            .filter(t -> t.getType() == TransactionType.Expense)
+            .map(Transaction::getAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
