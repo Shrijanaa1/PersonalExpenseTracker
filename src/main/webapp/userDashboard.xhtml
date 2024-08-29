@@ -17,10 +17,7 @@
             flex-direction: column;
             align-items: center;
         }
-        .card-icon {
-            font-size: 1.5rem; /* Reduced size for the icon */
-            margin-bottom: 0.5rem;
-        }
+
         .card-balance {
             font-size: 1.5rem;
             font-weight: bold;
@@ -42,19 +39,19 @@
             <p:growl id="messages" />
 
             <p:panel  styleClass="ui-widget-content">
-                <!--<h:outputText value="Welcome to Personal Expense Tracker" styleClass="welcome-heading" />-->
+                <h:outputText value="Welcome to Personal Expense Tracker" styleClass="welcome-heading" />
 
                 <p:panelGrid columns="2" styleClass="ui-grid ui-grid-responsive">
                     <p:panel header="Total Income" styleClass="ui-widget-content ui-corner-all center-align">
                         <p:panelGrid columns="1" styleClass="card-content">
-                            <h:graphicImage value="#{resource['images/expense2.png']}" alt="Income" styleClass="card-icon"/>
+                            <h:graphicImage value="#{resource['images/expense2.png']}" alt="Income" styleClass="card-icon" style="height: 100px;"/>
                             <h:outputText value="#{transactionBean.totalIncome}" styleClass="card-balance" />
                         </p:panelGrid>
                     </p:panel>
 
                     <p:panel header="Total Expense" styleClass="ui-widget-content ui-corner-all center-align">
                         <p:panelGrid columns="1" styleClass="card-content">
-                            <h:graphicImage value="#{resource['images/expense1.png']}" alt="Expense" styleClass="card-icon"/>
+                            <h:graphicImage value="#{resource['images/expense1.png']}" alt="Expense" styleClass="card-icon" style="height: 100px;"/>
                             <h:outputText value="#{transactionBean.totalExpense}" styleClass="card-balance" />
                         </p:panelGrid>
                     </p:panel>

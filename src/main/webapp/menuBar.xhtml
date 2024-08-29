@@ -38,6 +38,15 @@
                 align-items: center;
             }
 
+            .ui-menubar .ui-menubar-end {
+                margin-left: -100px;
+                display: flex;
+                align-items: center;
+                height: 3.5rem;
+                border: none;
+                
+            }
+
             .ui-button-info {
                 background-color: #007bff !important;
             }
@@ -61,16 +70,15 @@
 
                 <p:menuitem value="Report" icon="pi pi-fw pi-chart-bar" outcome="report"/>
 
-<!--                <p:submenu label="Report" icon="pi pi-fw pi-chart-bar" >
-                    <p:menuitem value="Monthly Report" icon="pi pi-fw pi-calendar" outcome="monthlyReport"/>
-                    <p:menuitem value="Yearly Report" icon="pi pi-fw pi-calendar" outcome="yearlyReport"/>
-                </p:submenu>-->
-
-                <p:menuitem value="Settings" icon="pi pi-fw pi-cog" outcome="settings"/>
-
-                <f:facet name="end">
-                    <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" outcome="login"/>
+                <f:facet name="options">
+                    <p:menubar styleClass="ui-menubar-end">
+                        <p:submenu label="User" icon="pi pi-user" styleClass="ui-menubar-end">
+                            <p:menuitem value="Settings" icon="pi pi-cog" outcome="settings"/>
+                            <p:menuitem value="Logout" icon="pi pi-sign-out" outcome="login"/>
+                        </p:submenu>
+                    </p:menubar>
                 </f:facet>
+                
             </p:menubar>
         </h:form>
     </h:body>
