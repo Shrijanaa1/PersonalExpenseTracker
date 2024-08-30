@@ -66,5 +66,13 @@ public class TransactionRepository extends GenericRepository<Transaction>{
                 .setParameter("year", year)
                 .getResultList();
     }
+    
+    public List<Object[]> findSumByCategoryAndType(TransactionType type, int year) {
+        String jpql = "SELECT t.category, SUM(t.amount) FROM Transaction t WHERE t.type = :type AND YEAR(t.date) = :year GROUP BY t.category";
+        return entityManager.createQuery(jpql, Object[].class)
+                            .setParameter("type", type)
+                            .setParameter("year", year)
+                            .getResultList();
+    }
             
 }
