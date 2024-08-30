@@ -38,9 +38,8 @@ public class BudgetRepository extends GenericRepository<Budget>{
     }
     
     public Budget findByCategory(CategoryType category){
-        String query = "SELECT b FROM Budget b WHERE b.category = :category";
-        return entityManager.createQuery(query, Budget.class)
-                .setParameter("category", category)
-                .getSingleResult();
+        startQuery();
+        addPredicates(criteriaBuilder.equal(root.get("category"), category));
+        return getSingleResult();
     }
 }
