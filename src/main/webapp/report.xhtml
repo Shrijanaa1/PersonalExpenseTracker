@@ -9,8 +9,9 @@
             .content{
                 padding-top: 3rem;
             }
+            
             .form-controls {
-                margin-top: 20px; /* Adjust this value to move controls down */
+                margin-top: 20px; 
             }
         </style>
     </h:head>
@@ -43,7 +44,6 @@
                 
                 
                 <!-- Bar Charts -->
-
                 <h:panelGrid id="charts" columns="2" cellpadding="10">
                     <p:barChart model="#{reportBean.monthlyExpenseBarModel}" style="height:300px;width:100%;" />
                     <p:barChart model="#{reportBean.yearlyExpenseBarModel}" style="height:300px;width:100%;" />

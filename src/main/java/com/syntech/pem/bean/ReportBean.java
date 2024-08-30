@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
@@ -36,7 +34,6 @@ public class ReportBean implements Serializable {
     @Inject
     private TransactionRepository transactionRepository;
 
-//    private int selectedMonth;
     private String selectedMonth;
     private int selectedYear;
     private Map<String, BigDecimal> monthlyExpenseReport;
@@ -44,9 +41,7 @@ public class ReportBean implements Serializable {
     private Map<String, BigDecimal> yearlyExpenseReport;
     private Map<String, BigDecimal> yearlyIncomeReport;
 
-//    private List<Integer> availableMonths;
     private List<String> availableMonths;
-    private List<Integer> availableYears;
 
     private BarChartModel monthlyExpenseBarModel;
     private BarChartModel monthlyIncomeBarModel;
@@ -55,20 +50,14 @@ public class ReportBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        // Initialize selected month and year to the current date
-//        selectedMonth = LocalDate.now().getMonthValue();
 
         availableMonths = Arrays.asList(
             "January", "February", "March", "April", "May", "June", 
             "July", "August", "September", "October", "November", "December"
         );
+        
         selectedMonth = availableMonths.get(LocalDate.now().getMonthValue() - 1);
-
         selectedYear = LocalDate.now().getYear();
-
-        // Initialize available months (1 to 12) and available years (last 10 years including current)
-//        availableMonths = IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList());
-        availableYears = IntStream.rangeClosed(selectedYear - 10, selectedYear).boxed().collect(Collectors.toList());
 
         // Generate initial reports and bar models
         generateReports();
@@ -215,8 +204,6 @@ public class ReportBean implements Serializable {
         return yearlyIncomeBarModel;
     }
 
-    // Getters and Setters for other fields...
-
     public int getSelectedYear() {
         return selectedYear;
     }
@@ -257,22 +244,6 @@ public class ReportBean implements Serializable {
         this.yearlyIncomeReport = yearlyIncomeReport;
     }
 
-//    public int getSelectedMonth() {
-//        return selectedMonth;
-//    }
-//
-//    public void setSelectedMonth(int selectedMonth) {
-//        this.selectedMonth = selectedMonth;
-//    }
-    
-//    public List<Integer> getAvailableMonths() {
-//        return availableMonths;
-//    }
-//
-//    public void setAvailableMonths(List<Integer> availableMonths) {
-//        this.availableMonths = availableMonths;
-//    }
-
     public String getSelectedMonth() {
         return selectedMonth;
     }
@@ -288,15 +259,7 @@ public class ReportBean implements Serializable {
     public void setAvailableMonths(List<String> availableMonths) {
         this.availableMonths = availableMonths;
     }
-
     
-    public List<Integer> getAvailableYears() {
-        return availableYears;
-    }
-
-    public void setAvailableYears(List<Integer> availableYears) {
-        this.availableYears = availableYears;
-    }
 
     public void incrementMonth() {
         int monthIndex = availableMonths.indexOf(selectedMonth);

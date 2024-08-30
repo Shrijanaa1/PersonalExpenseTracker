@@ -36,8 +36,11 @@
                              paginator="true" rows="5"
                              lazy="true" rowsPerPageTemplate="5,10,15"
                              paginatorPosition="bottom"
-                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
-                         {CurrentPageReport} {NextPageLink} {LastPageLink}">
+                             paginatorTemplate="  {FirstPageLink} {PreviousPageLink} 
+                             {CurrentPageReport} {NextPageLink} {LastPageLink}  {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+
+                          
                     <f:facet name="header">
                         Transaction List
 

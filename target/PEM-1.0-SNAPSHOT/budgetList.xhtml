@@ -34,7 +34,11 @@
                              var="budget" rowKey="#{budget.id}"
                              paginator="true" rows="5"
                              lazy="true" rowsPerPageTemplate="5,10,15"
-                             paginatorPosition="bottom">
+                             paginatorPosition="bottom"
+                             paginatorTemplate="  {FirstPageLink} {PreviousPageLink} 
+                             {CurrentPageReport} {NextPageLink} {LastPageLink}  {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+                    
                     <f:facet name="header">
                         Budget List
 
