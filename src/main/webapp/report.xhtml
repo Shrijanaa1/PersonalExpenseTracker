@@ -2,13 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Expense and Income Reports</title>
         <style>
             .content{
                 padding-top: 3rem;
+            }
+            .form-controls {
+                margin-top: 20px; /* Adjust this value to move controls down */
             }
         </style>
     </h:head>
@@ -17,42 +19,38 @@
         <div class="content">
 
             <h:form id="reportForm">
-                <h:panelGrid columns="6" style="margin-bottom:20px;" cellpadding="10">
+                
+                <h:panelGroup layout="block" styleClass="form-controls">
 
                     <!-- Month Selection -->
-                    <p:commandButton value="Previous" actionListener="#{test.decrementMonth}" update=":reportForm:charts" />
-                    <h:outputLabel value="Month: " />
-                    <p:selectOneMenu value="#{test.selectedMonth}" id="monthSelect" style="width: 100px;">
-                        <f:selectItems value="#{test.availableMonths}" var="month" itemLabel="#{month}" itemValue="#{month}" />
-                    </p:selectOneMenu>
-                    <p:commandButton value="Next" actionListener="#{test.incrementMonth}" update=":reportForm:charts" />
+                    <p:commandButton icon="pi pi-angle-left" title="Previous Month" actionListener="#{reportBean.decrementMonth}" update="monthInput" />
+                    <p:inputText value="#{reportBean.selectedMonth}" id="monthInput" />
+                    <p:commandButton icon="pi pi-angle-right" title="Next Month" actionListener="#{reportBean.incrementMonth}" update="monthInput" />
 
+                    <!-- Spacer -->
+                    <h:outputText value=" " />
 
                     <!-- Year Selection -->
-                    <p:commandButton value="Previous" actionListener="#{test.decrementYear}" update=":reportForm:charts" />
-                    <h:outputLabel value="Year: " />
-                    <p:selectOneMenu value="#{test.selectedYear}" id="yearSelect" style="width: 100px;">
-                        <f:selectItems value="#{test.availableYears}" var="year" itemLabel="#{year}" itemValue="#{year}" />
-                    </p:selectOneMenu>
-                    <p:commandButton value="Next" actionListener="#{test.incrementYear}" update="reportForm:charts" />
+                    <p:commandButton icon="pi pi-angle-left" title="Previous Year" actionListener="#{reportBean.decrementYear}" update="yearInput" />
+                    <p:inputText value="#{reportBean.selectedYear}" id="yearInput" maxlength="4" />
+                    <p:commandButton icon="pi pi-angle-right" title="Next Year" actionListener="#{reportBean.incrementYear}" update="yearInput" />
 
 
-                </h:panelGrid>
+                    <!-- Generate Reports Button -->
+                    <p:commandButton value="Generate Reports" actionListener="#{reportBean.generateReports}" update=":reportForm:charts" />
 
-                <!-- Generate Reports Button -->
-                <p:commandButton value="Generate Reports" actionListener="#{test.generateReports}" update=":reportForm:charts" />
-
-                <!-- Bar Chart -->
+                </h:panelGroup>
                 
-                <p:panel id="charts" header="Reports">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:barChart model="#{test.monthlyExpenseBarModel}" style="height:400px;width:100%;" />
-                        <p:barChart model="#{test.yearlyExpenseBarModel}" style="height:400px;width:100%;" />
-                        <p:barChart model="#{test.monthlyIncomeBarModel}" style="height:400px;width:100%;" />
-                        <p:barChart model="#{test.yearlyIncomeBarModel}" style="height:400px;width:100%;" />
+                
+                <!-- Bar Charts -->
 
-                    </h:panelGrid>
-                </p:panel>                       
+                <h:panelGrid id="charts" columns="2" cellpadding="10">
+                    <p:barChart model="#{reportBean.monthlyExpenseBarModel}" style="height:300px;width:100%;" />
+                    <p:barChart model="#{reportBean.yearlyExpenseBarModel}" style="height:300px;width:100%;" />
+                    <p:barChart model="#{reportBean.monthlyIncomeBarModel}" style="height:300px;width:100%;" />
+                    <p:barChart model="#{reportBean.yearlyIncomeBarModel}" style="height:300px;width:100%;" />
+
+                </h:panelGrid>                     
 
             </h:form>
         </div>

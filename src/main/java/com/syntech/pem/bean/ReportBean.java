@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +36,16 @@ public class ReportBean implements Serializable {
     @Inject
     private TransactionRepository transactionRepository;
 
-    private int selectedMonth;
+//    private int selectedMonth;
+    private String selectedMonth;
     private int selectedYear;
     private Map<String, BigDecimal> monthlyExpenseReport;
     private Map<String, BigDecimal> monthlyIncomeReport;
     private Map<String, BigDecimal> yearlyExpenseReport;
     private Map<String, BigDecimal> yearlyIncomeReport;
 
-    private List<Integer> availableMonths;
+//    private List<Integer> availableMonths;
+    private List<String> availableMonths;
     private List<Integer> availableYears;
 
     private BarChartModel monthlyExpenseBarModel;
@@ -53,11 +56,18 @@ public class ReportBean implements Serializable {
     @PostConstruct
     public void init() {
         // Initialize selected month and year to the current date
-        selectedMonth = LocalDate.now().getMonthValue();
+//        selectedMonth = LocalDate.now().getMonthValue();
+
+        availableMonths = Arrays.asList(
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        );
+        selectedMonth = availableMonths.get(LocalDate.now().getMonthValue() - 1);
+
         selectedYear = LocalDate.now().getYear();
 
         // Initialize available months (1 to 12) and available years (last 10 years including current)
-        availableMonths = IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList());
+//        availableMonths = IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList());
         availableYears = IntStream.rangeClosed(selectedYear - 10, selectedYear).boxed().collect(Collectors.toList());
 
         // Generate initial reports and bar models
@@ -69,8 +79,10 @@ public class ReportBean implements Serializable {
     }
 
     public void generateReports() {
-        monthlyExpenseReport = generateExpenseReport(selectedMonth, selectedYear);
-        monthlyIncomeReport = generateIncomeReport(selectedMonth, selectedYear);
+        int monthIndex = availableMonths.indexOf(selectedMonth) + 1;
+
+        monthlyExpenseReport = generateExpenseReport(monthIndex, selectedYear);
+        monthlyIncomeReport = generateIncomeReport(monthIndex, selectedYear);
         yearlyExpenseReport = generateExpenseReport(selectedYear);
         yearlyIncomeReport = generateIncomeReport(selectedYear);
 
@@ -204,13 +216,6 @@ public class ReportBean implements Serializable {
     }
 
     // Getters and Setters for other fields...
-    public int getSelectedMonth() {
-        return selectedMonth;
-    }
-
-    public void setSelectedMonth(int selectedMonth) {
-        this.selectedMonth = selectedMonth;
-    }
 
     public int getSelectedYear() {
         return selectedYear;
@@ -252,14 +257,39 @@ public class ReportBean implements Serializable {
         this.yearlyIncomeReport = yearlyIncomeReport;
     }
 
-    public List<Integer> getAvailableMonths() {
+//    public int getSelectedMonth() {
+//        return selectedMonth;
+//    }
+//
+//    public void setSelectedMonth(int selectedMonth) {
+//        this.selectedMonth = selectedMonth;
+//    }
+    
+//    public List<Integer> getAvailableMonths() {
+//        return availableMonths;
+//    }
+//
+//    public void setAvailableMonths(List<Integer> availableMonths) {
+//        this.availableMonths = availableMonths;
+//    }
+
+    public String getSelectedMonth() {
+        return selectedMonth;
+    }
+
+    public void setSelectedMonth(String selectedMonth) {
+        this.selectedMonth = selectedMonth;
+    }
+
+    public List<String> getAvailableMonths() {
         return availableMonths;
     }
 
-    public void setAvailableMonths(List<Integer> availableMonths) {
+    public void setAvailableMonths(List<String> availableMonths) {
         this.availableMonths = availableMonths;
     }
 
+    
     public List<Integer> getAvailableYears() {
         return availableYears;
     }
@@ -269,21 +299,23 @@ public class ReportBean implements Serializable {
     }
 
     public void incrementMonth() {
-        if (selectedMonth < 12) {
-            selectedMonth++;
+        int monthIndex = availableMonths.indexOf(selectedMonth);
+        if (monthIndex < availableMonths.size() - 1) {
+            selectedMonth = availableMonths.get(monthIndex + 1);
         } else {
-            selectedMonth = 1;
-            incrementYear();
+            selectedMonth = availableMonths.get(0);
+            selectedYear++;
         }
         generateReports();
     }
 
     public void decrementMonth() {
-        if (selectedMonth > 1) {
-            selectedMonth--;
+        int monthIndex = availableMonths.indexOf(selectedMonth);
+        if (monthIndex > 0) {
+            selectedMonth = availableMonths.get(monthIndex - 1);
         } else {
-            selectedMonth = 12;
-            decrementYear();
+            selectedMonth = availableMonths.get(availableMonths.size() - 1);
+            selectedYear--;
         }
         generateReports();
     }
