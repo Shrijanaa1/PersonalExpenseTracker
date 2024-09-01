@@ -35,9 +35,12 @@
                 
                 <div class="dialog-footer">
                     <p:commandButton value="Save Changes" 
-                                     actionListener="#{userBean.saveOrUpdateUser()}"
+                                     action="#{userBean.saveOrUpdateUser}"
                                      update=":settingsForm:msgs"
                                      styleClass="ui-button-success"/>
+                    <p:commandButton value="Reset" 
+                                     type="reset"
+                                     styleClass="ui-button-secondary"/>
                 </div>
             </p:panel>
             

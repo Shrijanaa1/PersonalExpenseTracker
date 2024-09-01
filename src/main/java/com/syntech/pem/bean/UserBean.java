@@ -33,7 +33,7 @@ public class UserBean implements Serializable {
     }
     
     
-    public void saveOrUpdateUser() throws IOException{
+    public String saveOrUpdateUser() throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
         
         if(selectedUser.getId() != null){
@@ -42,7 +42,7 @@ public class UserBean implements Serializable {
             User existingUser = userRepository.findById(selectedUser.getId());
             if(existingUser == null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User not found"));
-                return;
+                return null;
             }
             userRepository.update(selectedUser);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
@@ -52,13 +52,15 @@ public class UserBean implements Serializable {
             //create new user
             if(userRepository.getByUsername(selectedUser.getUsername()) != null){
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
-                return;
+                return null;
             }
             userRepository.save(selectedUser);
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.xhtml?faces-redirect=true");
+            return "login?faces-redirect=true"; // Redirect to login page
+
         }
+        return null;
     }
     
     public String deleteUser(User user) {
