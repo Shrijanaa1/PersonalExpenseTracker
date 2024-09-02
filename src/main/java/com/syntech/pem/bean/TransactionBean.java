@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 @Named
 @ViewScoped
@@ -46,6 +47,17 @@ public class TransactionBean implements Serializable{
 
     @PostConstruct
     public void init() {
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        if (session == null || session.getAttribute("valid_user") == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                    "Please log in first", "You need to log in to access this page."));
+            try {
+                context.getExternalContext().redirect("login.xhtml");
+            }catch(IOException e){               
+            }
+        }
         accounts = accountRepository.findAll(); 
         selectedTransaction = new Transaction();
         categoryOptions = new ArrayList<>();

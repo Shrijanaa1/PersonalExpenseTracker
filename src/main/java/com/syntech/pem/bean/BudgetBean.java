@@ -7,6 +7,7 @@ import com.syntech.pem.model.Transaction;
 import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.BudgetRepository;
 import com.syntech.pem.repository.TransactionRepository;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,6 +44,18 @@ public class BudgetBean implements Serializable{
     
     @PostConstruct
     public void init(){
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        if (session == null || session.getAttribute("valid_user") == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                    "Please log in first", "You need to log in to access this page."));
+            try {
+                context.getExternalContext().redirect("login.xhtml");
+            }catch(IOException e){               
+            }
+        }
+        
         selectedBudget = new Budget();
         
         // Filter expense categories

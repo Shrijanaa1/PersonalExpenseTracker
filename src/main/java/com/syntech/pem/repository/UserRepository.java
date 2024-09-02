@@ -50,6 +50,12 @@ public class UserRepository extends GenericRepository<User>{
         if (user != null) {
             // Extract the stored hashed password and salt
             String[] parts = user.getPassword().split(":");
+            
+            // Ensure the password was correctly stored in the format "hashedPassword:salt"
+            if (parts.length != 2) {
+                throw new IllegalStateException("Stored password format is invalid for user: " + username);
+            }
+        
             String storedHashedPassword = parts[0];
             String salt = parts[1];
             

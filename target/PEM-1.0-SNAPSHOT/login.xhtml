@@ -90,6 +90,7 @@
     </style>
 </h:head>
 <h:body>
+    <p:growl id="growl" showDetail="true"/>
     <div class="login-container">
         <h:form>
             <p:panel header="Login">
@@ -106,11 +107,11 @@
                     <p:password id="password" value="#{loginBean.password}" placeholder="Password" required="true" label="Password"/>
                 </div>
                 
-                <p:commandButton value="Login" action="#{loginBean.login}" update="messages"/>
+                <p:commandButton value="Login" action="#{loginBean.login}" update="messages :growl"/>
                 
                 <div class="register-link">
                     <h:outputText value="Don't have an account? " />
-                    <h:link value="Sign Up" outcome="signUp"/>
+                    <h:link value="Sign Up" outcome="signUp.xhtml"/>
                 </div>
                 
             </p:panel>
