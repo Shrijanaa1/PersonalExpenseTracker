@@ -54,23 +54,23 @@ public class ReportBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
         if (session == null || session.getAttribute("valid_user") == null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, 
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Please log in first", "You need to log in to access this page."));
             try {
                 context.getExternalContext().redirect("login.xhtml");
-            }catch(IOException e){               
+            } catch (IOException e) {
             }
         }
 
         availableMonths = Arrays.asList(
-            "January", "February", "March", "April", "May", "June", 
-            "July", "August", "September", "October", "November", "December"
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
         );
-        
+
         selectedMonth = availableMonths.get(LocalDate.now().getMonthValue() - 1);
         selectedYear = LocalDate.now().getYear();
 
@@ -131,30 +131,59 @@ public class ReportBean implements Serializable {
     }
 
     private void createMonthlyExpenseBarModel() {
-        monthlyExpenseBarModel = createBarModel(monthlyExpenseReport, "Monthly Expense Report");
+        monthlyExpenseBarModel = createBarModel(monthlyExpenseReport);
     }
 
     private void createMonthlyIncomeBarModel() {
-        monthlyIncomeBarModel = createBarModel(monthlyIncomeReport, "Monthly Income Report");
+        monthlyIncomeBarModel = createBarModel(monthlyIncomeReport);
     }
 
     private void createYearlyExpenseBarModel() {
-        yearlyExpenseBarModel = createBarModel(yearlyExpenseReport, "Yearly Expense Report");
+        yearlyExpenseBarModel = createBarModel(yearlyExpenseReport);
     }
 
     private void createYearlyIncomeBarModel() {
-        yearlyIncomeBarModel = createBarModel(yearlyIncomeReport, "Yearly Income Report");
+        yearlyIncomeBarModel = createBarModel(yearlyIncomeReport);
     }
 
-    private BarChartModel createBarModel(Map<String, BigDecimal> reportData, String title) {
+    private BarChartModel createBarModel(Map<String, BigDecimal> reportData) {
         BarChartModel barModel = new BarChartModel();
 
         // Create chart data
         ChartData data = new ChartData();
         BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel(title);
-        barDataSet.setBackgroundColor("rgba(75, 192, 192, 0.2)");
-        barDataSet.setBorderColor("rgb(75, 192, 192)");
+
+        // Set different background colors for each category
+        List<String> backgroundColors = new ArrayList<>();
+        List<String> borderColors = new ArrayList<>();
+
+        // Generate or define a list of colors
+        List<String> colors = Arrays.asList(
+                "rgba(255, 99, 132, 0.2)", // Red
+                "rgba(54, 162, 235, 0.2)", // Blue
+                "rgba(255, 206, 86, 0.2)", // Yellow
+                "rgba(75, 192, 192, 0.2)", // Green
+                "rgba(153, 102, 255, 0.2)", // Purple
+                "rgba(255, 159, 64, 0.2)" // Orange
+        );
+
+        List<String> borderColorsList = Arrays.asList(
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)"
+        );
+
+        // Assign colors to each category
+        for (int i = 0; i < reportData.size(); i++) {
+            backgroundColors.add(colors.get(i % colors.size())); // Repeat colors if categories exceed color list
+            borderColors.add(borderColorsList.get(i % borderColorsList.size()));
+        }
+
+        barDataSet.setBackgroundColor(backgroundColors);
+        barDataSet.setBorderColor(borderColors);
         barDataSet.setBorderWidth(1);
 
         // Add data to dataset
@@ -163,7 +192,7 @@ public class ReportBean implements Serializable {
         // Add dataset to data
         data.addChartDataSet(barDataSet);
 
-        // Add labels to data
+        // Add labels to data - use category names directly as labels
         data.setLabels(new ArrayList<>(reportData.keySet()));
 
         // Set data to model
@@ -185,15 +214,9 @@ public class ReportBean implements Serializable {
         scales.addXAxesData(xAxes);
         options.setScales(scales);
 
-        // Configure Title
-        Title chartTitle = new Title();
-        chartTitle.setDisplay(true);
-        chartTitle.setText(title);
-        options.setTitle(chartTitle);
-
         // Configure Legend
         Legend legend = new Legend();
-        legend.setDisplay(true);
+        legend.setDisplay(false); //Disable the legend
         options.setLegend(legend);
 
         // Set options to model
@@ -274,7 +297,6 @@ public class ReportBean implements Serializable {
     public void setAvailableMonths(List<String> availableMonths) {
         this.availableMonths = availableMonths;
     }
-    
 
     public void incrementMonth() {
         int monthIndex = availableMonths.indexOf(selectedMonth);
@@ -308,5 +330,3 @@ public class ReportBean implements Serializable {
         generateReports();
     }
 }
-
-
