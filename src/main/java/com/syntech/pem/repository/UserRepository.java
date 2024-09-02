@@ -70,7 +70,7 @@ public class UserRepository extends GenericRepository<User>{
         return null; // Password does not match or user not found
     }
     
-    private String hashPassword(String password, String salt) {
+    public String hashPassword(String password, String salt) {
         try {
             // Initialize SHA-256 digest
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -89,7 +89,7 @@ public class UserRepository extends GenericRepository<User>{
         }
     }
     
-    private String generateSalt() {
+    public String generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt); // Generate random bytes
@@ -107,4 +107,13 @@ public class UserRepository extends GenericRepository<User>{
         // Call the generic save method after modifying the password
         return super.save(user);
     }
+    
+    public String extractSalt(String storedPassword) {
+    String[] parts = storedPassword.split(":");
+    if (parts.length != 2) {
+        throw new IllegalStateException("Stored password format is invalid");
+    }
+    return parts[1];
+}
+
 }

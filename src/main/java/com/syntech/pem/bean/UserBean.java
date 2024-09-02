@@ -56,6 +56,12 @@ public class UserBean implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User not found"));
                 return null;
             }
+            
+            if(!existingUser.getPassword().equals(selectedUser.getPassword())){
+                //Re-hash new password here before saving
+                String salt = userRepository.extractSalt(existingUser.getPassword());
+                selectedUser.setPassword(userRepository.hashPassword(selectedUser.getPassword(), salt) + ":" + salt);
+            }
             userRepository.update(selectedUser);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
         
@@ -66,8 +72,10 @@ public class UserBean implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
                 return null;
             }
+            //Hash the password before saving
+            String salt = userRepository.generateSalt();
+            selectedUser.setPassword(userRepository.hashPassword(selectedUser.getPassword(), salt) + ":" + salt); //Hash password before saving
             userRepository.save(selectedUser);
-            
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
             return "login?faces-redirect=true"; // Redirect to login page
 
