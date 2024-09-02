@@ -15,6 +15,7 @@
                 margin-left: 10px;
             }
             
+            
         </style>
     </h:head>
     <h:body>
@@ -26,21 +27,21 @@
                 <h:panelGroup layout="block" styleClass="form-controls">
 
                     <!-- Month Selection -->
-                    <p:commandButton icon="pi pi-angle-left" title="Previous Month" actionListener="#{reportBean.decrementMonth}" update="monthInput" />
+                    <p:commandButton icon="pi pi-angle-left" title="Previous Month" actionListener="#{reportBean.decrementMonth}" update="monthInput charts" />
                     <p:inputText value="#{reportBean.selectedMonth}" id="monthInput" style="text-align: center;"/>
-                    <p:commandButton icon="pi pi-angle-right" title="Next Month" actionListener="#{reportBean.incrementMonth}" update="monthInput" />
+                    <p:commandButton icon="pi pi-angle-right" title="Next Month" actionListener="#{reportBean.incrementMonth}" update="monthInput charts" />
 
                     <!-- Spacer -->
                     <h:outputText value=" " />
 
                     <!-- Year Selection -->
-                    <p:commandButton icon="pi pi-angle-left" title="Previous Year" actionListener="#{reportBean.decrementYear}" update="yearInput" />
+                    <p:commandButton icon="pi pi-angle-left" title="Previous Year" actionListener="#{reportBean.decrementYear}" update="yearInput charts" />
                     <p:inputText value="#{reportBean.selectedYear}" id="yearInput" maxlength="4" style="text-align: center;"/>
-                    <p:commandButton icon="pi pi-angle-right" title="Next Year" actionListener="#{reportBean.incrementYear}" update="yearInput" />
+                    <p:commandButton icon="pi pi-angle-right" title="Next Year" actionListener="#{reportBean.incrementYear}" update="yearInput charts" />
 
 
                     <!-- Generate Reports Button -->
-                    <p:commandButton value="Generate Reports" actionListener="#{reportBean.generateReports}" update=":reportForm:charts" />
+                    <p:commandButton value="Generate Reports" actionListener="#{reportBean.generateReports}" update="charts" />
 
                 </h:panelGroup>
 
@@ -48,7 +49,7 @@
                 <!-- Bar Charts -->
                 <h:panelGrid id="charts" columns="2" cellpadding="10">
 
-                    <p:panel header="Monthly Expense" style="text-align:center;" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                    <p:panel header="Monthly Expense" style="text-align:center;" styleClass="chart-panel ui-panel ui-widget ui-widget-content ui-corner-all">
                         <p:barChart model="#{reportBean.monthlyExpenseBarModel}" style="height:300px;width:100%;" />
                     </p:panel>
                     
