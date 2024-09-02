@@ -90,7 +90,6 @@
     </style>
 </h:head>
 <h:body>
-    <p:growl id="growl" showDetail="true"/>
     <div class="login-container">
         <h:form>
             <p:panel header="Login">
@@ -99,19 +98,19 @@
                 
                 <div class="input-group">
                     <i class="fa fa-user"></i>
-                    <p:inputText id="username" value="#{loginBean.username}" placeholder="Username" required="true" label="Username"/>
+                    <p:inputText id="username" value="#{loginBean.username}" placeholder="Username" required="true" requiredMessage="Username is required" label="Username"/>
                 </div>
                 
                 <div class="input-group">
                     <i class="fa fa-lock"></i>
-                    <p:password id="password" value="#{loginBean.password}" placeholder="Password" required="true" label="Password"/>
+                    <p:password id="password" value="#{loginBean.password}" placeholder="Password" required="true" requiredMessage="Password is required" label="Password"/>
                 </div>
                 
-                <p:commandButton value="Login" action="#{loginBean.login}" update="messages :growl"/>
+                <p:commandButton value="Login" action="#{loginBean.login}" update="messages"/>
                 
                 <div class="register-link">
                     <h:outputText value="Don't have an account? " />
-                    <h:link value="Sign Up" outcome="signUp.xhtml"/>
+                    <h:link value="Sign Up" outcome="signUp" />
                 </div>
                 
             </p:panel>

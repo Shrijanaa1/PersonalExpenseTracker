@@ -33,13 +33,19 @@ public class UserBean implements Serializable {
     @PostConstruct
     public void init(){
         sessionBean.checkSession();
-        selectedUser = sessionBean.getCurrentUser(); // Use the logged-in user's details
+        // Initialize selectedUser from the session if available, otherwise create a new instance
+        selectedUser = sessionBean.getCurrentUser();
+        if(selectedUser == null){
+            selectedUser = new User(); // Initialize selectedUser if null
+        }    
     }
         
+    //Prepares the user object for editing
     public void prepareEditUser(User user) {
         this.selectedUser = user;
     }
     
+    //Prepares a new user object for creation
     public void prepareCreateUser() {
         this.selectedUser = new User();
     }
@@ -57,10 +63,16 @@ public class UserBean implements Serializable {
                 return null;
             }
             
-            if(!existingUser.getPassword().equals(selectedUser.getPassword())){
-                //Re-hash new password here before saving
+            //check if password has been modified
+            User authenticatedUser = userRepository.authenticate(existingUser.getUsername(), selectedUser.getPassword());
+            if(authenticatedUser == null){
+
+                //Password has been modified; Re-hash new password before saving
                 String salt = userRepository.extractSalt(existingUser.getPassword());
                 selectedUser.setPassword(userRepository.hashPassword(selectedUser.getPassword(), salt) + ":" + salt);
+            } else{
+                //If the password hasn't changed, keep existing hashed password
+                selectedUser.setPassword(existingUser.getPassword());
             }
             userRepository.update(selectedUser);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
@@ -72,14 +84,13 @@ public class UserBean implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username taken", "Please choose a different username."));
                 return null;
             }
-            //Hash the password before saving
-            String salt = userRepository.generateSalt();
-            selectedUser.setPassword(userRepository.hashPassword(selectedUser.getPassword(), salt) + ":" + salt); //Hash password before saving
             userRepository.save(selectedUser);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User created successfully."));
             return "login?faces-redirect=true"; // Redirect to login page
-
         }
+        
+        // Update the session with the modified user details
+        sessionBean.storeUserInSession(selectedUser);
         return null;
     }
     
@@ -103,6 +114,6 @@ public class UserBean implements Serializable {
 
     public void setSelectedUser(User selectedUser) {
         this.selectedUser = selectedUser;
-    }
+    }   
     
 }  

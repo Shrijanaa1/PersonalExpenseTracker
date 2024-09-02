@@ -59,11 +59,11 @@ public class LoginBean implements Serializable {
         } else {
             // Authentication failed, show an error message
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid credentials", "Please try again."));
-            return "login";
+            return null; //stay on login page
         }
     }
     
-     // Logout method
+
     public String logout() {
         sessionBean.logout(); // Invalidate the session
         return "login?faces-redirect=true";  // Redirect to login page
