@@ -8,7 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
+
+/**
+ *
+ * @author shrijanakarki
+ */
 
 @Named
 @SessionScoped
@@ -21,6 +25,9 @@ public class LoginBean implements Serializable {
 
     @Inject
     private UserRepository userRepository;
+    
+    @Inject
+    private SessionBean sessionBean;
 
     public String getUsername() {
         return username;
@@ -40,17 +47,13 @@ public class LoginBean implements Serializable {
 
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
 
         // Authenticate the user using the UserRepository's authenticate method
         User user = userRepository.authenticate(username, password);
 
         if (user != null) { 
             //Successful login, store user details in the session
-            session.setAttribute("valid_user", user);
-            session.setAttribute("username", user.getUsername());
-//            session.setMaxInactiveInterval(120);  // Set session timeout in seconds
-            
+            sessionBean.storeUserInSession(user);           
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Login successful"));
             return "userDashboard?faces-redirect=true";
         } else {
@@ -62,9 +65,7 @@ public class LoginBean implements Serializable {
     
      // Logout method
     public String logout() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
-        session.invalidate();  // Invalidate the session
+        sessionBean.logout(); // Invalidate the session
         return "login?faces-redirect=true";  // Redirect to login page
     }
      

@@ -25,7 +25,7 @@
     <!-- Session Configuration -->
     <session-config>
         <session-timeout>
-            30
+            2 <!-- 2 minutes (By default its 30 minutes)-->
         </session-timeout>
     </session-config>
     

@@ -3,8 +3,6 @@ package com.syntech.pem.bean;
 import com.syntech.pem.model.Transaction;
 import com.syntech.pem.model.TransactionType;
 import com.syntech.pem.repository.TransactionRepository;
-import java.io.IOException;
-
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -17,9 +15,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
@@ -27,7 +22,11 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
 import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
-import org.primefaces.model.charts.optionconfig.title.Title;
+
+/**
+ *
+ * @author shrijanakarki
+ */
 
 @Named
 @ViewScoped
@@ -37,6 +36,9 @@ public class ReportBean implements Serializable {
 
     @Inject
     private TransactionRepository transactionRepository;
+    
+    @Inject
+    private SessionBean sessionBean;
 
     private String selectedMonth;
     private int selectedYear;
@@ -54,23 +56,13 @@ public class ReportBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-        if (session == null || session.getAttribute("valid_user") == null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Please log in first", "You need to log in to access this page."));
-            try {
-                context.getExternalContext().redirect("login.xhtml");
-            } catch (IOException e) {
-            }
-        }
-
+        sessionBean.checkSession();
+        
         availableMonths = Arrays.asList(
                 "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
         );
-
+        
         selectedMonth = availableMonths.get(LocalDate.now().getMonthValue() - 1);
         selectedYear = LocalDate.now().getYear();
 
