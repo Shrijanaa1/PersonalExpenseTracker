@@ -9,11 +9,12 @@
             .content{
                 padding-top: 3rem;
             }
-            
+
             .form-controls {
-                margin-top: 20px; 
+                margin-top: 20px;
                 margin-left: 10px;
             }
+            
         </style>
     </h:head>
     <h:body>
@@ -21,7 +22,7 @@
         <div class="content">
 
             <h:form id="reportForm">
-                
+
                 <h:panelGroup layout="block" styleClass="form-controls">
 
                     <!-- Month Selection -->
@@ -42,14 +43,26 @@
                     <p:commandButton value="Generate Reports" actionListener="#{reportBean.generateReports}" update=":reportForm:charts" />
 
                 </h:panelGroup>
-                
-                
+
+
                 <!-- Bar Charts -->
                 <h:panelGrid id="charts" columns="2" cellpadding="10">
-                    <p:barChart model="#{reportBean.monthlyExpenseBarModel}" style="height:300px;width:100%;" />
-                    <p:barChart model="#{reportBean.yearlyExpenseBarModel}" style="height:300px;width:100%;" />
-                    <p:barChart model="#{reportBean.monthlyIncomeBarModel}" style="height:300px;width:100%;" />
-                    <p:barChart model="#{reportBean.yearlyIncomeBarModel}" style="height:300px;width:100%;" />
+
+                    <p:panel header="Monthly Expense" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                        <p:barChart model="#{reportBean.monthlyExpenseBarModel}" style="height:300px;width:100%;" />
+                    </p:panel>
+                    
+                    <p:panel header="Yearly Expense" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                        <p:barChart model="#{reportBean.yearlyExpenseBarModel}" style="height:300px;width:100%;" />
+                    </p:panel>
+                    
+                    <p:panel header="Monthly Income" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                        <p:barChart model="#{reportBean.monthlyIncomeBarModel}" style="height:300px;width:100%;" />
+                    </p:panel>
+                    
+                    <p:panel header="Yearly Income" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                        <p:barChart model="#{reportBean.yearlyIncomeBarModel}" style="height:300px;width:100%;" />
+                    </p:panel>
 
                 </h:panelGrid>                     
 
