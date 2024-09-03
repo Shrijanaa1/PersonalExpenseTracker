@@ -32,7 +32,6 @@ public class UserBean implements Serializable {
     
     @PostConstruct
     public void init(){
-        sessionBean.checkSession();
         // Initialize selectedUser from the session if available, otherwise create a new instance
         selectedUser = sessionBean.getCurrentUser();
         if(selectedUser == null){
@@ -40,6 +39,7 @@ public class UserBean implements Serializable {
         }    
     }
         
+    
     //Prepares the user object for editing
     public void prepareEditUser(User user) {
         this.selectedUser = user;

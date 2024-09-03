@@ -49,18 +49,15 @@ public class TransactionBean implements Serializable{
     
     private GenericLazyDataModel<Transaction> lazyTransactions;
     
-    @Inject
-    private SessionBean sessionBean;
 
     @PostConstruct
     public void init() {              
-        sessionBean.checkSession();
         accounts = accountRepository.findAll(); 
         selectedTransaction = new Transaction();
         categoryOptions = new ArrayList<>();
         lazyTransactions  = new GenericLazyDataModel<>(transactionRepository, Transaction.class);
     }
-    
+
     public void prepareCreateTransaction(){
         this.selectedTransaction = new Transaction();
         updateCategoryOptions();

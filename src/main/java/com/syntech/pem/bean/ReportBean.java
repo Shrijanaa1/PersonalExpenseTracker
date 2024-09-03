@@ -37,8 +37,6 @@ public class ReportBean implements Serializable {
     @Inject
     private TransactionRepository transactionRepository;
     
-    @Inject
-    private SessionBean sessionBean;
 
     private String selectedMonth;
     private int selectedYear;
@@ -56,7 +54,6 @@ public class ReportBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        sessionBean.checkSession();
         
         availableMonths = Arrays.asList(
                 "January", "February", "March", "April", "May", "June",
@@ -74,6 +71,8 @@ public class ReportBean implements Serializable {
         createYearlyIncomeBarModel();
     }
 
+   
+    
     public void generateReports() {
         int monthIndex = availableMonths.indexOf(selectedMonth) + 1;
 

@@ -6,6 +6,7 @@ com/syntech/pem/repository/AccountRepository.class
 com/syntech/pem/JAXRSConfiguration.class
 com/syntech/pem/model/Account$AccountBuilder.class
 com/syntech/pem/bean/LoginBean.class
+com/syntech/pem/listener/SessionPhaseListener.class
 com/syntech/pem/repository/GenericRepository.class
 com/syntech/pem/model/TransactionType.class
 com/syntech/pem/bean/BudgetBean.class

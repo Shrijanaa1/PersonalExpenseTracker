@@ -34,9 +34,6 @@ public class BudgetBean implements Serializable{
     @Inject
     private TransactionRepository transactionRepository;
     
-    @Inject
-    private SessionBean sessionBean;
-    
     private Budget selectedBudget;
     
     private List<CategoryType> expenseCategories;
@@ -45,7 +42,6 @@ public class BudgetBean implements Serializable{
     
     @PostConstruct
     public void init(){
-        sessionBean.checkSession();
         selectedBudget = new Budget();
         
         // Filter expense categories

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,10 +30,7 @@ public class AccountBean implements Serializable{
     private AccountRepository accountRepository;
     
     @Inject 
-    private TransactionRepository transactionRepository;
-    
-    @Inject
-    private SessionBean sessionBean;
+    private TransactionRepository transactionRepository;  
     
     private Account selectedAccount;
     
@@ -40,12 +38,12 @@ public class AccountBean implements Serializable{
     
     @PostConstruct
     public void init() {
-        sessionBean.checkSession();
         selectedAccount = new Account(); 
         lazyAccounts  = new GenericLazyDataModel<>(accountRepository, Account.class); 
         recalculateAllAccountBalances(); // Initial balance calculation
 
     }
+    
     
     public void prepareCreateAccount() {
         this.selectedAccount = new Account();
