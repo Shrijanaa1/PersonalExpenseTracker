@@ -121,7 +121,7 @@ public abstract class GenericRepository<T extends BaseIdEntity> {
                     .getResultList();
         }
         
-            private void applyFilters(Map<String, FilterMeta> filters, Root<T> root, CriteriaQuery<?> query) {
+    private void applyFilters(Map<String, FilterMeta> filters, Root<T> root, CriteriaQuery<?> query) {
             Predicate[] predicates = filters.values().stream()
                     .map(filter -> criteriaBuilder.like(root.get(filter.getField()), "%" + filter.getFilterValue() + "%"))
                     //similar to sql, where username like '%john%' ==> filter.getField=username , filter.getFilterValue=john
