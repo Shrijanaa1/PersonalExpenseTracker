@@ -28,7 +28,7 @@
         <ui:include src="menuBar.xhtml" />
         <div class="content">
             <h:form id="accountListForm">
-                <p:growl id="msgs" showDetail="true" life="2000" />
+                <p:growl id="msgs" life="2000" />
 
                 <p:dataTable id="accounts" value="#{accountBean.lazyAccounts}" var="account" 
                              rowKey="#{account.id}" paginator="true" rows="5"
@@ -119,10 +119,11 @@
 
                         <h:panelGrid id="editPanel" columns="2" >
                             <h:outputLabel for="name" value="Name:" />
-                            <p:inputText id="name" value="#{accountBean.selectedAccount.name}" required="true" styleClass="input-field"/>
+                            <p:inputText id="name" value="#{accountBean.selectedAccount.name}" 
+                                         required="true" requiredMessage="Account name is required" styleClass="input-field"/>
 
                             <h:outputLabel for="balance" value="Balance:" />
-                            <p:inputText id="balance" value="#{accountBean.selectedAccount.balance}" required="true" styleClass="input-field"/>
+                            <p:inputText id="balance" value="#{accountBean.selectedAccount.balance}" styleClass="input-field"/>
                         </h:panelGrid>
 
                         <div class="dialog-footer">

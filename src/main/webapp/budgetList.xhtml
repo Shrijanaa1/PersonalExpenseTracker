@@ -28,7 +28,7 @@
 
         <div class="content">
             <h:form id="budgetListForm">
-                <p:growl id="msgs" showDetail="true" life="2000" />
+                <p:growl id="msgs" life="2000" />
 
                 <p:dataTable id="budgets" value="#{budgetBean.lazyBudgets}" 
                              var="budget" rowKey="#{budget.id}"
@@ -130,20 +130,20 @@
 
                         <h:panelGrid id="editPanel" columns="2" >
                             <h:outputLabel for="category" value="Category:" />
-                            <p:selectOneMenu id="category" value="#{budgetBean.selectedBudget.category}" required="true" styleClass="input-field">
+                            <p:selectOneMenu id="category" value="#{budgetBean.selectedBudget.category}" styleClass="input-field">
                                 <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{budgetBean.expenseCategories}" var="category" itemLabel="#{category.name()}" itemValue="#{category}"/>
                             </p:selectOneMenu>
 
 
                             <h:outputLabel for="limit" value="Limit:" />
-                            <p:inputText id="limit" value="#{budgetBean.selectedBudget.budgetLimit}" required="true" styleClass="input-field"/>
+                            <p:inputText id="limit" value="#{budgetBean.selectedBudget.budgetLimit}"  styleClass="input-field"/>
 
                             <h:outputLabel for="startDate" value="Start Date:" />
-                            <p:calendar id="startDate" value="#{budgetBean.selectedBudget.startDate}" required="true" styleClass="input-field"/>
+                            <p:calendar id="startDate" value="#{budgetBean.selectedBudget.startDate}" styleClass="input-field"/>
 
                             <h:outputLabel for="endDate" value="End Date:" />
-                            <p:calendar id="endDate" value="#{budgetBean.selectedBudget.endDate}" required="true" styleClass="input-field"/>
+                            <p:calendar id="endDate" value="#{budgetBean.selectedBudget.endDate}" styleClass="input-field"/>
 
                         </h:panelGrid>
 

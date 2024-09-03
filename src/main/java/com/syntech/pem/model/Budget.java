@@ -20,12 +20,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "budgets")
 public class Budget extends BaseIdEntity{
     
-    @NotNull
+    @NotNull(message = "Category should not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private CategoryType category;
     
-    @NotNull
+    @NotNull(message = "Budget Limit should not be null")
     @Column(name = "budgetLimit", nullable = false)
     private BigDecimal budgetLimit;
     
@@ -33,11 +33,11 @@ public class Budget extends BaseIdEntity{
     @Column(name = "remainingAmount", nullable = false)
     private BigDecimal remainingAmount;
     
-    @NotNull
+    @NotNull(message = "StartDate should not be null")
     @Column(name = "startDate", nullable = false)
     private LocalDate startDate;
     
-    @NotNull
+    @NotNull(message = "EndDate should not be null")
     @Column(name = "endDate", nullable = false)
     private LocalDate endDate;
     

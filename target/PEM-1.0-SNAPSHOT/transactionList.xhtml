@@ -30,7 +30,7 @@
         <div class="content">
 
             <h:form id="transactionListForm">
-                <p:growl id="msgs" showDetail="true" life="3000" />
+                <p:growl id="msgs"  life="3000" />
                 <p:dataTable id="transactions" value="#{transactionBean.lazyTransactions}" 
                              var="transaction" rowKey="#{transaction.id}"
                              paginator="true" rows="5"
@@ -119,10 +119,10 @@
 
                         <h:panelGrid id="editPanel" columns="2" >
                             <h:outputLabel for="amount" value="Amount" />
-                            <p:inputText id="amount" value="#{transactionBean.selectedTransaction.amount}" required="true" styleClass="input-field"/>
+                            <p:inputText id="amount" value="#{transactionBean.selectedTransaction.amount}" styleClass="input-field"/>
 
                             <h:outputLabel for="type" value="Type" />
-                            <p:selectOneMenu id="type"  value="#{transactionBean.selectedTransaction.type}" required="true" styleClass="input-field">
+                            <p:selectOneMenu id="type"  value="#{transactionBean.selectedTransaction.type}" styleClass="input-field">
                                 <f:selectItem itemLabel="Select Type" itemValue="" noSelectionOption="true"/>
                                 <f:selectItem itemLabel="Income" itemValue="Income"/>
                                 <f:selectItem itemLabel="Expense" itemValue="Expense"/>
@@ -130,20 +130,23 @@
                             </p:selectOneMenu>
 
                             <h:outputLabel for="category" value="Category" />
-                            <p:selectOneMenu id="category" value="#{transactionBean.selectedTransaction.category}" required="true" styleClass="input-field">
+                            <p:selectOneMenu id="category" value="#{transactionBean.selectedTransaction.category}" styleClass="input-field">
                                 <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{transactionBean.categoryOptions}" var="category" itemLabel="#{category}" itemValue="#{category}" />
                             </p:selectOneMenu>
 
                             <h:outputLabel for="description" value="Description" />
-                            <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" required="true" styleClass="input-field"/>
+                            <p:inputText id="description" value="#{transactionBean.selectedTransaction.description}" 
+                                         required="true" requiredMessage="Description is required" styleClass="input-field"/>
 
                             <h:outputLabel for="date" value="Date" />
-                            <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" required="true" styleClass="input-field"/>
+                            <p:calendar id="date" value="#{transactionBean.selectedTransaction.date}" styleClass="input-field"/>
 
 
                             <h:outputLabel for="account" value="Account" />
-                            <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" required="true" 
+                            <p:selectOneMenu id="account" value="#{transactionBean.selectedTransaction.account}" 
+                                             required="true" 
+                                             requiredMessage="Account is required"
                                              styleClass="input-field"
                                              converter="accountConverter">
                                 <f:selectItem itemLabel="Select Account" itemValue="#{null}" noSelectionOption="true" />

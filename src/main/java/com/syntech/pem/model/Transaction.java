@@ -9,31 +9,33 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="transactions")
 public class Transaction extends BaseIdEntity{
         
-    @NotNull
+    @NotBlank(message = "Amount should not be null")
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
     
-    @NotNull
+    @NotNull(message = "Type should not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private TransactionType type;
     
-    @NotNull
+    @NotEmpty(message = "Category should not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private CategoryType category;
     
-    @NotNull
+    @NotNull(message = "Description should not be null")
     @Column(name = "description", nullable = false)
     private String description;
     
-    @NotNull
+    @NotNull(message = "Date should not be null")
     @Column(name = "date", nullable = false)
     private LocalDate date;
     

@@ -12,11 +12,11 @@ import javax.validation.constraints.NotNull;
 @Table(name = "accounts")
 public class Account extends BaseIdEntity{
     
-    @NotNull(message = "Account name should not be null")
+    @NotNull(message = "Account names should not be null")
     @Column(name = "name", nullable = false, unique = true)
     private String name; 
     
-    @NotNull
+    @NotNull(message = "Balance should not be null")
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
