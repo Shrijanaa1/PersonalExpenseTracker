@@ -32,10 +32,7 @@ public class BudgetRestApi {
     
     @GET
     public Response getAllBudgets() {
-        try{
-            
-             
-            System.out.println("Time"+ LocalDate.now().toString() +" ST "+new Date());
+        try{          
             List<Budget> budgets = budgetRepository.findAll();
             return RestResponse.responseBuilder("true", "200","Budgets retrieved successfully", budgets.toString());
         }catch(Exception e){

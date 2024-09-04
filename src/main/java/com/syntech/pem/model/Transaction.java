@@ -2,6 +2,7 @@ package com.syntech.pem.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,6 +38,7 @@ public class Transaction extends BaseIdEntity{
     
     @NotNull(message = "Date should not be null")
     @Column(name = "date", nullable = false)
+    @JsonbDateFormat("yyyy-MM-dd HH:mm:ss.S")
     private LocalDate date;
     
     @ManyToOne
