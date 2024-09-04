@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @Table(name="transactions")
 public class Transaction extends BaseIdEntity{
         
-    @NotBlank(message = "Amount should not be null")
+    @NotNull(message = "Amount should not be null")
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
     
@@ -27,7 +27,7 @@ public class Transaction extends BaseIdEntity{
     @Column(name = "type", nullable = false)
     private TransactionType type;
     
-    @NotEmpty(message = "Category should not be null")
+    @NotNull(message = "Category should not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private CategoryType category;

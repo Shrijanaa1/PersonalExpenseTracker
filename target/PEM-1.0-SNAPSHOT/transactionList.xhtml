@@ -30,7 +30,7 @@
         <div class="content">
 
             <h:form id="transactionListForm">
-                <p:growl id="msgs"  life="3000" />
+                <p:growl id="msgs" life="3000" />
                 <p:dataTable id="transactions" value="#{transactionBean.lazyTransactions}" 
                              var="transaction" rowKey="#{transaction.id}"
                              paginator="true" rows="5"
