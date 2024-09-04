@@ -97,6 +97,12 @@ public class Account extends BaseIdEntity{
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" + "name=" + name + ", balance=" + balance + '}';
+    }   
+        
     
 }
 

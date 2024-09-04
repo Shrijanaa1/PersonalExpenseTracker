@@ -2,6 +2,8 @@ package com.syntech.pem.api;
 
 import com.syntech.pem.model.Budget;
 import com.syntech.pem.repository.BudgetRepository;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -30,54 +32,74 @@ public class BudgetRestApi {
     
     @GET
     public Response getAllBudgets() {
-        List<Budget> budgets = budgetRepository.findAll();
-        return Response.ok(budgets).build();
+        try{
+            
+             
+            System.out.println("Time"+ LocalDate.now().toString() +" ST "+new Date());
+            List<Budget> budgets = budgetRepository.findAll();
+            return RestResponse.responseBuilder("true", "200","Budgets retrieved successfully", budgets.toString());
+        }catch(Exception e){
+            return RestResponse.responseBuilder("false", "500", "An error occurred", e.getMessage());
+        }      
     }
     
     @GET
     @Path("/{id}")
-    public Response getBudgetById(@PathParam("id") Long id){
-        Budget budget = budgetRepository.findById(id);
-        if(budget == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
+    public Response getBudgetById(@PathParam("id") Long id) {
+        try {
+            Budget budget = budgetRepository.findById(id);
+            if (budget == null) {
+                return RestResponse.responseBuilder("true", "200", "Budget found", budget.toString());
+            } else {
+                return RestResponse.responseBuilder("false", "404", "Budget not found", null);
+            }
+        } catch (Exception e) {
+            return RestResponse.responseBuilder("false", "500", "An error occurred", e.getMessage());
         }
-        
-        return Response.ok(budget).build();
     }
     
     @POST
     public Response createBudget(Budget budget) {
         try {
             budgetRepository.save(budget);
-            return Response.status(Response.Status.CREATED).entity(budget).build();
+            return RestResponse.responseBuilder("true", "201", "Budget created successfully", budget.toString());
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Error creating budget: " + e.getMessage()).build();
+            return RestResponse.responseBuilder("false", "400", "Failed to create budget", e.getMessage());
         }
     }
     
     @PUT
     @Path("/{id}")
-    public Response updateBudget(@PathParam("id")Long id, Budget budget){
-        Budget existingBudget = budgetRepository.findById(id);
-        if(existingBudget != null){
-            budget.setId(id);
-            budgetRepository.update(budget);
-            return Response.ok(budget).build();  
-        }else{
-            return Response.status(Response.Status.NOT_FOUND).build();
+    public Response updateBudget(@PathParam("id") Long id, Budget budget) {
+        try {
+            Budget existingBudget = budgetRepository.findById(id);
+            if (existingBudget != null) {
+                budget.setId(id);
+                budgetRepository.update(budget);
+               return RestResponse.responseBuilder("true", "200", "Budget updated successfully", budget.toString());
+            } else {
+                return RestResponse.responseBuilder("false", "404", "Budget not found", null);
+            }
+
+        } catch (Exception e) {
+            return RestResponse.responseBuilder("false", "500", "An error occurred", e.getMessage());
         }
-        
     }
     
     @DELETE
     @Path("/{id}")
     public Response deleteBudget(@PathParam("id")Long id){
-        Budget budget = budgetRepository.findById(id);
-        if(budget != null){
-            budgetRepository.delete(budget);
-            return Response.noContent().build();           
-        }else{
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }               
+        try{
+            Budget budget = budgetRepository.findById(id);
+            if(budget != null){
+                budgetRepository.delete(budget);
+                return RestResponse.responseBuilder("true", "204", "Budget deleted successfully", null);          
+            }else{
+                return RestResponse.responseBuilder("false", "404", "Budget not found", null);  
+            }               
+        }catch(Exception e){
+            return RestResponse.responseBuilder("false", "500", "An error occurred", e.getMessage());
+        }
     }
+ 
 }

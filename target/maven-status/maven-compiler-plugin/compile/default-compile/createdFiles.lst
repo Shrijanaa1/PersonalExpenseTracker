@@ -16,6 +16,7 @@ com/syntech/pem/bean/BudgetBean.class
 com/syntech/pem/model/BaseIdEntity.class
 com/syntech/pem/repository/BudgetRepository.class
 com/syntech/pem/bean/UserBean.class
+com/syntech/pem/api/RestResponse.class
 com/syntech/pem/repository/UserRepository.class
 com/syntech/pem/model/Transaction.class
 com/syntech/pem/model/Budget.class

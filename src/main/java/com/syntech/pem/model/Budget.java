@@ -29,7 +29,7 @@ public class Budget extends BaseIdEntity{
     @Column(name = "budgetLimit", nullable = false)
     private BigDecimal budgetLimit;
     
-    @NotNull
+//    @NotNull
     @Column(name = "remainingAmount", nullable = false)
     private BigDecimal remainingAmount;
     
@@ -112,6 +112,11 @@ public class Budget extends BaseIdEntity{
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Budget{" + "category=" + category + ", budgetLimit=" + budgetLimit + ", startDate=" + startDate + ", endDate=" + endDate + '}';
     }
     
     
