@@ -74,6 +74,10 @@ public class BudgetRestApi {
         try {
             Budget existingBudget = budgetRepository.findById(id);
             if (existingBudget != null) {
+                if (budget.getRemainingAmount() == null) {
+                    budget.setRemainingAmount(budget.getBudgetLimit());
+                }   
+                
                 budget.setId(id);
                 budgetRepository.update(budget);
                return RestResponse.responseBuilder("true", "200", "Budget updated successfully", budget.toString());

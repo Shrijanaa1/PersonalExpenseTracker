@@ -57,6 +57,7 @@ public class RestResponse {
 
     public void setResult(String result) {
         this.result = result;
+        
     }
     
     public static Response responseBuilder(String success, String code, String message, String result) {

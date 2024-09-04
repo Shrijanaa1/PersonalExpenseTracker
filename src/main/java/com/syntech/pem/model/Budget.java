@@ -1,12 +1,14 @@
 package com.syntech.pem.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -29,25 +31,27 @@ public class Budget extends BaseIdEntity{
     @Column(name = "budgetLimit", nullable = false)
     private BigDecimal budgetLimit;
     
-//    @NotNull
-    @Column(name = "remainingAmount", nullable = false)
+    @Column(name = "remainingAmount")
     private BigDecimal remainingAmount;
     
     @NotNull(message = "StartDate should not be null")
+    @JsonbDateFormat("yyyy-MM-dd HH:mm:ss.S")
     @Column(name = "startDate", nullable = false)
-    private LocalDate startDate;
+    private Date startDate;
+    
     
     @NotNull(message = "EndDate should not be null")
+    @JsonbDateFormat("yyyy-MM-dd HH:mm:ss.S")
     @Column(name = "endDate", nullable = false)
-    private LocalDate endDate;
+    private Date endDate;
     
     @Transient
-    @Column(name = "remark", nullable = false)
+    @Column(name = "remark")
     private String remark;
     
     public Budget() { }
 
-    public Budget(CategoryType category, BigDecimal budgetLimit, BigDecimal remainingAmount, LocalDate startDate, LocalDate endDate, String remark) {
+    public Budget(CategoryType category, BigDecimal budgetLimit, BigDecimal remainingAmount, Date startDate, Date endDate, String remark) {
         this.category = category;
         this.budgetLimit = budgetLimit;
         this.remainingAmount = remainingAmount;
@@ -64,6 +68,13 @@ public class Budget extends BaseIdEntity{
         }
     }
     
+    @PreUpdate
+    public void preUpdate(){
+        if (this.remainingAmount == null) {
+            this.remainingAmount = this.budgetLimit;
+        }
+    }
+    
     
     public CategoryType getCategory() {
         return category;
@@ -73,23 +84,23 @@ public class Budget extends BaseIdEntity{
         this.category = category;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-
+    
     public BigDecimal getBudgetLimit() {
         return budgetLimit;
     }
@@ -118,7 +129,5 @@ public class Budget extends BaseIdEntity{
     public String toString() {
         return "Budget{" + "category=" + category + ", budgetLimit=" + budgetLimit + ", startDate=" + startDate + ", endDate=" + endDate + '}';
     }
-    
-    
     
 }
