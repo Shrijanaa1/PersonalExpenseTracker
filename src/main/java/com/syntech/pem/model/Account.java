@@ -1,10 +1,8 @@
 package com.syntech.pem.model;
 
 import java.math.BigDecimal;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -19,9 +17,6 @@ public class Account extends BaseIdEntity{
     @NotNull(message = "Balance should not be null")
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
-
-    @OneToMany(mappedBy = "account")
-    private List<Transaction> transactions;
     
     public Account() {}
     
@@ -48,15 +43,6 @@ public class Account extends BaseIdEntity{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
     }
     
 
